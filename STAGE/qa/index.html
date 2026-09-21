@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>QA — Phil McNeely</title>
-<meta name="description" content="How Phil McNeely thinks about quality and testing, and the automated test pipeline behind it.">
+<meta name="description" content="I'm a tester. Not QA — a tester. How Phil McNeely thinks about quality, testing, and quality engineering.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -25,45 +25,48 @@
 <main id="main"><div class="wrap">
   <div class="page-head">
     <a class="back" href="/STAGE/">← back</a>
-    <p class="kicker">QA · testing · quality engineering</p>
-    <h1>Quality is the job.</h1>
-    <p class="sub">Not a phase at the end, not someone else's problem — the thing you build in from the first line. This is the part of the work that's most me.</p>
+    <p class="kicker">Testing · quality engineering</p>
+    <h1>I'm a tester.</h1>
+    <p class="sub">Not QA. Not quality assurance. A tester. It isn't a job I clock into — it's how I'm wired.</p>
   </div>
 
-  <section aria-labelledby="approach-h">
-    <p class="eyebrow" id="approach-h"><span class="idx">01</span> How I think about it</p>
+  <section aria-labelledby="wired-h">
+    <p class="eyebrow" id="wired-h"><span class="idx">01</span> How I'm wired</p>
     <div class="prose">
-      <p>I started as a <b>tester</b> and never lost the instinct. The tester's job isn't to catch bugs at the door — it's to make the whole system harder to get wrong: better contracts, better feedback loops, better defaults, so the failure mode stops happening instead of getting caught.</p>
-      <p>I care about <b>measuring quality honestly</b> — a green checkmark that isn't evidence is worse than a red one. If a test can pass while the thing is broken, the test is the bug. Instrument everything; trust the output, not the exit code.</p>
-      <p>And I care about <b>leaving the people after me better equipped</b>: repeatable process over heroics, documented decisions over tribal knowledge.</p>
+      <p>I poke at the thing everyone assumes is fine and find the defect nobody wanted found — in a codebase, in a plan, in a "fact" someone stated a little too confidently. People state things blindly; I love asking <b>is that actually true?</b> and watching what happens. Same with assumptions — especially the load-bearing ones nobody thought to check.</p>
+      <p><span class="accent">Доверяй, но проверяй — trust, but verify.</span> I test <b>to see</b>, not to confirm. Even when I'm certain I know the answer, I'd rather watch it happen than trust the theory. Don't take the claim — check the thing. Seeing beats assuming.</p>
+      <p>I knew two external GPUs on separate Thunderbolt buses couldn't be pooled into one big model. I wired them together and tried it anyway — just to watch exactly how it broke. That's the whole job, dressed up in tooling.</p>
     </div>
   </section>
 
-  <section aria-labelledby="build-h">
-    <p class="eyebrow" id="build-h"><span class="idx">02</span> What I build</p>
-    <div class="grid">
-      <a class="card feature" href="#demos">
+  <section aria-labelledby="qe-h">
+    <p class="eyebrow" id="qe-h"><span class="idx">02</span> From QA to QE</p>
+    <div class="prose">
+      <p>You cannot inspect quality into a product. That's not the objection — it's the point. If you can't inspect it in, you <b>build it in</b>.</p>
+      <p>QA was reactive: validate at the end, run the tests, find the bugs after the work was already done. <b>Quality Engineering is proactive</b> — build the architecture and the feedback loops that keep defects from being written in the first place, and catch the ones that slip the moment they land. I stopped guarding the border between "testing" and "engineering" and started owning both sides of it.</p>
+      <p>What I own isn't assuring quality — I don't control the schedule or the scope, and I've made my peace with that. What I own is <b>the system that lets the organization build quality in</b>, and the information that makes the real state of it impossible to fake.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="ai-h">
+    <p class="eyebrow" id="ai-h"><span class="idx">03</span> AI, held to the same bar</p>
+    <div class="prose">
+      <p>I run models on my own hardware. I'm not theorizing about AI — I'm using it every day, and building with it, not waiting for it: AI-assisted test generation, agent-based testing, defect diagnostics.</p>
+      <p>The AI handles the mechanical work; <b>the tester decides what matters</b>. So I own the evaluation discipline and the human-in-the-loop governance that holds AI-assisted work to the same bar as anything written by hand. Trust the agent to do the work; verify it exactly as hard. <span class="accent">An agent is a powerful new instrument. It is not an excuse to stop thinking.</span></p>
+    </div>
+    <div class="grid" style="margin-top:36px">
+      <a class="card feature" href="#demo">
         <div class="ct">Automated test pipeline <span class="tag invite">demo · invite only</span></div>
-        <p class="cd">A pipeline that turns intent into asserted, running tests — fetch, generate, execute, and grade against real criteria, not vibes. The hands-on demo is invite-only and sandboxed.</p>
+        <p class="cd">Where the ideas above run for real — intent to asserted, running tests, graded against criteria that matter. The hands-on demo is invite-only and sandboxed.</p>
         <span class="go">request a demo →</span>
       </a>
-      <div class="card">
-        <div class="ct">Test frameworks</div>
-        <p class="cd">Playwright and Cypress harnesses with an AI layer — page models, proof-to-test flows, targeted regression, and TDD scaffolding.</p>
-      </div>
-      <div class="card">
-        <div class="ct">Quality gates</div>
-        <p class="cd">Grounding gates and rubric-based scoring that block on evidence — coverage scoped to the change, not a vanity number.</p>
-      </div>
     </div>
   </section>
 
-  <section id="principles" aria-labelledby="principles-h">
-    <p class="eyebrow" id="principles-h"><span class="idx">03</span> Principles I hold</p>
+  <section aria-labelledby="measure-h">
+    <p class="eyebrow" id="measure-h"><span class="idx">04</span> The measurement loop</p>
     <div class="prose">
-      <p><b>Measure it, or it didn't happen.</b> Every feature ships with the metric that proves it works.</p>
-      <p><b>Fix the gap, keep the bar.</b> When something falls short, raise the system — don't lower the standard.</p>
-      <p><b>Don't reduce judgment to a checkbox.</b> Quality is value delivered, measured for insight — not vanity dashboards.</p>
+      <p>Measure everything — but the <b>right</b> things. Quality is value to someone who matters, not a number on a dashboard: measure outcomes and conversion, not vanity volume. Read the numbers to <b>learn</b>, never as a target to hit — the moment a metric becomes a goal, it gets gamed. The analytics aren't decoration; they're the proof. Доверяй, но проверяй.</p>
     </div>
   </section>
 
