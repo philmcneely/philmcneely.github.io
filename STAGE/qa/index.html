@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QA — Phil McNeely</title>
+<meta name="description" content="How Phil McNeely thinks about quality and testing, and the automated test pipeline behind it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/STAGE/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><div class="wrap nav">
+  <a class="brand" href="/STAGE/" aria-label="Phil McNeely — home">Phil McNeely<span class="dot">.</span></a>
+  <div class="nav-r">
+    <nav class="menu" aria-label="Primary">
+      <a href="/STAGE/qa/" class="active">QA</a><a href="/STAGE/systems/">Systems</a><a href="/STAGE/writing/">Writing</a><a href="/STAGE/hobbies/">Hobbies</a><a href="/STAGE/#about">About</a>
+    </nav>
+    <div class="icons"><a href="https://github.com/philmcneely" aria-label="GitHub"><svg width="19" height="19" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a></div>
+  </div>
+</div></header>
+
+<main id="main"><div class="wrap">
+  <div class="page-head">
+    <a class="back" href="/STAGE/">← back</a>
+    <p class="kicker">QA · testing · quality engineering</p>
+    <h1>Quality is the job.</h1>
+    <p class="sub">Not a phase at the end, not someone else's problem — the thing you build in from the first line. This is the part of the work that's most me.</p>
+  </div>
+
+  <section aria-labelledby="approach-h">
+    <p class="eyebrow" id="approach-h"><span class="idx">01</span> How I think about it</p>
+    <div class="prose">
+      <p>I started as a <b>tester</b> and never lost the instinct. The tester's job isn't to catch bugs at the door — it's to make the whole system harder to get wrong: better contracts, better feedback loops, better defaults, so the failure mode stops happening instead of getting caught.</p>
+      <p>I care about <b>measuring quality honestly</b> — a green checkmark that isn't evidence is worse than a red one. If a test can pass while the thing is broken, the test is the bug. Instrument everything; trust the output, not the exit code.</p>
+      <p>And I care about <b>leaving the people after me better equipped</b>: repeatable process over heroics, documented decisions over tribal knowledge.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="build-h">
+    <p class="eyebrow" id="build-h"><span class="idx">02</span> What I build</p>
+    <div class="grid">
+      <a class="card feature" href="#demos">
+        <div class="ct">Automated test pipeline <span class="tag invite">demo · invite only</span></div>
+        <p class="cd">A pipeline that turns intent into asserted, running tests — fetch, generate, execute, and grade against real criteria, not vibes. The hands-on demo is invite-only and sandboxed.</p>
+        <span class="go">request a demo →</span>
+      </a>
+      <div class="card">
+        <div class="ct">Test frameworks</div>
+        <p class="cd">Playwright and Cypress harnesses with an AI layer — page models, proof-to-test flows, targeted regression, and TDD scaffolding.</p>
+      </div>
+      <div class="card">
+        <div class="ct">Quality gates</div>
+        <p class="cd">Grounding gates and rubric-based scoring that block on evidence — coverage scoped to the change, not a vanity number.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="principles" aria-labelledby="principles-h">
+    <p class="eyebrow" id="principles-h"><span class="idx">03</span> Principles I hold</p>
+    <div class="prose">
+      <p><b>Measure it, or it didn't happen.</b> Every feature ships with the metric that proves it works.</p>
+      <p><b>Fix the gap, keep the bar.</b> When something falls short, raise the system — don't lower the standard.</p>
+      <p><b>Don't reduce judgment to a checkbox.</b> Quality is value delivered, measured for insight — not vanity dashboards.</p>
+    </div>
+  </section>
+
+</div>
+<footer class="wrap">
+  <span>© <span id="yr"></span> Phil McNeely</span><span class="sep">/</span>
+  <a href="https://github.com/philmcneely">GitHub</a><a href="/STAGE/">Home</a>
+  <span class="sep">/</span><span>Draconis</span>
+</footer>
+</main>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
