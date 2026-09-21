@@ -63,6 +63,8 @@ section{padding:var(--s7) 0}
 h1.big{font-family:var(--display);font-weight:700;font-size:clamp(52px,11vw,108px);line-height:.94;letter-spacing:-.035em;margin:0 0 var(--s3);text-wrap:balance}
 h1.big .dot{color:var(--accent)}
 .role{font-family:var(--display);font-weight:500;font-size:clamp(18px,2.5vw,23px);color:var(--muted);letter-spacing:-.01em;margin:0 0 var(--s5)}
+.big-words{font-family:var(--display);font-weight:700;font-size:clamp(24px,4.5vw,40px);letter-spacing:-.02em;line-height:1.05;margin:6px 0 var(--s5);color:var(--ink)}
+.big-words .a{color:var(--accent)}
 .lede{font-size:clamp(18px,2.2vw,21px);line-height:1.6;color:var(--ink);max-width:62ch;margin:0 0 var(--s5);padding-left:var(--s4);border-left:2px solid var(--accent)}
 .lede b{font-weight:600}
 .hero-cta{display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center}
