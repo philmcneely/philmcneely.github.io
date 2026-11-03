@@ -175,7 +175,7 @@
         "y": 11.9,
         "w": 6.6,
         "h": 3.8,
-        "label": "Honest gaps",
+        "label": "Known gaps",
         "text": "A machine that cannot be reached is shown as unreachable instead of being hidden."
       }
     ]
@@ -413,7 +413,7 @@
         "y": 0.9,
         "w": 42.7,
         "h": 15.2,
-        "label": "Honest status",
+        "label": "Real status",
         "text": "The panel separates 'not working' from 'unmeasured', so missing data is not hidden."
       },
       {
