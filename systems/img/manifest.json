@@ -825,7 +825,7 @@
     "system": "also",
     "w": 1000,
     "h": 1900,
-    "caption": "The Bridge running a real debate: \"Should pineapple go on pizza?\" One agent is assigned to argue for, another against, over two rounds of openings and rebuttals. The whole run took 24 seconds. Agent names are blurred.",
+    "caption": "The Bridge running a real debate: \"Should pineapple go on pizza?\" A local Qwen model on the fleet's GPUs argues for, a hosted DeepSeek model argues against, over two rounds of openings and rebuttals, about 50 seconds end to end. Every model call goes through a fleet proxy. Machine and agent names are blurred.",
     "callouts": [
       {
         "x": 10,
@@ -839,25 +839,25 @@
         "x": 10,
         "y": 13.6,
         "w": 80,
-        "h": 14.6,
+        "h": 25.2,
         "label": "Pick the panel",
-        "text": "Click an agent once to let it argue freely, twice to force it for, three times to force it against."
+        "text": "Thirteen agents: coding agents on different machines plus local and hosted models. Click once to let one argue freely, twice to force it for, three times to force it against."
       },
       {
         "x": 10,
-        "y": 41.5,
+        "y": 49.5,
         "w": 80,
-        "h": 36.8,
+        "h": 35.2,
         "label": "Against",
         "text": "The opposing agent opens with its case."
       },
       {
         "x": 10,
-        "y": 78.8,
+        "y": 86.6,
         "w": 80,
-        "h": 21,
+        "h": 13.2,
         "label": "For",
-        "text": "The other side answers, then each rebuts in round two."
+        "text": "The local model answers, then each side rebuts the other in round two."
       }
     ]
   }
