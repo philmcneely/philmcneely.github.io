@@ -821,6 +821,47 @@
     ]
   },
   {
+    "file": "herdr-web.webp",
+    "system": "also",
+    "w": 1500,
+    "h": 1400,
+    "caption": "herdr-web: one private web page, behind my login, with every agent session on every machine in the fleet. Twelve machines, all connected; under them, each running agent with its status. Open any pane and you get its live terminal, so I can check on or steer an agent from my phone. Machine names and pane contents are blurred.",
+    "callouts": [
+      {
+        "x": 0.5,
+        "y": 1.5,
+        "w": 20.5,
+        "h": 45,
+        "label": "Every machine",
+        "text": "Twelve machines in the fleet, each with a green dot when its sessions are reachable."
+      },
+      {
+        "x": 0.5,
+        "y": 46.5,
+        "w": 20.5,
+        "h": 47,
+        "label": "Every agent",
+        "text": "Each running session with its workspace, its agent and whether it is working, waiting or done."
+      },
+      {
+        "x": 21.5,
+        "y": 0,
+        "w": 78,
+        "h": 5.5,
+        "label": "Chat or terminal",
+        "text": "The selected session, as a chat view or its raw terminal."
+      },
+      {
+        "x": 21.5,
+        "y": 6,
+        "w": 78,
+        "h": 88,
+        "label": "Live pane",
+        "text": "The agent's real terminal, streamed. Contents blurred here."
+      }
+    ]
+  },
+  {
     "file": "debate-pineapple.webp",
     "system": "also",
     "w": 1000,
