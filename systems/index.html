@@ -91,7 +91,7 @@
   .toc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:48px;
     border-bottom:1px solid var(--line)}
   .toc li{border-top:1px solid var(--line)}
-  .toc li:nth-last-child(1){grid-column:1 / -1}
+  .toc li:nth-last-child(1):nth-child(odd){grid-column:1 / -1}
   .toc a{display:grid;grid-template-columns:36px 1fr;padding:20px 8px 22px 0;text-decoration:none;color:inherit;position:relative;
     transition:background .16s}
   .toc a::before{content:"";position:absolute;left:-14px;top:0;bottom:0;width:2px;background:var(--ox);opacity:0;transition:opacity .16s}
@@ -187,6 +187,17 @@
   .cd{color:var(--read-ink);font-size:16.5px;line-height:1.55;max-width:60ch}
   a.card .go{margin-top:10px;display:block;border:0}
 
+  /* ---- the rest of the workshop ---- */
+  .rest{display:grid;grid-template-columns:1fr 1fr;gap:0 46px;margin:34px 0 8px}
+  .item{padding:22px 0 24px;border-top:1px solid var(--line)}
+  .item.feat{grid-column:1 / -1}
+  .item .ct{font-size:22px}
+  .item .cd{max-width:none}
+  .item .cd p{margin:0 0 .9em}
+  .item .cd p:last-child{margin-bottom:0}
+  .item.feat .cd{max-width:62ch}
+  .org{font:400 11px/1.5 var(--mono);color:var(--paper-faint);letter-spacing:.03em;margin:10px 0 0}
+
   /* ---- screenshots with callouts ---- */
   .shots{margin-top:56px}
   .shots:empty{display:none}
@@ -247,6 +258,7 @@
     .toc{grid-template-columns:1fr}
     .two{grid-template-columns:1fr;gap:30px}
     .legend{grid-template-columns:1fr}
+    .rest{grid-template-columns:1fr}
   }
   @media (max-width:560px){
     body{font-size:18px}
@@ -267,7 +279,7 @@
 <header class="top">
   <div class="top-in">
     <a class="home" href="../" aria-label="Phil McNeely, home">Phil McNeely</a>
-    <nav class="sec-nav" aria-label="Systems"><a href="#fleet">Fleet</a><a href="#memory">Memory</a><a href="#intake">Intake</a><a href="#dispatch">Dispatch</a><a href="#podcast">Podcast</a><a href="#karakuri">Karakuri</a><a href="#qa">QA</a><a href="#gm">Game master</a><a href="#meetings">Meetings</a><a href="#selfheal">Self-heal</a><a href="#storage">Storage</a><a href="#open">Open</a></nav>
+    <nav class="sec-nav" aria-label="Systems"><a href="#fleet">Fleet</a><a href="#memory">Memory</a><a href="#intake">Intake</a><a href="#dispatch">Dispatch</a><a href="#podcast">Podcast</a><a href="#karakuri">Karakuri</a><a href="#qa">QA</a><a href="#gm">Game master</a><a href="#meetings">Meetings</a><a href="#selfheal">Self-heal</a><a href="#storage">Storage</a><a href="#also">Also</a><a href="#open">Open</a></nav>
   </div>
 </header>
 
@@ -303,6 +315,7 @@
 <li><a href="#meetings"><span class="n">09</span><span class="t">Meeting intelligence <span class="tag run">running</span></span><span class="d">Recordings in; transcripts, speakers and summaries out, all processed on my own machines.</span></a></li>
 <li><a href="#selfheal"><span class="n">10</span><span class="t">Self-healing operations <span class="tag prog">in progress</span></span><span class="d">Watchdogs, red alerts, a local-model triage ladder and runbooks. The goal is zero alerts.</span></a></li>
 <li><a href="#storage"><span class="n">11</span><span class="t">Storage &amp; backup <span class="tag run">running</span></span><span class="d">Hundreds of terabytes on shucked drives, with a nightly copy to a backup server.</span></a></li>
+<li><a href="#also"><span class="n">12</span><span class="t">The rest of the workshop <span class="tag run">running</span></span><span class="d">A debate room for models, a coffee machine that works without its app, a 3D-printing workflow, and a handful of tools and games.</span></a></li>
     </ol>
   </div>
 
@@ -380,7 +393,7 @@
     <p class="slede">Agents forget. This is the part that doesn&rsquo;t.</p>
     <div class="parts" aria-label="Built with"><span>sqlite-vec</span><span>SQLite FTS5</span><span>sentence-transformer embeddings</span><span>REST + MCP bridge</span></div>
   </div>
-  <div class="col prose"><p>Two failures drove it. One: an agent answers a question about my own setup from a stale guess instead of checking. Two: a decision made mid-session dies when the context window compacts. So there is one place agents look things up and one place they write things down.</p><p>There are two stores. <b>Facts and decisions</b> live in a semantic store: short notes, each tagged with how I know it. <span class="chip">human-said</span> means I stated it, <span class="chip">observed</span> means a tool showed it, <span class="chip">agent-thought</span> means the agent inferred it. That distinction matters, because an inference should never carry the weight of something I decided. <b>Conversations</b> live in a full-text archive of thousands of past sessions. Search spans both, so a hit can be the fact and the conversation it came from.</p><p>Agents get two deliberate tools, <b>recall</b> and <b>remember</b>, plus a hook that injects memory automatically, but only when a prompt actually points backwards: &ldquo;last night&rdquo;, &ldquo;remember when&rdquo;, a project by name. A plain task pulls nothing. For fleet work there is a gate on top: an agent&rsquo;s tool calls are blocked until it has recalled what we already know. A batch job also mines old transcripts for decisions and writes them back as facts, so durable knowledge doesn&rsquo;t depend on any one agent remembering to save it. A small app, <b>Mnemo</b>, shows what is stored, where it came from and who is asking.</p></div>
+  <div class="col prose"><p>Two failures drove it. One: an agent answers a question about my own setup from a stale guess instead of checking. Two: a decision made mid-session dies when the context window compacts. So there is one place agents look things up and one place they write things down.</p><p>There are two stores. <b>Facts and decisions</b> live in a semantic store: short notes, each tagged with how I know it. <span class="chip">human-said</span> means I stated it, <span class="chip">observed</span> means a tool showed it, <span class="chip">agent-thought</span> means the agent inferred it. That distinction matters, because an inference should never carry the weight of something I decided. <b>Conversations</b> live in a full-text archive of thousands of past sessions. Search spans both, so a hit can be the fact and the conversation it came from.</p><p>The vector side works like this. When a fact is saved, a small sentence-transformer model turns the note into a vector of 384 numbers, and that vector is stored beside the text in a SQLite database with the <b>sqlite-vec</b> extension. A question gets embedded the same way and matched by cosine similarity, so it can find a note even when the words differ. One catch: a vector search always hands back its nearest neighbours, even for gibberish. So the lookup tool throws away anything under a relevance floor and says &ldquo;nothing on record&rdquo; instead of showing a weak match. The conversation archive is the keyword side: <b>SQLite FTS5</b> over the transcripts, exact words and terms, with no embeddings yet. One query goes to both stores and the results are merged, with facts ranked ahead of conversation hits on ties. The vectors give the meaning, and the keywords catch the exact strings: a model name, an error message, a hostname. The test tooling keeps a separate vector store of its own (ChromaDB, for proven test steps), described in its section.</p><p>Agents get two deliberate tools, <b>recall</b> and <b>remember</b>, plus a hook that injects memory automatically, but only when a prompt actually points backwards: &ldquo;last night&rdquo;, &ldquo;remember when&rdquo;, a project by name. A plain task pulls nothing. For fleet work there is a gate on top: an agent&rsquo;s tool calls are blocked until it has recalled what we already know. A batch job also mines old transcripts for decisions and writes them back as facts, so durable knowledge doesn&rsquo;t depend on any one agent remembering to save it. A small app, <b>Mnemo</b>, shows what is stored, where it came from and who is asking.</p></div>
   <div class="wide">
     <figure class="dgm">
       <div class="dgm-in">
@@ -445,9 +458,9 @@
     <p class="kick">03 · Reading pipeline</p>
     <h2 id="intake-h">Content intake <span class="tag run">running</span></h2>
     <p class="slede">A dozen kinds of source go in. A scored, readable queue and a funnel of ideas come out.</p>
-    <div class="parts" aria-label="Built with"><span>n8n</span><span>Python</span><span>Markdown + frontmatter</span><span>git</span><span>local + hosted LLMs</span></div>
+    <div class="parts" aria-label="Built with"><span>n8n</span><span>Python</span><span>Markdown + frontmatter</span><span>git</span><span>local + hosted LLMs</span><span>full-text + vector search index</span></div>
   </div>
-  <div class="col prose"><p>I read a lot: articles, posts, newsletters, forums, videos, podcasts, books, new repos. I don&rsquo;t want to find it all by hand, and I don&rsquo;t want a feed deciding what matters. So every source gets its own <b>downloader</b> that pulls new items on a schedule and writes each one as a Markdown file with frontmatter into a repo for that media type. Hundreds of thousands of items live there now.</p><p><b>The Librarian</b> is the single chokepoint. Every item goes through one scoring workflow: an LLM rates it against my interest profile and pulls out the substance, meaning the ideas, the lessons and why it matters to me. Everything downstream reads scored items, never raw scrapes. What passes lands in a reading queue, <b>the Workshop</b>, where I triage, drill into any source, or paste a URL and have it fetched, scored and filed on the spot.</p><p><b>The Ladder</b> is where the good ones go to work. A source sparks an idea, an idea becomes a testable hypothesis, a hypothesis becomes an experiment, and an experiment that holds up becomes a proven method. Results loop back in as new sources. In front of it sits a grounding gate: a local model that throws out ideas I have already tested and settled before they reach me.</p></div>
+  <div class="col prose"><p>I read a lot: articles, posts, newsletters, forums, videos, podcasts, books, new repos. I don&rsquo;t want to find it all by hand, and I don&rsquo;t want a feed deciding what matters. So every source gets its own <b>downloader</b> that pulls new items on a schedule and writes each one as a Markdown file with frontmatter into a repo for that media type. Hundreds of thousands of items live there now.</p><p><b>The Librarian</b> is the single chokepoint. Every item goes through one scoring workflow: an LLM rates it against my interest profile and pulls out the substance, meaning the ideas, the lessons and why it matters to me. Everything downstream reads scored items, never raw scrapes. What passes lands in a reading queue, <b>the Workshop</b>, where I triage, drill into any source, or paste a URL and have it fetched, scored and filed on the spot.</p><p>Downstream of the Librarian sits a search index with both halves: full-text and vectors. Articles, video and podcast transcripts, forum posts and news are cut into chunks and embedded. Today that is roughly 580,000 documents and 3.3 million chunks, tens of gigabytes of SQLite files on one edge box. It answers &ldquo;what have I read about this&rdquo;, where Fleet Memory answers &ldquo;what did we decide&rdquo;, and an agent can search it by meaning or by exact words. Fleet Dispatch keeps a smaller index of its own for news articles. The Ladder&rsquo;s grounding gate uses embeddings too: it searches fleet memory for what is already settled before an idea reaches me.</p><p><b>The Ladder</b> is where the good ones go to work. A source sparks an idea, an idea becomes a testable hypothesis, a hypothesis becomes an experiment, and an experiment that holds up becomes a proven method. Results loop back in as new sources. In front of it sits a grounding gate: a local model that throws out ideas I have already tested and settled before they reach me.</p></div>
   <div class="wide">
     <figure class="dgm">
       <div class="dgm-in">
@@ -768,7 +781,7 @@
     <p class="slede">A test-generation pipeline built from separate stages that meet only at model-free contracts, plus the harness that tells me whether it works.</p>
     <div class="parts" aria-label="Built with"><span>Python</span><span>Playwright</span><span>ChromaDB</span><span>JSON-schema contracts</span><span>pytest</span></div>
   </div>
-  <div class="col prose"><p>I have been a tester my whole career, so this is the system I am hardest on. The pipeline has five small services. <b>Spec intake</b> reads a spec or ticket, interrogates it for assumptions and gaps, asks clarifying questions, and normalises the acceptance criteria into BDD. Creating anything in a system of record needs a human&rsquo;s approval. The <b>test-case designer</b> expands that into positive, negative and boundary cases. The <b>synthesizer</b> turns each step into automation: it reuses a proven step from the library when one matches, and otherwise derives the step by driving the live app (map it, walk the journey, adapt) and compiles the test from what it observed. The <b>runner</b> executes the test, heals locator drift, and on green promotes the new steps into the <b>step library</b>, which only ever holds steps that passed. A human merges the pull request.</p><p>Stages meet only at <b>contracts</b>: versioned JSON schemas with no model calls in them, so any stage can be swapped out or run alone. <b>qa-eval</b> is the harness that keeps me honest. It runs the whole pipeline N times on every spec in a corpus and reports green rate, run-to-run consistency and why tests failed.</p><p><b>Self-healing</b> is the part of this I am most careful with, because a test that quietly rewrites itself can hide a real bug. It lives in two places. Inside the pipeline, the runner repairs locator drift in a generated test, and when it can&rsquo;t, it flags the test for a human and promotes nothing. Separately I keep two mirrored Playwright frameworks, Python and TypeScript, with self-healing locators and the Planner, Generator and Healer agent trio driven over MCP, plus a heal command that works with any OpenAI-compatible model, local or hosted. The rules come from what practitioners learned running this for real. Healing happens <b>out of band</b>: tests run and publish results first, and only afterwards does a separate step go back over the failures, never during the run and never automatically on a first failure. Each failure is reproduced in a real browser before anything is touched. The healer may change locators only, never assertions or what a test means. If a repair doesn&rsquo;t hold, it is reverted and the failure is flagged as a likely app bug instead of being papered over, and everything lands as one pull request that lists each decision and the tests left alone for a human to review. I have run it end to end on a local 27-billion-parameter model: break a selector, watch it heal to a label-based locator, watch the test pass again. A nightly job now runs the end-to-end suite for one of my own services and calls the healer on whatever fails.</p><p>The result that changed the project: when the pipeline failed on basic demo apps, the model was not the bottleneck. A 27-billion-parameter local model, quantised to 4-bit, matched a frontier model on a controlled run (17 to 18 of 18 genuine passes) once the harness observed the real page and could address repeated elements. The earlier &ldquo;small models hallucinate&rdquo; results were harness bugs. Observation, not model size, was the fix. Alongside it are agent skills for generating test documents from specs and for coaching red-green-refactor, and a QA review panel inside Karakuri.</p></div>
+  <div class="col prose"><p>I have been a tester my whole career, so this is the system I am hardest on. The pipeline has five small services. <b>Spec intake</b> reads a spec or ticket, interrogates it for assumptions and gaps, asks clarifying questions, and normalises the acceptance criteria into BDD. Creating anything in a system of record needs a human&rsquo;s approval. The <b>test-case designer</b> expands that into positive, negative and boundary cases. The <b>synthesizer</b> turns each step into automation: it reuses a proven step from the library when one matches, and otherwise derives the step by driving the live app (map it, walk the journey, adapt) and compiles the test from what it observed. The <b>runner</b> executes the test, heals locator drift, and on green promotes the new steps into the <b>step library</b>, which only ever holds steps that passed. A human merges the pull request.</p><p>Stages meet only at <b>contracts</b>: versioned JSON schemas with no model calls in them, so any stage can be swapped out or run alone. <b>qa-eval</b> is the harness that keeps me accurate. It runs the whole pipeline N times on every spec in a corpus and reports green rate, run-to-run consistency and why tests failed.</p><p><b>Self-healing</b> is the part of this I am most careful with, because a test that quietly rewrites itself can hide a real bug. It lives in two places. Inside the pipeline, the runner repairs locator drift in a generated test, and when it can&rsquo;t, it flags the test for a human and promotes nothing. Separately I keep two mirrored Playwright frameworks, Python and TypeScript, with self-healing locators and the Planner, Generator and Healer agent trio driven over MCP, plus a heal command that works with any OpenAI-compatible model, local or hosted. The rules come from what practitioners learned running this for real. Healing happens <b>out of band</b>: tests run and publish results first, and only afterwards does a separate step go back over the failures, never during the run and never automatically on a first failure. Each failure is reproduced in a real browser before anything is touched. The healer may change locators only, never assertions or what a test means. If a repair doesn&rsquo;t hold, it is reverted and the failure is flagged as a likely app bug instead of being papered over, and everything lands as one pull request that lists each decision and the tests left alone for a human to review. I have run it end to end on a local 27-billion-parameter model: break a selector, watch it heal to a label-based locator, watch the test pass again. A nightly job now runs the end-to-end suite for one of my own services and calls the healer on whatever fails.</p><p>The result that changed the project: when the pipeline failed on basic demo apps, the model was not the bottleneck. A 27-billion-parameter local model, quantised to 4-bit, matched a frontier model on a controlled run (17 to 18 of 18 genuine passes) once the harness observed the real page and could address repeated elements. The earlier &ldquo;small models hallucinate&rdquo; results were harness bugs. Observation, not model size, was the fix. Alongside it are agent skills for generating test documents from specs and for coaching red-green-refactor, and a QA review panel inside Karakuri.</p></div>
   <div class="wide">
     <figure class="dgm">
       <div class="dgm-in">
@@ -834,7 +847,7 @@
   <div class="col head">
     <p class="kick">08 · Games</p>
     <h2 id="gm-h">AI game master <span class="tag prog">in progress</span></h2>
-    <p class="slede">Generate a tabletop adventure, then hand it to an LLM that runs it like a game master: you talk, it narrates, and the dice stay honest.</p>
+    <p class="slede">Generate a tabletop adventure, then hand it to an LLM that runs it like a game master: you talk, it narrates, and the dice stay fair.</p>
     <div class="parts" aria-label="Built with"><span>Go</span><span>YAML rule adapters</span><span>Whisper (speech in)</span><span>multi-voice TTS (speech out)</span><span>generated ambience</span></div>
   </div>
   <div class="col prose"><p>It started as a Karakuri task type. The <b>generator</b> produces a complete module: scenes, boxed read-aloud text, skill checks, branching, NPCs, monsters, treasure and pregenerated characters, plus maps and handouts in four genres (fantasy, space, modern and western) and a vintage-style module booklet you can print. Maps cover regions, cities, dungeon interiors and star maps.</p><p>The <b>runtime</b> plays a module. The design splits three layers on purpose: <b>content</b> (what happens), a <b>system adapter</b> (how actions resolve), and the <b>engine</b> (the loop that plays it). The adapter is a config file, not code, so a new rule system is data and prompt, not a rewrite. And precision is an architecture property: all randomness goes through a deterministic dice engine. The LLM asks for a roll and consumes the result. It never invents one. Combat state (hit points, conditions, initiative) lives in code, turn order is enforced, and a player who tries to act out of turn is redirected instead of resolved.</p><p>On top of that the loop is voice-driven: speech-to-text takes what you say, a fast text-to-speech engine narrates with different voices for different characters, ambient beds and sound effects play, and the maps appear in the loop. A bake-off, not an assumption, chooses which model runs the table.</p></div>
@@ -1119,10 +1132,83 @@
   <div class="wide shots" data-system="storage"></div>
 </section>
 
+<section class="sys" id="also" data-system="also" aria-labelledby="also-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">12 · Everything else</p>
+    <h2 id="also-h">The rest of the workshop <span class="tag run">running</span></h2>
+    <p class="slede">Around the big systems sit the smaller ones: a debate room for models, a coffee machine, a 3D-printing workflow, a few tools and a few games.</p>
+    <div class="parts" aria-label="Built with"><span>Docker</span><span>Node.js</span><span>FastAPI</span><span>local vision model</span><span>PLA</span></div>
+  </div>
+  <div class="col prose"><p>None of these earned a full section, but all of them run. Under each name I say whether I wrote it, adapted open-source code, or only host it. Almost all sit behind a login, so I describe them and don&rsquo;t link them.</p></div>
+  <div class="wide">
+    <div class="rest">
+      <div class="item feat">
+        <div class="ct">The Bridge</div>
+        <div class="cd"><p>A web page where I type a question, pick which agents and models take part, and watch them argue. Round one is opening arguments, streamed as they arrive. In round two each participant reads what the others said and rebuts. In round three one of them judges the whole exchange and says who made the best points. I can assign sides, for or against, so a model has to defend a position it wouldn&rsquo;t pick. The panel can mix coding agents on different machines with local and hosted models, and anything offline is skipped.</p><p>It answers only on my home network, so there is no link. It is the quickest way I know to see models disagree.</p></div>
+        <p class="org">built by me &middot; LAN only</p>
+      </div>
+      <div class="item feat">
+        <div class="ct">3D modeling for print <span class="tag prog">in progress</span></div>
+        <div class="cd"><p>I model large scale-model kits for my own printer, with AI doing much of the geometry work. Everything is PLA, which is weak, so strength has to come from the design: thicker walls, fillets where a part meets its root, layers running along the load, a metal rod where a stress check fails, and pegs, magnets and glue instead of snap clips. The shape comes from the best source I have. If I&rsquo;m given a 3D model, that model is the shape and my job is hollowing, splitting and adding play features. Otherwise it comes from orthographic drawings, which outrank photos. When code has to write the geometry, a local vision model does it one feature at a time: it renders its own work beside the drawing, compares, and fixes.</p><p>A model too big for the bed is split the way kit makers split them, and every seam gets a solid inner rim and alignment pins, never a bare glue line. Nothing reaches the slicer until two gates pass. A preflight script fails hard on loose bodies, overlapping parts, duplicates, missing magnet caps and any part out of position against the drawings. Then a render sheet puts the model next to the drawing, and I have to look at it before slicing is allowed. I added the gates after a build reached the slicer with overlapping parts and a part in the wrong place; the gate had to fail on that bad build before I trusted it. The current project is a large scale-model helicopter, built so a kid can assemble it with glue and drop-in magnets.</p></div>
+        <p class="org">my own pipeline &middot; local models</p>
+      </div>
+      <div class="item feat">
+        <div class="ct">Spinn <span class="tag run">running</span></div>
+        <div class="cd"><p>My coffee machine has one physical button, so most recipes need the maker&rsquo;s phone app. A small open-source bridge I run at home gives it a web page instead, and the first cold brew with no app worked. I added two patches, one to ignore a harmless mid-brew grinder warning and one to show recipe pictures, and backed up the account&rsquo;s recipes and images.</p><p>The catch is that it still talks through the maker&rsquo;s own cloud. I tested pointing the machine at a local server instead, and it refused: the firmware checks the cloud&rsquo;s certificate authority. The fallback is to swap the trusted certificate in the machine&rsquo;s flash and run a small local broker. That is planned, not built.</p></div>
+        <p class="org">open-source bridge, my patches &middot; behind a login</p>
+      </div>
+      <div class="item">
+        <div class="ct">Kept</div>
+        <div class="cd">A home inventory: what I own, where it is, and what is due, such as warranties, services and loans. It has a phone app and publishes to the push server below.</div>
+        <p class="org">open source, self-hosted</p>
+      </div>
+      <div class="item">
+        <div class="ct">Daemon editor</div>
+        <div class="cd">The gated editor for my public Daemon profile. Every save passes a fail-closed pattern check, with no LLM in it, that blocks street addresses, coordinates, credentials and private URLs.</div>
+        <p class="org">built by me</p>
+      </div>
+      <div class="item">
+        <div class="ct">herdr-web</div>
+        <div class="cd">A browser front end for herdr, a terminal workspace manager for coding agents. It puts each machine&rsquo;s agent sessions in a tab, so I can check on or steer an agent from my phone. The work lives in persistent terminal sessions, and the page only attaches to them.</div>
+        <p class="org">open source plus my patches</p>
+      </div>
+      <div class="item">
+        <div class="ct">Canvas</div>
+        <div class="cd">A browser UI and coding-agent server (OpenHands). Its model calls go through the same proxy as everything else, so they show up on the cost dashboard.</div>
+        <p class="org">open source, self-hosted</p>
+      </div>
+      <div class="item">
+        <div class="ct">Kiwi</div>
+        <div class="cd">A test-case and test-run tracker (Kiwi TCMS) that holds only my own data, behind a GitHub-only login. A nightly job dumps the database and checks the dump before keeping it.</div>
+        <p class="org">open source, self-hosted</p>
+      </div>
+      <div class="item">
+        <div class="ct">Crafts</div>
+        <div class="cd">Thirteen browser-based creative apps, photo and light among them, as static WebAssembly builds that run entirely in the visitor&rsquo;s browser. A nightly job of mine refreshes them, verifies checksums and swaps in the new build in one step.</div>
+        <p class="org">open-source apps, I host the builds</p>
+      </div>
+      <div class="item">
+        <div class="ct">The Gibson</div>
+        <div class="cd">A Synchronet bulletin board with dozens of classic door games, playable in a browser terminal, and a link to a wider network of door-game boards. Nostalgia, mostly.</div>
+        <p class="org">open source, self-hosted</p>
+      </div>
+      <div class="item">
+        <div class="ct">Bot Crossing and Agent Colony <span class="tag prog">in progress</span></div>
+        <div class="cd">A visualizer that draws coding-agent sessions as a small space colony, one astronaut per session, each claiming a plot for its repo. I adapted it to read sessions from every machine, and run a second world for the software-factory agents, which leave no session files and are fed from events instead. Both containers run, but both colonies are empty today.</div>
+        <p class="org">open source, my adapters</p>
+      </div>
+    </div>
+  </div>
+  <div class="col prose"><p><b>Off-the-shelf, self-hosted:</b> a chat front end (Open WebUI) and a local model server (Ollama), both reached only through the per-box proxies so every call is counted; a document archive (Paperless-ngx); and a push-notification server (ntfy).</p></div>
+  <div class="col links"><a class="go" href="https://ntfy.draconis.io/">ntfy &rarr;</a><span class="gon">the one public piece here; topics need an account</span></div>
+  <div class="wide shots" data-system="also"></div>
+</section>
+
   <section class="sys" id="open" aria-labelledby="open-h">
     <div class="wide"><div class="rule"></div></div>
     <div class="col head">
-      <p class="kick">12 · The public parts</p>
+      <p class="kick">13 · The public parts</p>
       <h2 id="open-h">Open them</h2>
       <p class="slede">Everything above runs behind my own network and a login. These are the pieces you can open right now.</p>
     </div>
@@ -1216,6 +1302,7 @@
     meetings: ['meeting', 'meetings', 'olive', 'transcript'],
     selfheal: ['selfheal', 'self-heal', 'heal', 'status', 'watchdog', 'ops', 'operations', 'runbook'],
     storage: ['storage', 'backup', 'backups'],
+    also: ['also', 'workshop', 'bridge-debate', 'debate', 'spinn', 'coffee', '3d', '3d-printing', 'printing', 'modeling', 'modelling', 'kept', 'crafts', 'canvas', 'kiwi', 'gibson', 'bot-crossing', 'botcrossing', 'colony', 'herdr'],
     open: ['open', 'daemon', 'unwatched']
   };
   function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }

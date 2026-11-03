@@ -819,5 +819,46 @@
         "text": "One square is five feet, so movement and range can be judged."
       }
     ]
+  },
+  {
+    "file": "debate-pineapple.webp",
+    "system": "also",
+    "w": 1000,
+    "h": 1900,
+    "caption": "The Bridge running a real debate: \"Should pineapple go on pizza?\" One agent is assigned to argue for, another against, over two rounds of openings and rebuttals. The whole run took 24 seconds. Agent names are blurred.",
+    "callouts": [
+      {
+        "x": 10,
+        "y": 8.2,
+        "w": 80,
+        "h": 4.5,
+        "label": "The question",
+        "text": "Anything you type becomes the motion."
+      },
+      {
+        "x": 10,
+        "y": 13.6,
+        "w": 80,
+        "h": 14.6,
+        "label": "Pick the panel",
+        "text": "Click an agent once to let it argue freely, twice to force it for, three times to force it against."
+      },
+      {
+        "x": 10,
+        "y": 41.5,
+        "w": 80,
+        "h": 36.8,
+        "label": "Against",
+        "text": "The opposing agent opens with its case."
+      },
+      {
+        "x": 10,
+        "y": 78.8,
+        "w": 80,
+        "h": 21,
+        "label": "For",
+        "text": "The other side answers, then each rebuts in round two."
+      }
+    ]
   }
 ]
