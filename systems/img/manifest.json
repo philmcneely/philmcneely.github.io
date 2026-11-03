@@ -1,0 +1,741 @@
+[
+ {
+  "file": "switchboard-overview.webp",
+  "system": "architecture",
+  "w": 688,
+  "h": 620,
+  "caption": "The fleet-wide LLM control plane: every request to every model, local or cloud, counted in one place.",
+  "callouts": [
+   {
+    "x": 1.7,
+    "y": 6.6,
+    "w": 73.3,
+    "h": 32.3,
+    "label": "Fleet totals",
+    "text": "Every call to every model is counted in one place."
+   },
+   {
+    "x": 51.7,
+    "y": 6.6,
+    "w": 23.3,
+    "h": 32.3,
+    "label": "Cache hit rate",
+    "text": "Shows how much input was reused from a prompt cache."
+   },
+   {
+    "x": 1.7,
+    "y": 46.0,
+    "w": 98.3,
+    "h": 31.9,
+    "label": "Dead models",
+    "text": "Flags models that never once succeeded so they can leave the fallback chain."
+   },
+   {
+    "x": 1.7,
+    "y": 86.8,
+    "w": 98.3,
+    "h": 12.6,
+    "label": "Token mix",
+    "text": "Splits traffic into prompt, completion and reasoning tokens."
+   }
+  ]
+ },
+ {
+  "file": "switchboard-usage.webp",
+  "system": "architecture",
+  "caption": "Traffic over time grouped by provider, so every token traces back to the backend that served it.",
+  "w": 1216,
+  "h": 497,
+  "callouts": [
+   {
+    "x": 10.1,
+    "y": 9.1,
+    "w": 85.1,
+    "h": 75.5,
+    "label": "Traffic over time",
+    "text": "Each line shows how work shifts between local and cloud providers day by day."
+   },
+   {
+    "x": 2.4,
+    "y": 94.6,
+    "w": 55.1,
+    "h": 4.4,
+    "label": "Attribution",
+    "text": "Every series is a named backend, so each token can be traced to where it ran."
+   }
+  ]
+ },
+ {
+  "file": "switchboard-failures.webp",
+  "system": "architecture",
+  "caption": "The failures view: providers that never worked in the window, with the error and the last time they were seen. Machine names are blurred.",
+  "w": 1216,
+  "h": 460,
+  "callouts": [
+   {
+    "x": 1.0,
+    "y": 1.1,
+    "w": 98.0,
+    "h": 35.9,
+    "label": "Dead providers",
+    "text": "Providers that never once succeeded are listed first, with a plain instruction: remove from chain."
+   },
+   {
+    "x": 35.2,
+    "y": 19.1,
+    "w": 27.1,
+    "h": 13.5,
+    "label": "Why it failed",
+    "text": "Fail rate, number of attempts and the actual error, side by side."
+   },
+   {
+    "x": 93.5,
+    "y": 11.3,
+    "w": 4.1,
+    "h": 4.1,
+    "label": "Verdict",
+    "text": "Dead means it never worked; degraded means it fails some of the time."
+   }
+  ]
+ },
+ {
+  "file": "switchboard-capacity.webp",
+  "system": "architecture",
+  "caption": "Live inference capacity: how much GPU and unified memory is free across the fleet right now.",
+  "w": 1216,
+  "h": 470,
+  "callouts": [
+   {
+    "x": 2.5,
+    "y": 38.3,
+    "w": 95.1,
+    "h": 30.2,
+    "label": "One bar per GPU",
+    "text": "Each bar is a graphics card, filled to show how much memory is in use."
+   },
+   {
+    "x": 85.4,
+    "y": 38.3,
+    "w": 12.3,
+    "h": 30.2,
+    "label": "Free memory",
+    "text": "Green cards still have room for another model; red cards are full."
+   },
+   {
+    "x": 2.5,
+    "y": 83.8,
+    "w": 95.1,
+    "h": 3.8,
+    "label": "Unified memory",
+    "text": "The Apple machine shares one memory pool, shown as a single bar."
+   },
+   {
+    "x": 91.0,
+    "y": 11.9,
+    "w": 6.6,
+    "h": 3.8,
+    "label": "Honest gaps",
+    "text": "A machine that cannot be reached is shown as unreachable instead of being hidden."
+   }
+  ]
+ },
+ {
+  "file": "karakuri-deliveries.webp",
+  "system": "karakuri",
+  "caption": "Everything the Karakuri software factory has built from plain-language requests: code, documents and apps in many languages, each marked delivered or needs attention.",
+  "w": 980,
+  "h": 770,
+  "callouts": [
+   {
+    "x": 1.8,
+    "y": 1.7,
+    "w": 94.9,
+    "h": 3.6,
+    "label": "Filter",
+    "text": "Narrow hundreds of builds by name, by date range, or by whether they were delivered."
+   },
+   {
+    "x": 1.8,
+    "y": 14.2,
+    "w": 95.5,
+    "h": 15.6,
+    "label": "One card per build",
+    "text": "Each card shows the kind of output, the file count, the language and the result."
+   },
+   {
+    "x": 34.2,
+    "y": 14.2,
+    "w": 30.8,
+    "h": 15.6,
+    "label": "Delivered",
+    "text": "A green tag means the build passed its checks and shipped."
+   },
+   {
+    "x": 1.8,
+    "y": 66.4,
+    "w": 95.5,
+    "h": 33.0,
+    "label": "Many languages",
+    "text": "Go, Python, Kotlin, C++, Java and more, all produced by the same factory."
+   }
+  ]
+ },
+ {
+  "file": "ladder-pipeline.webp",
+  "system": "intake",
+  "caption": "Ladder, the reading ladder: things read in become ideas, then tested hypotheses, experiments and finally algorithms, with a kill rate that shows whether triage is working.",
+  "w": 1084,
+  "h": 375,
+  "callouts": [
+   {
+    "x": 1.1,
+    "y": 9.3,
+    "w": 97.8,
+    "h": 52.8,
+    "label": "Six stages",
+    "text": "Sources become ideas, hypotheses, experiments, algorithms and results."
+   },
+   {
+    "x": 17.5,
+    "y": 9.3,
+    "w": 15.5,
+    "h": 52.8,
+    "label": "Ideas",
+    "text": "Most items start as drafts. Few are promoted, and some are killed on purpose."
+   },
+   {
+    "x": 1.1,
+    "y": 77.9,
+    "w": 42.6,
+    "h": 14.4,
+    "label": "Conversion",
+    "text": "Shows how many ideas survive each step of the ladder."
+   },
+   {
+    "x": 88.7,
+    "y": 77.9,
+    "w": 10.1,
+    "h": 16.5,
+    "label": "Kill rate",
+    "text": "A healthy pipeline kills ideas often. That means triage is working."
+   }
+  ]
+ },
+ {
+  "file": "ladder-fleet-health.webp",
+  "system": "selfheal",
+  "caption": "The fleet health page: checks that the things producing data are still producing it, not just still running. Machine names are blurred.",
+  "w": 1084,
+  "h": 545,
+  "callouts": [
+   {
+    "x": 1.1,
+    "y": 6.8,
+    "w": 95.9,
+    "h": 4.8,
+    "label": "Freshness, not just uptime",
+    "text": "Each check asks whether the output is still fresh, so silent failures show up."
+   },
+   {
+    "x": 1.1,
+    "y": 14.1,
+    "w": 15.9,
+    "h": 4.4,
+    "label": "Plain summary",
+    "text": "One line says how many of the checks are failing."
+   },
+   {
+    "x": 1.1,
+    "y": 20.6,
+    "w": 24.2,
+    "h": 13.6,
+    "label": "Green means fresh",
+    "text": "A green card means the backup or index was updated on schedule."
+   },
+   {
+    "x": 25.8,
+    "y": 71.7,
+    "w": 23.8,
+    "h": 26.8,
+    "label": "Red explains itself",
+    "text": "A failing card says exactly what drifted and by how much."
+   }
+  ]
+ },
+ {
+  "file": "fleet-desk.webp",
+  "system": "intake",
+  "caption": "Fleet Desk: a single-pane daily desk where scored reading is ranked and each item can be researched, written up or dismissed.",
+  "w": 760,
+  "h": 920,
+  "callouts": [
+   {
+    "x": 2.6,
+    "y": 9.1,
+    "w": 56.6,
+    "h": 2.2,
+    "label": "Six views",
+    "text": "Briefing, patterns, top finds, kept, interests and queue, all from one page."
+   },
+   {
+    "x": 2.6,
+    "y": 22.8,
+    "w": 94.1,
+    "h": 2.8,
+    "label": "Daily rebuild",
+    "text": "The desk is rebuilt each day, ranking the new finds into must-see, high and worth a look."
+   },
+   {
+    "x": 2.6,
+    "y": 80.1,
+    "w": 38.4,
+    "h": 3.9,
+    "label": "One-click actions",
+    "text": "Research sends an agent to dig in. Write sends it to be written up. Dismiss clears it."
+   },
+   {
+    "x": 2.6,
+    "y": 84.9,
+    "w": 68.4,
+    "h": 10.3,
+    "label": "Plain-language instructions",
+    "text": "Or type what you want done instead, in ordinary words."
+   }
+  ]
+ },
+ {
+  "file": "pixel-office.webp",
+  "system": "selfheal",
+  "caption": "The agent office: AI agents drawn as small office workers moving between rooms. Names in the status panel are blurred.",
+  "w": 1440,
+  "h": 900,
+  "callouts": [
+   {
+    "x": 9.9,
+    "y": 8.7,
+    "w": 13.5,
+    "h": 50.6,
+    "label": "Break room",
+    "text": "Agents that are idle or not reporting are drawn here."
+   },
+   {
+    "x": 25.0,
+    "y": 8.7,
+    "w": 50.0,
+    "h": 47.8,
+    "label": "The bridge",
+    "text": "The main floor, drawn as an office with desks."
+   },
+   {
+    "x": 56.7,
+    "y": 0.9,
+    "w": 42.7,
+    "h": 15.2,
+    "label": "Honest status",
+    "text": "The panel separates 'not working' from 'unmeasured', so missing data is not hidden."
+   },
+   {
+    "x": 0.7,
+    "y": 88.3,
+    "w": 22.6,
+    "h": 5.3,
+    "label": "Machinery",
+    "text": "Counts the services that are running against the ones actually doing work."
+   }
+  ]
+ },
+ {
+  "file": "podcast-studio-networks.webp",
+  "system": "podcast",
+  "caption": "Podcast Studio: every show the desk produces, grouped by network. One show title is blurred.",
+  "w": 1440,
+  "h": 650,
+  "callouts": [
+   {
+    "x": 75.9,
+    "y": 1.5,
+    "w": 22.9,
+    "h": 3.7,
+    "label": "Top controls",
+    "text": "Generate an episode, see stats, edit global settings or open the voice pool."
+   },
+   {
+    "x": 3.2,
+    "y": 20.0,
+    "w": 93.6,
+    "h": 21.2,
+    "label": "Networks",
+    "text": "Each brand is a network that holds its own shows."
+   },
+   {
+    "x": 4.4,
+    "y": 54.0,
+    "w": 91.2,
+    "h": 21.5,
+    "label": "Show templates",
+    "text": "Forty show formats, from solo and duo to panel, debate and quiz."
+   }
+  ]
+ },
+ {
+  "file": "podcast-studio-stats.webp",
+  "system": "podcast",
+  "caption": "Studio stats: real production timing pulled from each episode's own record, with no estimates.",
+  "w": 880,
+  "h": 630,
+  "callouts": [
+   {
+    "x": 2.8,
+    "y": 18.7,
+    "w": 94.3,
+    "h": 16.2,
+    "label": "Real timings",
+    "text": "Episodes produced, average and median time, and daily throughput."
+   },
+   {
+    "x": 4.8,
+    "y": 41.3,
+    "w": 45.5,
+    "h": 6.3,
+    "label": "Where the time goes",
+    "text": "Click a stage to see which episodes ran slowest there."
+   },
+   {
+    "x": 5.2,
+    "y": 74.6,
+    "w": 89.8,
+    "h": 4.1,
+    "label": "Audio dominates",
+    "text": "Making the audio takes about half of the total time."
+   }
+  ]
+ },
+ {
+  "file": "daemon.webp",
+  "system": "memory",
+  "caption": "Daemon: a public, machine-readable broadcast of what is being built and thought about. The location field is blurred.",
+  "w": 1440,
+  "h": 900,
+  "callouts": [
+   {
+    "x": 0.0,
+    "y": 1.1,
+    "w": 61.1,
+    "h": 2.9,
+    "label": "Live status strip",
+    "text": "A running clock, last sync and section count show the page is alive."
+   },
+   {
+    "x": 1.7,
+    "y": 37.0,
+    "w": 63.7,
+    "h": 62.2,
+    "label": "Live feed",
+    "text": "The latest code pushes and articles, merged into one stream."
+   },
+   {
+    "x": 66.6,
+    "y": 37.0,
+    "w": 31.3,
+    "h": 21.8,
+    "label": "Mission",
+    "text": "A short statement of what the work is for."
+   },
+   {
+    "x": 66.6,
+    "y": 60.8,
+    "w": 31.3,
+    "h": 37.8,
+    "label": "Telos",
+    "text": "The principles and goals the whole broadcast is built around."
+   }
+  ]
+ },
+ {
+  "file": "unwatched-town.webp",
+  "system": "gm",
+  "caption": "Unwatched, a self-hosted island town of AI citizens that keeps living while you are away. One shop name is blurred.",
+  "w": 1376,
+  "h": 980,
+  "callouts": [
+   {
+    "x": 1.7,
+    "y": 8.2,
+    "w": 20.3,
+    "h": 14.7,
+    "label": "Send someone over",
+    "text": "You put a person on the island and they make their own decisions."
+   },
+   {
+    "x": 14.4,
+    "y": 39.7,
+    "w": 18.2,
+    "h": 9.7,
+    "label": "Residents",
+    "text": "Townspeople going about their day on a drawn street map."
+   },
+   {
+    "x": 1.7,
+    "y": 89.9,
+    "w": 24.0,
+    "h": 7.7,
+    "label": "Live ticker",
+    "text": "A running log of what is happening in town right now."
+   },
+   {
+    "x": 85.2,
+    "y": 86.5,
+    "w": 13.1,
+    "h": 11.0,
+    "label": "Mini-map",
+    "text": "A small overview of the whole island."
+   }
+  ]
+ },
+ {
+  "file": "fleet-map.webp",
+  "system": "architecture",
+  "caption": "The public fleet map: GPU boxes, the models on each card and the memory they use. Machine names are blurred.",
+  "w": 1200,
+  "h": 1200,
+  "callouts": [
+   {
+    "x": 0.8,
+    "y": 8.2,
+    "w": 98.3,
+    "h": 8.8,
+    "label": "Capacity at a glance",
+    "text": "Total memory, how much is committed, how much is free and how much is held in reserve."
+   },
+   {
+    "x": 0.8,
+    "y": 21.2,
+    "w": 98.3,
+    "h": 4.3,
+    "label": "One group per machine",
+    "text": "Each machine lists its cards and how full they are."
+   },
+   {
+    "x": 2.3,
+    "y": 27.0,
+    "w": 30.8,
+    "h": 19.2,
+    "label": "Card and model",
+    "text": "Every GPU shows its memory bar and the model pinned to it."
+   },
+   {
+    "x": 34.5,
+    "y": 27.0,
+    "w": 31.0,
+    "h": 19.2,
+    "label": "Held in reserve",
+    "text": "Dashed boxes are capacity kept free for bursts of voice work."
+   }
+  ]
+ },
+ {
+  "file": "fleet-dispatch.webp",
+  "system": "dispatch",
+  "caption": "The Fleet Dispatch daily briefing as it arrives by email, showing the Technology section of one edition.",
+  "w": 720,
+  "h": 960,
+  "callouts": [
+   {
+    "x": 2.8,
+    "y": 0.8,
+    "w": 94.4,
+    "h": 15.6,
+    "label": "Masthead",
+    "text": "A daily briefing, assembled and sent by email each morning."
+   },
+   {
+    "x": 2.8,
+    "y": 20.6,
+    "w": 94.4,
+    "h": 2.9,
+    "label": "Sections",
+    "text": "Stories are grouped by topic, and this one is the Technology section."
+   },
+   {
+    "x": 2.8,
+    "y": 25.0,
+    "w": 94.4,
+    "h": 33.3,
+    "label": "Top stories",
+    "text": "The lead stories get a short summary and a link to the source."
+   },
+   {
+    "x": 2.8,
+    "y": 58.9,
+    "w": 94.4,
+    "h": 38.5,
+    "label": "The rest",
+    "text": "Everything else is a headline and a line, with the source named."
+   }
+  ]
+ },
+ {
+  "file": "gm-region.webp",
+  "system": "gm",
+  "w": 1440,
+  "h": 1008,
+  "caption": "A generated realm map for an AI-run tabletop adventure: kingdoms, borders and a title, all drawn by the map generator.",
+  "callouts": [
+   {
+    "x": 25.9,
+    "y": 2.8,
+    "w": 48.3,
+    "h": 7.2,
+    "label": "Titled map",
+    "text": "Every adventure gets its own named map."
+   },
+   {
+    "x": 9.7,
+    "y": 22.8,
+    "w": 78.5,
+    "h": 58.5,
+    "label": "Generated realms",
+    "text": "Coastlines, borders and rivers are generated, not hand drawn."
+   },
+   {
+    "x": 45.0,
+    "y": 27.8,
+    "w": 25.0,
+    "h": 13.0,
+    "label": "Named kingdoms",
+    "text": "Each realm is labelled, so the game master can refer to places by name."
+   },
+   {
+    "x": 84.9,
+    "y": 96.4,
+    "w": 13.7,
+    "h": 2.4,
+    "label": "Scale bar",
+    "text": "A scale in kilometres keeps distances believable."
+   }
+  ]
+ },
+ {
+  "file": "gm-city.webp",
+  "system": "gm",
+  "w": 1440,
+  "h": 1440,
+  "caption": "A generated walled-city map from the adventure builder, with named districts, harbour, docks and a castle.",
+  "callouts": [
+   {
+    "x": 22.9,
+    "y": 23.3,
+    "w": 63.2,
+    "h": 49.7,
+    "label": "Walls and gates",
+    "text": "The city is drawn with a defensive wall and gatehouses."
+   },
+   {
+    "x": 44.4,
+    "y": 41.7,
+    "w": 20.8,
+    "h": 27.8,
+    "label": "Named districts",
+    "text": "Wards and docks are labelled so scenes can be set in a specific place."
+   },
+   {
+    "x": 69.4,
+    "y": 35.4,
+    "w": 16.7,
+    "h": 16.0,
+    "label": "Castle",
+    "text": "Key locations from the story are placed on the map."
+   },
+   {
+    "x": 88.9,
+    "y": 86.8,
+    "w": 10.4,
+    "h": 12.5,
+    "label": "Compass",
+    "text": "North is marked so directions in the narration line up."
+   }
+  ]
+ },
+ {
+  "file": "gm-battle.webp",
+  "system": "gm",
+  "w": 1024,
+  "h": 1024,
+  "caption": "An illustrated battle map generated for a combat scene: an entrance, a central brazier and scattered cover.",
+  "callouts": [
+   {
+    "x": 39.6,
+    "y": 8.3,
+    "w": 23.0,
+    "h": 20.0,
+    "label": "Entrance",
+    "text": "The way in is drawn clearly so players know where the fight starts."
+   },
+   {
+    "x": 37.9,
+    "y": 40.5,
+    "w": 27.0,
+    "h": 26.4,
+    "label": "Centre of the room",
+    "text": "A landmark in the middle gives the combat a focal point."
+   },
+   {
+    "x": 68.4,
+    "y": 24.4,
+    "w": 14.6,
+    "h": 13.7,
+    "label": "Cover",
+    "text": "Statues and rubble give characters something to hide behind."
+   },
+   {
+    "x": 10.7,
+    "y": 23.4,
+    "w": 25.4,
+    "h": 30.3,
+    "label": "Second exit",
+    "text": "Stairs and a side door give the fight more than one direction."
+   }
+  ]
+ },
+ {
+  "file": "gm-dungeon.webp",
+  "system": "gm",
+  "w": 1146,
+  "h": 784,
+  "caption": "A stylized dungeon map with numbered rooms, a legend and a scale bar, built for the game master to read from.",
+  "callouts": [
+   {
+    "x": 29.5,
+    "y": 3.8,
+    "w": 41.0,
+    "h": 6.6,
+    "label": "Title",
+    "text": "The map is named after the adventure it belongs to."
+   },
+   {
+    "x": 6.3,
+    "y": 15.9,
+    "w": 62.6,
+    "h": 73.4,
+    "label": "Numbered rooms",
+    "text": "Rooms match the numbers in the adventure text."
+   },
+   {
+    "x": 77.7,
+    "y": 26.1,
+    "w": 16.8,
+    "h": 29.2,
+    "label": "Legend",
+    "text": "Doors, water, stairs and statues are explained in a key."
+   },
+   {
+    "x": 2.6,
+    "y": 92.1,
+    "w": 92.5,
+    "h": 3.6,
+    "label": "Scale bar",
+    "text": "One square is five feet, so movement and range can be judged."
+   }
+  ]
+ }
+]

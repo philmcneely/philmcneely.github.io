@@ -1,0 +1,1353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How the System Works — Phil McNeely</title>
+<meta name="description" content="A tour of the Draconis fleet: local GPUs, content intake, the daily Fleet Dispatch briefing, podcasts, the Karakuri software factory, QA tooling, an AI game master, meeting intelligence and self-healing operations. What each does, how work flows, and what is built versus still in progress.">
+<meta name="theme-color" content="#17140f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How the System Works — Phil McNeely">
+<meta property="og:description" content="What runs on the Draconis fleet, how work flows through it, and what is still in progress. Flow diagrams included.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2317140f'/%3E%3Crect x='7' y='8' width='18' height='2.5' fill='%23ece4d5'/%3E%3Crect x='7' y='14.75' width='12' height='2.5' fill='%23ece4d5'/%3E%3Crect x='7' y='21.5' width='15' height='2.5' fill='%23c05545'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17140f; --ink2:#1f1b15; --panel:#1c1812; --node:#211c15; --line:#332c22; --line2:#443a2c;
+    --paper:#ece4d5; --paper-dim:#b3a892; --paper-faint:#7d735f; --read-ink:#ded5c4;
+    --ox:#c05545; --ox-deep:#9c3f31;
+    --serif:'Fraunces',Georgia,'Times New Roman',serif;
+    --read:'Newsreader',Georgia,serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  html{scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+  body{background:var(--ink);color:var(--paper);font-family:var(--read);font-size:19px;line-height:1.7;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100vh;overflow-x:hidden}
+  a{color:inherit}
+  b{font-weight:500;color:var(--paper)}
+  .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--ox);color:var(--ink);padding:8px 14px;
+    font:500 12px var(--mono);letter-spacing:.08em;text-decoration:none;border-radius:3px}
+  .skip:focus{top:10px}
+
+  /* ---- layout columns ---- */
+  .col{max-width:760px;margin:0 auto;padding:0 28px}
+  .wide{max-width:1000px;margin:0 auto;padding:0 28px}
+
+  /* ---- top bar ---- */
+  .top{position:sticky;top:0;z-index:50;background:rgba(23,20,15,.9);
+    -webkit-backdrop-filter:saturate(1.2) blur(10px);backdrop-filter:saturate(1.2) blur(10px);
+    border-bottom:1px solid var(--line)}
+  .top-in{max-width:1180px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:22px;height:52px}
+  .home{font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:-.01em;color:var(--paper);
+    text-decoration:none;white-space:nowrap;flex:none}
+  .home:hover{color:var(--ox)}
+  .sec-nav{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;height:100%;align-items:stretch;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 26px),transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 26px),transparent 100%)}
+  .sec-nav::-webkit-scrollbar{display:none}
+  .sec-nav a{display:flex;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--paper-faint);text-decoration:none;padding:0 10px;white-space:nowrap;
+    border-bottom:2px solid transparent;border-top:2px solid transparent;transition:color .16s}
+  .sec-nav a i{font-style:normal;color:var(--ox);margin-right:6px;opacity:.85}
+  .sec-nav a:hover{color:var(--paper)}
+  .sec-nav a:focus-visible{outline:2px solid var(--ox);outline-offset:-2px}
+  .sec-nav a[aria-current="true"]{color:var(--paper);border-bottom-color:var(--ox)}
+
+  /* ---- hero ---- */
+  .hero{padding-top:84px}
+  .kick{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--ox);margin:0 0 20px}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(44px,8vw,76px);line-height:1;letter-spacing:-.02em;
+    margin:0 0 28px;color:var(--paper);text-wrap:balance}
+  .lede{font-family:var(--read);font-size:clamp(19px,2.4vw,22px);line-height:1.6;color:var(--read-ink);
+    border-left:2px solid var(--ox);padding-left:22px;margin:0;max-width:62ch}
+  .meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-faint);margin:26px 0 0}
+
+  .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--paper-faint);
+    margin:0 0 18px;padding-top:14px;border-top:1px solid var(--line)}
+  .key{margin-top:64px}
+  .keyp{margin:0 0 20px;color:var(--read-ink);font-size:17.5px;max-width:60ch}
+  .legend-key{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px 30px}
+  .legend-key li{display:flex;align-items:center;gap:12px;font-size:15.5px;color:var(--read-ink);line-height:1.4}
+  .legend-key svg{flex:none}
+  .k-solid{fill:var(--node);stroke:var(--line2);stroke-width:1.2}
+  .k-dash{fill:none;stroke:var(--paper-faint);stroke-width:1.2;stroke-dasharray:5 3.5}
+  .k-dot{fill:none;stroke:var(--paper-faint);stroke-width:1.4;stroke-dasharray:1.5 4;stroke-linecap:round}
+
+  /* ---- tags ---- */
+  .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ox);
+    border:1px solid var(--ox-deep);border-radius:3px;padding:2px 6px;font-weight:500;white-space:nowrap;
+    display:inline-block;vertical-align:middle;line-height:1.5}
+  .tag.prog{color:var(--paper-dim);border:1px dashed var(--paper-faint)}
+  .tag.plan{color:var(--paper-faint);border:1px dotted var(--line2)}
+
+  /* ---- contents ---- */
+  .toc-wrap{margin-top:64px}
+  .toc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:48px;
+    border-bottom:1px solid var(--line)}
+  .toc li{border-top:1px solid var(--line)}
+  .toc li:nth-last-child(1){grid-column:1 / -1}
+  .toc a{display:grid;grid-template-columns:36px 1fr;padding:20px 8px 22px 0;text-decoration:none;color:inherit;position:relative;
+    transition:background .16s}
+  .toc a::before{content:"";position:absolute;left:-14px;top:0;bottom:0;width:2px;background:var(--ox);opacity:0;transition:opacity .16s}
+  .toc a:hover::before,.toc a:focus-visible::before{opacity:1}
+  .toc a:focus-visible{outline:2px solid var(--ox);outline-offset:2px}
+  .toc .n{font:500 12px var(--mono);color:var(--ox);padding-top:9px;letter-spacing:.06em}
+  .toc .t{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em;line-height:1.25;
+    display:flex;gap:6px 12px;align-items:center;flex-wrap:wrap;color:var(--paper)}
+  .toc a:hover .t{color:var(--paper)}
+  .toc .d{grid-column:2;color:var(--read-ink);font-size:16px;line-height:1.5;margin-top:5px;max-width:46ch}
+
+  /* ---- system sections ---- */
+  .sys{margin-top:104px}
+  .rule{border-top:1px solid var(--line);margin-bottom:62px}
+  .head{margin-bottom:0}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(34px,5.6vw,54px);line-height:1.04;letter-spacing:-.02em;
+    margin:0 0 20px;color:var(--paper);text-wrap:balance}
+  h2 .tag{margin-left:10px;position:relative;top:-.45em;font-size:9.5px}
+  .slede{font-family:var(--read);font-size:clamp(20px,2.5vw,23px);line-height:1.5;color:var(--paper);margin:0 0 22px;
+    max-width:36em;text-wrap:pretty}
+  .parts{display:flex;flex-wrap:wrap;gap:7px 8px;margin:0 0 30px}
+  .parts span{font:400 11.5px/1.4 var(--mono);color:var(--paper-dim);border:1px solid var(--line2);border-radius:3px;
+    padding:3px 8px;letter-spacing:.02em}
+  .prose p{margin:0 0 1.15em;color:var(--read-ink);font-size:18.5px;line-height:1.7;text-wrap:pretty}
+  .prose p:last-child{margin-bottom:0}
+  .chip{font:400 .78em var(--mono);color:var(--ox);border:1px solid var(--ox-deep);border-radius:3px;padding:1px 6px;
+    white-space:nowrap;letter-spacing:.02em}
+
+  /* ---- diagrams ---- */
+  .dgm{margin:48px 0 0;border:1px solid var(--line);border-radius:4px;background:var(--ink);padding:26px 24px 18px}
+  .dgm-in{position:relative}
+  .dgm figcaption{margin:22px 0 0;padding-top:14px;border-top:1px solid var(--line);font-family:var(--mono);
+    font-size:11.5px;line-height:1.65;color:var(--paper-faint);letter-spacing:.01em;max-width:80ch}
+  .dg{display:block;width:100%;height:auto;overflow:visible}
+  .dg text{font-family:var(--mono)}
+  .dg .nt{font-family:var(--serif);font-weight:600;font-size:15px;fill:var(--paper);letter-spacing:-.005em}
+  .dg .nl{font-size:12px;fill:var(--paper-dim)}
+  .dg .lh{font-size:10px;letter-spacing:.24em;text-transform:uppercase;fill:var(--paper-faint)}
+  .dg .hl{stroke:var(--line);stroke-width:1}
+  .dg .gl{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;fill:var(--paper-faint)}
+  .dg .bd{font-size:9px;letter-spacing:.2em;fill:var(--ox)}
+  .dg .grp{fill:none;stroke:var(--line2);stroke-dasharray:3 4}
+  .dg .nd{fill:var(--node);stroke:var(--line2);stroke-width:1}
+  .dg .nd.acc{stroke:var(--ox-deep)}
+  .dg .nd.ref{fill:none;stroke:var(--line2)}
+  .dg .nd.dashed{fill:none;stroke:var(--paper-faint);stroke-dasharray:6 4}
+  .dg .nd.dotted{fill:none;stroke:var(--paper-faint);stroke-dasharray:1.5 5;stroke-linecap:round;stroke-width:1.3}
+  .dg .nd.rail{fill:var(--ink2);stroke:var(--line2)}
+  .dg .nodeg.dotted .nt,.dg .nodeg.dashed .nt{fill:var(--paper-dim)}
+  .dg .tick{fill:var(--ox)}
+  .dg .ln{fill:none;stroke:var(--paper-faint);stroke-width:1.25}
+  .dg .ln.acc{stroke:var(--ox)}
+  .dg .ln.dash{stroke-dasharray:5 4}
+  .dg .mk-dim{fill:var(--paper-faint)}
+  .dg .mk-acc{fill:var(--ox)}
+  .dg .pill rect{fill:var(--ink);stroke:var(--line2)}
+  .dg .pill text{font-size:10px;fill:var(--paper-dim);letter-spacing:.03em}
+  .dg .rl{font-size:10px;fill:var(--paper-dim);letter-spacing:.04em;paint-order:stroke;stroke:var(--ink);stroke-width:3px}
+  .d-tall{display:none;max-width:440px;margin:0 auto}
+  @media (max-width:860px){
+    .d-wide{display:none}
+    .d-tall{display:block}
+    .dgm{padding:20px 14px 14px}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes dashflow{to{stroke-dashoffset:-18}}
+    .dgm:hover .ln.dash{animation:dashflow 1.2s linear infinite}
+  }
+
+  /* ---- works / gaps ---- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:34px 46px;margin-top:44px}
+  .two .lbl{margin-bottom:16px}
+  .two ul{list-style:none;margin:0;padding:0}
+  .two li{position:relative;padding-left:22px;font-size:16.5px;line-height:1.58;color:var(--read-ink);margin:0 0 13px;text-wrap:pretty}
+  .works li::before{content:"";position:absolute;left:1px;top:.62em;width:8px;height:8px;background:var(--ox);border-radius:1px}
+  .gaps li::before{content:"";position:absolute;left:1px;top:.62em;width:8px;height:8px;border:1px dashed var(--paper-faint);border-radius:1px}
+  .links{margin-top:30px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+  .go{font-family:var(--mono);font-size:12px;color:var(--ox);letter-spacing:.02em;text-decoration:none;border-bottom:1px solid transparent}
+  .go:hover{border-bottom-color:var(--ox)}
+  .gon{font-family:var(--mono);font-size:11.5px;color:var(--paper-faint)}
+
+  /* ---- cards (same as home) ---- */
+  .grid{display:grid;grid-template-columns:1fr;gap:0;margin-top:34px}
+  a.card{display:block;text-decoration:none;color:inherit;position:relative;
+    padding:22px 22px 22px 26px;border-top:1px solid var(--line);transition:background .16s}
+  a.card:last-child{border-bottom:1px solid var(--line)}
+  a.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ox);opacity:0;transition:opacity .16s}
+  a.card:hover{background:var(--panel)}
+  a.card:hover::before{opacity:1}
+  a.card:focus-visible{outline:2px solid var(--ox);outline-offset:-2px}
+  .ct{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:-.01em;color:var(--paper);
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 6px}
+  .cd{color:var(--read-ink);font-size:16.5px;line-height:1.55;max-width:60ch}
+  a.card .go{margin-top:10px;display:block;border:0}
+
+  /* ---- screenshots with callouts ---- */
+  .shots{margin-top:56px}
+  .shots:empty{display:none}
+  .shots-h{margin:0 0 22px}
+  .shot{margin:0 0 44px}
+  .shot:last-child{margin-bottom:0}
+  .shot-frame{position:relative;border:1px solid var(--line2);border-radius:4px;background:var(--panel);
+    box-shadow:0 22px 60px rgba(0,0,0,.4)}
+  .shot-frame img{display:block;width:100%;height:auto;border-radius:3px}
+  .co{position:absolute;padding:0;margin:0;background:rgba(192,85,69,.07);border:1.5px solid var(--ox);border-radius:3px;
+    cursor:pointer;font:inherit;color:inherit;box-shadow:0 0 0 1px rgba(23,20,15,.55)}
+  .co:hover,.co.on,.co:focus-visible{background:rgba(192,85,69,.18);z-index:3;
+    box-shadow:0 0 0 1px rgba(23,20,15,.55),0 0 0 4px rgba(192,85,69,.3)}
+  .co:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+  .co-n{position:absolute;left:-11px;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--ox);color:var(--ink);
+    font:500 11.5px/22px var(--mono);text-align:center;pointer-events:none}
+  .co.n-in .co-n{left:3px;top:3px}
+  .co-tip{display:none;position:absolute;z-index:5;width:max-content;max-width:min(270px,70vw);text-align:left;
+    background:var(--ink);border:1px solid var(--line2);border-left:2px solid var(--ox);border-radius:3px;
+    padding:9px 12px 10px;font:400 12.5px/1.5 var(--read);color:var(--read-ink);box-shadow:0 14px 34px rgba(0,0,0,.55);
+    pointer-events:none;left:0;top:calc(100% + 10px)}
+  .co-tip b{display:block;font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ox);margin-bottom:3px}
+  .co.tip-r .co-tip{left:auto;right:0}
+  .co.tip-c .co-tip{left:50%;transform:translateX(-50%)}
+  .co.tip-up .co-tip{top:auto;bottom:calc(100% + 10px)}
+  @media (hover:hover) and (min-width:761px){
+    .co:hover .co-tip,.co:focus-visible .co-tip,.co.on .co-tip{display:block}
+  }
+  .shot figcaption{margin:14px 0 0;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;justify-content:space-between;
+    font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--paper-faint)}
+  .shot figcaption a{color:var(--paper-dim);text-decoration:none;border-bottom:1px solid var(--line2)}
+  .shot figcaption a:hover{color:var(--ox);border-bottom-color:var(--ox)}
+  .legend{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 32px;counter-reset:lg}
+  .legend button{display:grid;grid-template-columns:26px 1fr;gap:0 10px;width:100%;text-align:left;background:none;border:0;
+    border-top:1px solid var(--line);padding:11px 6px 11px 0;margin:0;font:inherit;color:inherit;cursor:pointer}
+  .legend button:hover,.legend button.on{background:var(--panel)}
+  .legend button:focus-visible{outline:2px solid var(--ox);outline-offset:-2px}
+  .lg-n{width:22px;height:22px;border-radius:50%;background:var(--ox);color:var(--ink);font:500 11.5px/22px var(--mono);text-align:center}
+  .lg-t{font:400 15.5px/1.45 var(--read);color:var(--read-ink)}
+  .lg-t b{display:block;font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--paper);margin-bottom:2px}
+  @media (prefers-reduced-motion:no-preference){
+    .co,.legend button{transition:box-shadow .16s,background .16s}
+  }
+
+  /* ---- footer (same as home) ---- */
+  .foot{margin-top:104px;margin-bottom:0;padding-top:18px;padding-bottom:64px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:11.5px;color:var(--paper-faint);
+    display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center;max-width:704px}
+  .foot a{color:var(--paper-dim);text-decoration:none}
+  .foot a:hover{color:var(--ox)}
+
+  /* ---- small screens ---- */
+  @media (max-width:860px){
+    .top-in{padding:0 16px;gap:14px}
+    .sec-nav a{padding:0 9px}
+  }
+  @media (max-width:760px){
+    .toc{grid-template-columns:1fr}
+    .two{grid-template-columns:1fr;gap:30px}
+    .legend{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){
+    body{font-size:18px}
+    .col,.wide{padding:0 20px}
+    .hero{padding-top:52px}
+    .prose p{font-size:17.5px}
+    .sys{margin-top:80px}
+    .rule{margin-bottom:46px}
+    .home{font-size:16px}
+    .foot{margin-top:80px}
+  }
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the tour</a>
+
+<header class="top">
+  <div class="top-in">
+    <a class="home" href="../" aria-label="Phil McNeely, home">Phil McNeely</a>
+    <nav class="sec-nav" aria-label="Systems"><a href="#fleet">Fleet</a><a href="#memory">Memory</a><a href="#intake">Intake</a><a href="#dispatch">Dispatch</a><a href="#podcast">Podcast</a><a href="#karakuri">Karakuri</a><a href="#qa">QA</a><a href="#gm">Game master</a><a href="#meetings">Meetings</a><a href="#selfheal">Self-heal</a><a href="#storage">Storage</a><a href="#open">Open</a></nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="col hero">
+    <p class="kick">Draconis · systems tour</p>
+    <h1>How the system works.</h1>
+    <p class="lede">A rack of GPUs at home, a crowd of small machines, and a pile of software I built so they do useful work without me hovering. This is the tour: what each system does, how work flows through it, what is actually running, and what still isn&rsquo;t. I&rsquo;m a tester at heart, so the rough edges are on the page too.</p>
+    <p class="meta">Updated 3 November 2026</p>
+  </div>
+
+  <div class="col key">
+    <p class="lbl">How to read this</p>
+    <p class="keyp">Each system gets a plain description, a flow diagram, and two lists: what works and what doesn&rsquo;t yet. Most tools here sit behind a login, so I describe them instead of linking them. The few public ones are at the bottom.</p>
+    <ul class="legend-key" aria-label="Status key">
+      <li><svg width="30" height="16" viewBox="0 0 30 16" aria-hidden="true"><rect x="1" y="1.5" width="28" height="13" rx="2" class="k-solid"/></svg><span><b>Running.</b> Built and in use.</span></li>
+      <li><svg width="30" height="16" viewBox="0 0 30 16" aria-hidden="true"><rect x="1" y="1.5" width="28" height="13" rx="2" class="k-dash"/></svg><span><b>In progress.</b> Works, but not at the bar I set for it.</span></li>
+      <li><svg width="30" height="16" viewBox="0 0 30 16" aria-hidden="true"><rect x="1" y="1.5" width="28" height="13" rx="2" class="k-dot"/></svg><span><b>Planned.</b> A box on the diagram, not yet code.</span></li>
+    </ul>
+  </div>
+
+  <div class="wide toc-wrap">
+    <p class="lbl">The systems</p>
+    <ol class="toc">
+<li><a href="#fleet"><span class="n">01</span><span class="t">The fleet <span class="tag run">running</span></span><span class="d">GPU servers, small edge machines and cloud fallbacks, a proxy on every box, and one dashboard that counts every call.</span></a></li>
+<li><a href="#memory"><span class="n">02</span><span class="t">Fleet Memory <span class="tag run">running</span></span><span class="d">One shared memory for every agent: facts with provenance, plus a raw conversation archive.</span></a></li>
+<li><a href="#intake"><span class="n">03</span><span class="t">Content intake <span class="tag run">running</span></span><span class="d">A dozen kinds of sources, downloaded, scored by an LLM librarian and fed into an idea-to-method ladder.</span></a></li>
+<li><a href="#dispatch"><span class="n">04</span><span class="t">Fleet Dispatch <span class="tag run">running</span></span><span class="d">The daily news briefing: a web page, an email and a spoken edition, built from one ranked list.</span></a></li>
+<li><a href="#podcast"><span class="n">05</span><span class="t">Podcast &amp; voice studio <span class="tag run">running</span></span><span class="d">Shows scripted, voiced, verified and delivered, with voices made in a separate tool.</span></a></li>
+<li><a href="#karakuri"><span class="n">06</span><span class="t">Karakuri <span class="tag prog">in progress</span></span><span class="d">A software factory of small local models with hard quality gates, built to mimic a frontier model.</span></a></li>
+<li><a href="#qa"><span class="n">07</span><span class="t">QA &amp; test tooling <span class="tag prog">in progress</span></span><span class="d">A test-generation pipeline of separate stages joined by model-free contracts, and the harness that tells me if it works.</span></a></li>
+<li><a href="#gm"><span class="n">08</span><span class="t">AI game master <span class="tag prog">in progress</span></span><span class="d">Generate a tabletop adventure, then hand it to an LLM that runs it like a game master, by voice.</span></a></li>
+<li><a href="#meetings"><span class="n">09</span><span class="t">Meeting intelligence <span class="tag run">running</span></span><span class="d">Recordings in; transcripts, speakers and summaries out, all processed on my own machines.</span></a></li>
+<li><a href="#selfheal"><span class="n">10</span><span class="t">Self-healing operations <span class="tag prog">in progress</span></span><span class="d">Watchdogs, red alerts, a local-model triage ladder and runbooks. The goal is zero alerts.</span></a></li>
+<li><a href="#storage"><span class="n">11</span><span class="t">Storage &amp; backup <span class="tag run">running</span></span><span class="d">Hundreds of terabytes on shucked drives, with a nightly copy to a backup server.</span></a></li>
+    </ol>
+  </div>
+
+
+<section class="sys" id="fleet" data-system="fleet" aria-labelledby="fleet-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">01 · Foundation</p>
+    <h2 id="fleet-h">The fleet <span class="tag run">running</span></h2>
+    <p class="slede">Local GPUs do the thinking. Small machines do the legwork. The cloud catches what neither can. Every call gets counted.</p>
+    <div class="parts" aria-label="Built with"><span>llm proxies</span><span>Switchboard (FastAPI + SQLite)</span><span>Docker</span><span>per-GPU telemetry</span></div>
+  </div>
+  <div class="col prose"><p>I run my own inference, in two tiers. The <b>backbone</b> is a few big machines that each own one big job: a six-GPU CUDA server for models, images, video and speech; a six-card accelerator box that holds one large model in memory; and a Mac with 256 GB of unified memory for the biggest models. They are busy on purpose, so I don&rsquo;t treat them as on call for everyone. The <b>edge</b> is a crowd of smaller machines with mid-size GPUs, plus the agent nodes that do the day-to-day work: routing, classifying, embedding, summarising, running coding agents. Bulk and utility work goes to the edge so the backbone stays free for what it&rsquo;s there for.</p><p><b>Every serving box runs its own proxy.</b> There is no single router for the whole fleet, and that&rsquo;s deliberate: the right route depends on the job. Each proxy has its own fallbacks. It tries local hardware first and falls back to a hosted provider when it has to. Nothing calls a model directly, because a call that skips the proxy never shows up in the books.</p><p><b>Switchboard</b> is the books. It polls every proxy and records which machine, which model and which job made each call, how long it took, and whether it worked. I can switch a provider off for one box or for the whole fleet from the same page. Next to it sit a few other windows: per-GPU telemetry, a pixel-art office where every live agent session is a little character at a desk, and a directory page that ties the dashboards together.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 564" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-fleet-t dg-fleet-d"><title id="dg-fleet-t">Fleet architecture</title><desc id="dg-fleet-d">Callers send requests to a proxy that runs on every serving box. Each proxy routes to the backbone tier of big dedicated machines, the edge tier of smaller machines, or hosted fallbacks. Switchboard records every call from every proxy, and Fleet Memory is shared by every caller.</desc><defs><marker id="dg-fleet-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-fleet-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-fleet-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-fleet-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="277.3" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Callers</text>
+<line class="hl" x1="341.3" y1="0.5" x2="618.7" y2="0.5"/>
+<text class="lh" x="341.3" y="21">Per-box proxy</text>
+<line class="hl" x1="682.7" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="682.7" y="21">Where models run</text>
+<path class="ln" d="M277.3,227.0 H340.3" marker-end="url(#dg-fleet-w-e-dim)"/>
+<path class="ln" d="M618.7,227.0 H650.7 V92.0 H681.7" marker-end="url(#dg-fleet-w-e-dim)"/>
+<path class="ln" d="M618.7,227.0 H650.7 V237.0 H681.7" marker-end="url(#dg-fleet-w-e-dim)"/>
+<path class="ln" d="M618.7,227.0 H650.7 V372.0 H681.7" marker-end="url(#dg-fleet-w-e-dim)"/>
+<path class="ln dash" d="M138.7,284.0 V461.0" marker-end="url(#dg-fleet-w-e-dim)"/>
+<path class="ln dash" d="M480.0,285.5 V461.0" marker-end="url(#dg-fleet-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="170.0" width="277.3" height="114.0" rx="3"/><text class="nt" x="14.0" y="193.0">Callers</text><text class="nl" x="14.0" y="214.0">coding agents</text><text class="nl" x="14.0" y="232.0">pipelines: intake, podcast,</text><text class="nl" x="14.0" y="248.0">Karakuri</text><text class="nl" x="14.0" y="266.0">apps and workflows</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="341.3" y="168.5" width="277.3" height="117.0" rx="3"/><rect class="tick" x="341.3" y="168.5" width="2.5" height="117.0"/><text class="nt" x="355.3" y="191.5">A proxy on every serving</text><text class="nt" x="355.3" y="210.5">box</text><text class="nl" x="355.3" y="231.5">its own routes and fallbacks</text><text class="nl" x="355.3" y="249.5">local first, hosted when it must</text><text class="nl" x="355.3" y="267.5">logs every call</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="34.0" width="277.3" height="116.0" rx="3"/><text class="nt" x="696.7" y="57.0">Backbone: dedicated</text><text class="nl" x="696.7" y="78.0">six-GPU CUDA server</text><text class="nl" x="696.7" y="96.0">six-card accelerator box</text><text class="nl" x="696.7" y="114.0">256 GB unified-memory Mac</text><text class="nl" x="696.7" y="132.0">one big job each</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="180.0" width="277.3" height="114.0" rx="3"/><text class="nt" x="696.7" y="203.0">Edge: always on</text><text class="nl" x="696.7" y="224.0">mid-size GPU machines</text><text class="nl" x="696.7" y="242.0">agent nodes</text><text class="nl" x="696.7" y="260.0">routing, classify, embed, 7 to</text><text class="nl" x="696.7" y="276.0">14B workers</text></g>
+<g class="nodeg ref"><rect class="nd ref" x="682.7" y="324.0" width="277.3" height="96.0" rx="3"/><text class="nt" x="696.7" y="347.0">Hosted fallbacks</text><text class="nl" x="696.7" y="368.0">big-model tiers</text><text class="nl" x="696.7" y="386.0">last resort, still through a</text><text class="nl" x="696.7" y="402.0">proxy</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="462.0" width="277.3" height="96.0" rx="3"/><rect class="tick" x="0.0" y="462.0" width="2.5" height="96.0"/><text class="nt" x="14.0" y="485.0">Fleet Memory</text><text class="nl" x="14.0" y="506.0">shared facts and conversation</text><text class="nl" x="14.0" y="522.0">archive</text><text class="nl" x="14.0" y="540.0">every agent reads and writes it</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="341.3" y="462.0" width="277.3" height="98.0" rx="3"/><rect class="tick" x="341.3" y="462.0" width="2.5" height="98.0"/><text class="nt" x="355.3" y="485.0">Switchboard</text><text class="nl" x="355.3" y="506.0">polls every proxy</text><text class="nl" x="355.3" y="524.0">which box, which model, which job</text><text class="nl" x="355.3" y="542.0">provider on/off switches</text></g>
+<g class="pill"><rect x="111.5" y="363.5" width="54.4" height="18" rx="9"/><text x="138.7" y="376.1" text-anchor="middle">shared</text></g>
+<g class="pill"><rect x="456.0" y="364.2" width="48.0" height="18" rx="9"/><text x="480.0" y="376.9" text-anchor="middle">usage</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 926" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-fleet-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-fleet-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-fleet-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-fleet-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Callers</text>
+<line class="hl" x1="0" y1="154.5" x2="340" y2="154.5"/>
+<text class="lh" x="0" y="173.0">Per-box proxy</text>
+<line class="hl" x1="0" y1="308.5" x2="340" y2="308.5"/>
+<text class="lh" x="0" y="327.0">Where models run</text>
+<path class="ln acc" d="M170.0,126.0 V181.0" marker-end="url(#dg-fleet-t-e-acc)"/>
+<path class="ln acc" d="M170.0,280.0 V335.0" marker-end="url(#dg-fleet-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="51.0">Callers</text><text class="nl" x="14.0" y="72.0">coding agents</text><text class="nl" x="14.0" y="90.0">pipelines: intake, podcast, Karakuri</text><text class="nl" x="14.0" y="108.0">apps and workflows</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="182.0" width="340.0" height="98.0" rx="3"/><rect class="tick" x="0.0" y="182.0" width="2.5" height="98.0"/><text class="nt" x="14.0" y="205.0">A proxy on every serving box</text><text class="nl" x="14.0" y="226.0">its own routes and fallbacks</text><text class="nl" x="14.0" y="244.0">local first, hosted when it must</text><text class="nl" x="14.0" y="262.0">logs every call</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="336.0" width="340.0" height="116.0" rx="3"/><text class="nt" x="14.0" y="359.0">Backbone: dedicated</text><text class="nl" x="14.0" y="380.0">six-GPU CUDA server</text><text class="nl" x="14.0" y="398.0">six-card accelerator box</text><text class="nl" x="14.0" y="416.0">256 GB unified-memory Mac</text><text class="nl" x="14.0" y="434.0">one big job each</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="476.0" width="340.0" height="114.0" rx="3"/><text class="nt" x="14.0" y="499.0">Edge: always on</text><text class="nl" x="14.0" y="520.0">mid-size GPU machines</text><text class="nl" x="14.0" y="538.0">agent nodes</text><text class="nl" x="14.0" y="556.0">routing, classify, embed, 7 to 14B</text><text class="nl" x="14.0" y="572.0">workers</text></g>
+<g class="nodeg ref"><rect class="nd ref" x="0.0" y="614.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="637.0">Hosted fallbacks</text><text class="nl" x="14.0" y="658.0">big-model tiers</text><text class="nl" x="14.0" y="676.0">last resort, still through a proxy</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="722.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="722.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="745.0">Fleet Memory</text><text class="nl" x="14.0" y="766.0">shared facts and conversation archive</text><text class="nl" x="14.0" y="784.0">every agent reads and writes it</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="814.0" width="340.0" height="98.0" rx="3"/><rect class="tick" x="0.0" y="814.0" width="2.5" height="98.0"/><text class="nt" x="14.0" y="837.0">Switchboard</text><text class="nl" x="14.0" y="858.0">polls every proxy</text><text class="nl" x="14.0" y="876.0">which box, which model, which job</text><text class="nl" x="14.0" y="894.0">provider on/off switches</text></g>
+</svg>
+      </div>
+      <figcaption>Calls go through a per-box proxy to one of three places. Switchboard sees every proxy; Fleet Memory is shared by everything above it. Dashed lines are reporting, not requests.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>A proxy on every serving box, with fallbacks that depend on the job</li><li>Usage attribution per machine, model and caller, plus provider switches for one box or the whole fleet</li><li>Edge nodes with mid-size GPUs serving agent traffic</li><li>A public, interactive map of every box and model (linked below)</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>Each proxy is its own copy of the same code, so a change has to be deployed box by box and then verified. Drift between copies is the recurring bug.</li><li>Two more edge tiers are on the plan, a faster one for hard steps and a low-power one for embeddings. Neither is online yet.</li><li>Power is a real limit. Loading several GPUs at once tripped the UPS one afternoon, so heavy jobs are now sequenced.</li></ul></div>
+    </div>
+  </div>
+  <div class="col links"><a class="go" href="https://philmcneely.github.io/draconis-fleet-map/">Fleet LLM Map &rarr;</a><span class="gon">every box, model and fallback, interactive</span></div>
+  <div class="wide shots" data-system="fleet"></div>
+</section>
+<section class="sys" id="memory" data-system="memory" aria-labelledby="memory-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">02 · Shared brain</p>
+    <h2 id="memory-h">Fleet Memory <span class="tag run">running</span></h2>
+    <p class="slede">Agents forget. This is the part that doesn&rsquo;t.</p>
+    <div class="parts" aria-label="Built with"><span>sqlite-vec</span><span>SQLite FTS5</span><span>sentence-transformer embeddings</span><span>REST + MCP bridge</span></div>
+  </div>
+  <div class="col prose"><p>Two failures drove it. One: an agent answers a question about my own setup from a stale guess instead of checking. Two: a decision made mid-session dies when the context window compacts. So there is one place agents look things up and one place they write things down.</p><p>There are two stores. <b>Facts and decisions</b> live in a semantic store: short notes, each tagged with how I know it. <span class="chip">human-said</span> means I stated it, <span class="chip">observed</span> means a tool showed it, <span class="chip">agent-thought</span> means the agent inferred it. That distinction matters, because an inference should never carry the weight of something I decided. <b>Conversations</b> live in a full-text archive of thousands of past sessions. Search spans both, so a hit can be the fact and the conversation it came from.</p><p>Agents get two deliberate tools, <b>recall</b> and <b>remember</b>, plus a hook that injects memory automatically, but only when a prompt actually points backwards: &ldquo;last night&rdquo;, &ldquo;remember when&rdquo;, a project by name. A plain task pulls nothing. For fleet work there is a gate on top: an agent&rsquo;s tool calls are blocked until it has recalled what we already know. A batch job also mines old transcripts for decisions and writes them back as facts, so durable knowledge doesn&rsquo;t depend on any one agent remembering to save it. A small app, <b>Mnemo</b>, shows what is stored, where it came from and who is asking.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 488" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-memory-t dg-memory-d"><title id="dg-memory-t">Fleet Memory</title><desc id="dg-memory-d">Every agent uses three tools: an automatic cue hook, a deliberate recall, and a deliberate remember. They read and write a facts store whose search federates with a full-text conversation archive. Mnemo watches both.</desc><defs><marker id="dg-memory-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-memory-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-memory-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-memory-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="277.3" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Clients</text>
+<line class="hl" x1="341.3" y1="0.5" x2="618.7" y2="0.5"/>
+<text class="lh" x="341.3" y="21">Tools</text>
+<line class="hl" x1="682.7" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="682.7" y="21">Stores</text>
+<path class="ln" d="M277.3,199.0 H301.3 V73.0 H340.3" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln" d="M277.3,199.0 H301.3 V190.0 H340.3" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln" d="M277.3,199.0 H301.3 V316.0 H340.3" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln" d="M618.7,73.0 H642.7 V127.0 H681.7" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln" d="M618.7,190.0 H642.7 V127.0 H681.7" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln" d="M618.7,316.0 H642.7 V127.0 H681.7" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln" d="M821.3,167.0 V196.0" marker-start="url(#dg-memory-w-s-dim)" marker-end="url(#dg-memory-w-e-dim)"/>
+<path class="ln dash" d="M821.3,311.0 V405.0" marker-end="url(#dg-memory-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="150.0" width="277.3" height="98.0" rx="3"/><text class="nt" x="14.0" y="173.0">Every agent, every node</text><text class="nl" x="14.0" y="194.0">coding agents</text><text class="nl" x="14.0" y="212.0">pipelines</text><text class="nl" x="14.0" y="230.0">scheduled jobs</text></g>
+<g class="nodeg std"><rect class="nd" x="341.3" y="34.0" width="277.3" height="78.0" rx="3"/><text class="nt" x="355.3" y="57.0">Cue hook</text><text class="nl" x="355.3" y="78.0">automatic, but only when a prompt</text><text class="nl" x="355.3" y="94.0">points backwards</text></g>
+<g class="nodeg std"><rect class="nd" x="341.3" y="142.0" width="277.3" height="96.0" rx="3"/><text class="nt" x="355.3" y="165.0">recall</text><text class="nl" x="355.3" y="186.0">deliberate lookup</text><text class="nl" x="355.3" y="204.0">few hits, relevance floor, hard</text><text class="nl" x="355.3" y="220.0">size ceiling</text></g>
+<g class="nodeg std"><rect class="nd" x="341.3" y="268.0" width="277.3" height="96.0" rx="3"/><text class="nt" x="355.3" y="291.0">remember</text><text class="nl" x="355.3" y="312.0">one fact, with provenance</text><text class="nl" x="355.3" y="330.0">human-said, observed, agent-</text><text class="nl" x="355.3" y="346.0">thought</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="682.7" y="87.0" width="277.3" height="80.0" rx="3"/><rect class="tick" x="682.7" y="87.0" width="2.5" height="80.0"/><text class="nt" x="696.7" y="110.0">Facts and decisions</text><text class="nl" x="696.7" y="131.0">semantic search</text><text class="nl" x="696.7" y="149.0">every fact carries provenance</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="197.0" width="277.3" height="114.0" rx="3"/><text class="nt" x="696.7" y="220.0">Conversation archive</text><text class="nl" x="696.7" y="241.0">full-text search</text><text class="nl" x="696.7" y="259.0">thousands of past sessions</text><text class="nl" x="696.7" y="277.0">a batch job mines it for</text><text class="nl" x="696.7" y="293.0">decisions</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="682.7" y="406.0" width="277.3" height="78.0" rx="3"/><rect class="tick" x="682.7" y="406.0" width="2.5" height="78.0"/><text class="nt" x="696.7" y="429.0">Mnemo</text><text class="nl" x="696.7" y="450.0">watches both stores: sizes,</text><text class="nl" x="696.7" y="466.0">sources, who is calling</text></g>
+<g class="pill"><rect x="762.1" y="172.5" width="118.4" height="18" rx="9"/><text x="821.3" y="185.1" text-anchor="middle">federated search</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 862" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-memory-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-memory-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-memory-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-memory-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Clients</text>
+<line class="hl" x1="0" y1="154.5" x2="340" y2="154.5"/>
+<text class="lh" x="0" y="173.0">Tools</text>
+<line class="hl" x1="0" y1="512.5" x2="340" y2="512.5"/>
+<text class="lh" x="0" y="531.0">Stores</text>
+<path class="ln acc" d="M170.0,126.0 V181.0" marker-end="url(#dg-memory-t-e-acc)"/>
+<path class="ln acc" d="M170.0,484.0 V539.0" marker-end="url(#dg-memory-t-e-acc)"/>
+<path class="ln" d="M170.0,620.0 V643.0" marker-start="url(#dg-memory-t-s-dim)" marker-end="url(#dg-memory-t-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="51.0">Every agent, every node</text><text class="nl" x="14.0" y="72.0">coding agents</text><text class="nl" x="14.0" y="90.0">pipelines</text><text class="nl" x="14.0" y="108.0">scheduled jobs</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="182.0" width="340.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="205.0">Cue hook</text><text class="nl" x="14.0" y="226.0">automatic, but only when a prompt points</text><text class="nl" x="14.0" y="242.0">backwards</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="284.0" width="340.0" height="96.0" rx="3"/><text class="nt" x="14.0" y="307.0">recall</text><text class="nl" x="14.0" y="328.0">deliberate lookup</text><text class="nl" x="14.0" y="346.0">few hits, relevance floor, hard size</text><text class="nl" x="14.0" y="362.0">ceiling</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="404.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="427.0">remember</text><text class="nl" x="14.0" y="448.0">one fact, with provenance</text><text class="nl" x="14.0" y="466.0">human-said, observed, agent-thought</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="540.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="540.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="563.0">Facts and decisions</text><text class="nl" x="14.0" y="584.0">semantic search</text><text class="nl" x="14.0" y="602.0">every fact carries provenance</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="644.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="667.0">Conversation archive</text><text class="nl" x="14.0" y="688.0">full-text search</text><text class="nl" x="14.0" y="706.0">thousands of past sessions</text><text class="nl" x="14.0" y="724.0">a batch job mines it for decisions</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="770.0" width="340.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="770.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="793.0">Mnemo</text><text class="nl" x="14.0" y="814.0">watches both stores: sizes, sources, who</text><text class="nl" x="14.0" y="830.0">is calling</text></g>
+</svg>
+      </div>
+      <figcaption>Agents reach memory through three tools. Search spans the facts store and the conversation archive; Mnemo watches both.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>Facts store and conversation archive, searched together</li><li>Provenance on every fact, written at the moment it is saved</li><li>Cue-gated retrieval with a hard size ceiling, so memory never floods the context</li><li>Chat-export ingest from other assistants, and caller analytics in Mnemo</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>It only knows what got written down. Facts mined by the batch job are tagged as such, so they never pose as things I actually decided.</li><li>If the conversation archive is unreachable, search quietly returns facts only. That is a known gotcha, not yet a loud failure.</li><li>Memory is not a substitute for checking live state. When the two disagree, live state wins, but the agent has to have looked at memory first.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="memory"></div>
+</section>
+<section class="sys" id="intake" data-system="intake" aria-labelledby="intake-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">03 · Reading pipeline</p>
+    <h2 id="intake-h">Content intake <span class="tag run">running</span></h2>
+    <p class="slede">A dozen kinds of source go in. A scored, readable queue and a funnel of ideas come out.</p>
+    <div class="parts" aria-label="Built with"><span>n8n</span><span>Python</span><span>Markdown + frontmatter</span><span>git</span><span>local + hosted LLMs</span></div>
+  </div>
+  <div class="col prose"><p>I read a lot: articles, posts, newsletters, forums, videos, podcasts, books, new repos. I don&rsquo;t want to find it all by hand, and I don&rsquo;t want a feed deciding what matters. So every source gets its own <b>downloader</b> that pulls new items on a schedule and writes each one as a Markdown file with frontmatter into a repo for that media type. Hundreds of thousands of items live there now.</p><p><b>The Librarian</b> is the single chokepoint. Every item goes through one scoring workflow: an LLM rates it against my interest profile and pulls out the substance, meaning the ideas, the lessons and why it matters to me. Everything downstream reads scored items, never raw scrapes. What passes lands in a reading queue, <b>the Workshop</b>, where I triage, drill into any source, or paste a URL and have it fetched, scored and filed on the spot.</p><p><b>The Ladder</b> is where the good ones go to work. A source sparks an idea, an idea becomes a testable hypothesis, a hypothesis becomes an experiment, and an experiment that holds up becomes a proven method. Results loop back in as new sources. In front of it sits a grounding gate: a local model that throws out ideas I have already tested and settled before they reach me.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 515" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-intake-t dg-intake-d"><title id="dg-intake-t">Content intake pipeline</title><desc id="dg-intake-d">A dozen kinds of source feed per-source downloaders, which write Markdown files into one repo per media type. The Librarian scores each item and extracts its substance. Scored items reach a reading queue, and promoted ones pass a grounding gate into the Ladder, which turns ideas into hypotheses, experiments and proven methods. Results loop back as new sources. An absence monitor watches every source.</desc><defs><marker id="dg-intake-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-intake-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-intake-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-intake-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Sources</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Download</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Librarian</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Ladder</text>
+<path class="ln" d="M354.5,201.5 V230.5" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln" d="M605.5,128.0 V157.0" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln" d="M605.5,255.0 V284.0" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln" d="M856.5,199.5 V228.5" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln" d="M207.0,215.5 H229.0 V143.0 H250.0" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln" d="M458.0,289.0 H480.0 V81.0 H501.0" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln" d="M709.0,341.0 H731.0 V152.5 H752.0" marker-end="url(#dg-intake-w-e-dim)"/>
+<path class="ln dash acc" d="M856.5,325.5 V415.0 H103.5 V283.5" marker-end="url(#dg-intake-w-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="149.5" width="207.0" height="132.0" rx="3"/><text class="nt" x="14.0" y="172.5">A dozen kinds</text><text class="nl" x="14.0" y="193.5">reading lists,</text><text class="nl" x="14.0" y="209.5">newsletters, RSS</text><text class="nl" x="14.0" y="227.5">video and podcasts</text><text class="nl" x="14.0" y="245.5">forums, dev news</text><text class="nl" x="14.0" y="263.5">GitHub, books</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="84.5" width="207.0" height="117.0" rx="3"/><text class="nt" x="265.0" y="107.5">One downloader per</text><text class="nt" x="265.0" y="126.5">source</text><text class="nl" x="265.0" y="147.5">scheduled</text><text class="nl" x="265.0" y="165.5">fetch the real body</text><text class="nl" x="265.0" y="183.5">never score a stub</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="231.5" width="207.0" height="115.0" rx="3"/><text class="nt" x="265.0" y="254.5">One repo per media</text><text class="nt" x="265.0" y="273.5">type</text><text class="nl" x="265.0" y="294.5">Markdown + frontmatter</text><text class="nl" x="265.0" y="312.5">hundreds of thousands of</text><text class="nl" x="265.0" y="328.5">items</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="502.0" y="34.0" width="207.0" height="94.0" rx="3"/><rect class="tick" x="502.0" y="34.0" width="2.5" height="94.0"/><text class="nt" x="516.0" y="57.0">Score</text><text class="nl" x="516.0" y="78.0">an LLM rates each item</text><text class="nl" x="516.0" y="94.0">against my interest</text><text class="nl" x="516.0" y="110.0">profile</text></g>
+<g class="nodeg std"><rect class="nd" x="502.0" y="158.0" width="207.0" height="97.0" rx="3"/><text class="nt" x="516.0" y="181.0">Extract the</text><text class="nt" x="516.0" y="200.0">substance</text><text class="nl" x="516.0" y="221.0">ideas, lessons, why it</text><text class="nl" x="516.0" y="237.0">matters</text></g>
+<g class="nodeg std"><rect class="nd" x="502.0" y="285.0" width="207.0" height="112.0" rx="3"/><text class="nt" x="516.0" y="308.0">Reading queue</text><text class="nl" x="516.0" y="329.0">triage, per-source</text><text class="nl" x="516.0" y="345.0">drill-down</text><text class="nl" x="516.0" y="363.0">paste a URL: fetch,</text><text class="nl" x="516.0" y="379.0">score, file</text></g>
+<g class="nodeg std"><rect class="nd" x="753.0" y="105.5" width="207.0" height="94.0" rx="3"/><text class="nt" x="767.0" y="128.5">Grounding gate</text><text class="nl" x="767.0" y="149.5">a local model drops</text><text class="nl" x="767.0" y="165.5">ideas I already tested</text><text class="nl" x="767.0" y="181.5">and settled</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="753.0" y="229.5" width="207.0" height="96.0" rx="3"/><rect class="tick" x="753.0" y="229.5" width="2.5" height="96.0"/><text class="nt" x="767.0" y="252.5">The Ladder</text><text class="nl" x="767.0" y="273.5">idea, hypothesis,</text><text class="nl" x="767.0" y="291.5">experiment, proven</text><text class="nl" x="767.0" y="307.5">method</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="449.0" width="960.0" height="62.0" rx="3"/><rect class="tick" x="0.0" y="449.0" width="2.5" height="62.0"/><text class="nt" x="14.0" y="472.0">Absence monitor</text><text class="nl" x="14.0" y="493.0">alerts on how long since a source last imported anything, not on whether a process is alive</text></g>
+<text class="rl" transform="translate(743.0,246.8) rotate(-90)" text-anchor="middle">promote</text>
+<g class="pill"><rect x="388.8" y="406.0" width="182.4" height="18" rx="9"/><text x="480.0" y="418.6" text-anchor="middle">results become new sources</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 1100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-intake-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-intake-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-intake-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-intake-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="26" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="26" y="19.0">Sources</text>
+<line class="hl" x1="26" y1="172.5" x2="340" y2="172.5"/>
+<text class="lh" x="26" y="191.0">Download</text>
+<line class="hl" x1="26" y1="430.5" x2="340" y2="430.5"/>
+<text class="lh" x="26" y="449.0">Librarian</text>
+<line class="hl" x1="26" y1="754.5" x2="340" y2="754.5"/>
+<text class="lh" x="26" y="773.0">Ladder</text>
+<path class="ln acc" d="M183.0,144.0 V199.0" marker-end="url(#dg-intake-t-e-acc)"/>
+<path class="ln" d="M183.0,298.0 V321.0" marker-end="url(#dg-intake-t-e-dim)"/>
+<path class="ln acc" d="M183.0,402.0 V457.0" marker-end="url(#dg-intake-t-e-acc)"/>
+<path class="ln" d="M183.0,536.0 V559.0" marker-end="url(#dg-intake-t-e-dim)"/>
+<path class="ln" d="M183.0,622.0 V645.0" marker-end="url(#dg-intake-t-e-dim)"/>
+<path class="ln acc" d="M183.0,726.0 V781.0" marker-end="url(#dg-intake-t-e-acc)"/>
+<path class="ln" d="M183.0,860.0 V883.0" marker-end="url(#dg-intake-t-e-dim)"/>
+<path class="ln dash acc" d="M26.0,924.0 H7 V86.0 H25.0" marker-end="url(#dg-intake-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="26.0" y="28.0" width="314.0" height="116.0" rx="3"/><text class="nt" x="40.0" y="51.0">A dozen kinds</text><text class="nl" x="40.0" y="72.0">reading lists, newsletters, RSS</text><text class="nl" x="40.0" y="90.0">video and podcasts</text><text class="nl" x="40.0" y="108.0">forums, dev news</text><text class="nl" x="40.0" y="126.0">GitHub, books</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="200.0" width="314.0" height="98.0" rx="3"/><text class="nt" x="40.0" y="223.0">One downloader per source</text><text class="nl" x="40.0" y="244.0">scheduled</text><text class="nl" x="40.0" y="262.0">fetch the real body</text><text class="nl" x="40.0" y="280.0">never score a stub</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="322.0" width="314.0" height="80.0" rx="3"/><text class="nt" x="40.0" y="345.0">One repo per media type</text><text class="nl" x="40.0" y="366.0">Markdown + frontmatter</text><text class="nl" x="40.0" y="384.0">hundreds of thousands of items</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="26.0" y="458.0" width="314.0" height="78.0" rx="3"/><rect class="tick" x="26.0" y="458.0" width="2.5" height="78.0"/><text class="nt" x="40.0" y="481.0">Score</text><text class="nl" x="40.0" y="502.0">an LLM rates each item against my</text><text class="nl" x="40.0" y="518.0">interest profile</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="560.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="583.0">Extract the substance</text><text class="nl" x="40.0" y="604.0">ideas, lessons, why it matters</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="646.0" width="314.0" height="80.0" rx="3"/><text class="nt" x="40.0" y="669.0">Reading queue</text><text class="nl" x="40.0" y="690.0">triage, per-source drill-down</text><text class="nl" x="40.0" y="708.0">paste a URL: fetch, score, file</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="782.0" width="314.0" height="78.0" rx="3"/><text class="nt" x="40.0" y="805.0">Grounding gate</text><text class="nl" x="40.0" y="826.0">a local model drops ideas I already</text><text class="nl" x="40.0" y="842.0">tested and settled</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="26.0" y="884.0" width="314.0" height="80.0" rx="3"/><rect class="tick" x="26.0" y="884.0" width="2.5" height="80.0"/><text class="nt" x="40.0" y="907.0">The Ladder</text><text class="nl" x="40.0" y="928.0">idea, hypothesis,</text><text class="nl" x="40.0" y="946.0">experiment, proven method</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="26.0" y="992.0" width="314.0" height="94.0" rx="3"/><rect class="tick" x="26.0" y="992.0" width="2.5" height="94.0"/><text class="nt" x="40.0" y="1015.0">Absence monitor</text><text class="nl" x="40.0" y="1036.0">alerts on how long since a source last</text><text class="nl" x="40.0" y="1052.0">imported anything, not on whether a</text><text class="nl" x="40.0" y="1068.0">process is alive</text></g>
+</svg>
+      </div>
+      <figcaption>Dashed oxblood line: results from the Ladder re-enter as new sources. The absence monitor watches every source for silence.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>A downloader for every source, one repo per media type</li><li>One scoring chokepoint that also extracts the substance</li><li>The Ladder running in a container, with the grounding gate in front of it</li><li>An absence monitor on every source</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>Every scraper has died silently at least once. One sat dead for thirteen days while its wrapper exited clean. So I stopped trusting success codes: the monitor alerts on how long since a source last imported anything, not on whether a process is alive.</li><li>Paywalled and link-only items give you a headline and not much else. The rule is never to score a stub: fetch the real body, or mark the item unscored. Closing that gap for every source is still work in progress.</li><li>The Ladder draws on the same scored input as the Librarian, so left alone it remixes content into generic mush. The grounding gate helps. It doesn&rsquo;t make ideas good by itself.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="intake"></div>
+</section>
+<section class="sys" id="dispatch" data-system="dispatch" aria-labelledby="dispatch-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">04 · Daily briefing</p>
+    <h2 id="dispatch-h">Fleet Dispatch <span class="tag run">running</span></h2>
+    <p class="slede">The news, once a day, without the feed: a web page, an email and a spoken edition, all built from one ranked list.</p>
+    <div class="parts" aria-label="Built with"><span>Python static build</span><span>small local classifier</span><span>LLM editorial passes</span><span>text-to-speech</span><span>email</span></div>
+  </div>
+  <div class="col prose"><p>Dozens of news feeds are scraped every half hour and sorted into sections by a small local model. Stories about the same event are clustered into one, and the ranking is simple on purpose: how many outlets covered it, weighted by how fresh it is.</p><p>Each morning a static page is built: an index, a page per section, an archive. The email is rendered from the same ranked list, so the lead story matches the page and every item deep-links to it. On top of that, LLM passes add the editorial layer: five things to know today, a one-line why-it-matters on the top stories, and a spoken digest of roughly fifteen minutes that a text-to-speech voice reads, with a player embedded in the page.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 338" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-dispatch-t dg-dispatch-d"><title id="dg-dispatch-t">Fleet Dispatch daily briefing</title><desc id="dg-dispatch-d">News feeds are gathered and sorted into sections by a small local model. Stories are clustered and ranked, then an editorial pass writes five things to know, why-it-matters lines and a spoken digest script. One ranked list produces three surfaces: a static web page, an email, and an audio edition.</desc><defs><marker id="dg-dispatch-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-dispatch-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-dispatch-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-dispatch-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="277.3" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Gather</text>
+<line class="hl" x1="341.3" y1="0.5" x2="618.7" y2="0.5"/>
+<text class="lh" x="341.3" y="21">Edit</text>
+<line class="hl" x1="682.7" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="682.7" y="21">Publish</text>
+<path class="ln" d="M138.7,170.0 V199.0" marker-end="url(#dg-dispatch-w-e-dim)"/>
+<path class="ln" d="M480.0,168.0 V197.0" marker-end="url(#dg-dispatch-w-e-dim)"/>
+<path class="ln" d="M277.3,239.0 H309.3 V120.0 H340.3" marker-end="url(#dg-dispatch-w-e-dim)"/>
+<path class="ln" d="M618.7,247.0 H642.7 V74.0 H681.7" marker-end="url(#dg-dispatch-w-e-dim)"/>
+<path class="ln" d="M618.7,247.0 H642.7 V184.0 H681.7" marker-end="url(#dg-dispatch-w-e-dim)"/>
+<path class="ln" d="M618.7,247.0 H642.7 V294.0 H681.7" marker-end="url(#dg-dispatch-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="90.0" width="277.3" height="80.0" rx="3"/><text class="nt" x="14.0" y="113.0">News feeds</text><text class="nl" x="14.0" y="134.0">dozens of outlets</text><text class="nl" x="14.0" y="152.0">scraped every half hour</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="200.0" width="277.3" height="78.0" rx="3"/><text class="nt" x="14.0" y="223.0">Sort</text><text class="nl" x="14.0" y="244.0">a small local model files each</text><text class="nl" x="14.0" y="260.0">story under a section</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="341.3" y="72.0" width="277.3" height="96.0" rx="3"/><rect class="tick" x="341.3" y="72.0" width="2.5" height="96.0"/><text class="nt" x="355.3" y="95.0">Cluster and rank</text><text class="nl" x="355.3" y="116.0">same event = one story</text><text class="nl" x="355.3" y="134.0">outlets covering it, weighted by</text><text class="nl" x="355.3" y="150.0">freshness</text></g>
+<g class="nodeg std"><rect class="nd" x="341.3" y="198.0" width="277.3" height="98.0" rx="3"/><text class="nt" x="355.3" y="221.0">Editorial pass</text><text class="nl" x="355.3" y="242.0">five things to know</text><text class="nl" x="355.3" y="260.0">why it matters</text><text class="nl" x="355.3" y="278.0">spoken digest script</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="682.7" y="34.0" width="277.3" height="80.0" rx="3"/><rect class="tick" x="682.7" y="34.0" width="2.5" height="80.0"/><text class="nt" x="696.7" y="57.0">Web page</text><text class="nl" x="696.7" y="78.0">static, rebuilt each morning</text><text class="nl" x="696.7" y="96.0">sections and an archive</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="144.0" width="277.3" height="80.0" rx="3"/><text class="nt" x="696.7" y="167.0">Email</text><text class="nl" x="696.7" y="188.0">same ranked list as the page</text><text class="nl" x="696.7" y="206.0">every item deep-links</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="254.0" width="277.3" height="80.0" rx="3"/><text class="nt" x="696.7" y="277.0">Audio edition</text><text class="nl" x="696.7" y="298.0">text-to-speech reads the digest</text><text class="nl" x="696.7" y="316.0">player embedded in the page</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 858" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-dispatch-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-dispatch-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-dispatch-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-dispatch-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Gather</text>
+<line class="hl" x1="0" y1="238.5" x2="340" y2="238.5"/>
+<text class="lh" x="0" y="257.0">Edit</text>
+<line class="hl" x1="0" y1="512.5" x2="340" y2="512.5"/>
+<text class="lh" x="0" y="531.0">Publish</text>
+<path class="ln" d="M170.0,108.0 V131.0" marker-end="url(#dg-dispatch-t-e-dim)"/>
+<path class="ln acc" d="M170.0,210.0 V265.0" marker-end="url(#dg-dispatch-t-e-acc)"/>
+<path class="ln" d="M170.0,362.0 V385.0" marker-end="url(#dg-dispatch-t-e-dim)"/>
+<path class="ln acc" d="M170.0,484.0 V539.0" marker-end="url(#dg-dispatch-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="51.0">News feeds</text><text class="nl" x="14.0" y="72.0">dozens of outlets</text><text class="nl" x="14.0" y="90.0">scraped every half hour</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="132.0" width="340.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="155.0">Sort</text><text class="nl" x="14.0" y="176.0">a small local model files each story</text><text class="nl" x="14.0" y="192.0">under a section</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="266.0" width="340.0" height="96.0" rx="3"/><rect class="tick" x="0.0" y="266.0" width="2.5" height="96.0"/><text class="nt" x="14.0" y="289.0">Cluster and rank</text><text class="nl" x="14.0" y="310.0">same event = one story</text><text class="nl" x="14.0" y="328.0">outlets covering it, weighted by</text><text class="nl" x="14.0" y="344.0">freshness</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="386.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="409.0">Editorial pass</text><text class="nl" x="14.0" y="430.0">five things to know</text><text class="nl" x="14.0" y="448.0">why it matters</text><text class="nl" x="14.0" y="466.0">spoken digest script</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="540.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="540.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="563.0">Web page</text><text class="nl" x="14.0" y="584.0">static, rebuilt each morning</text><text class="nl" x="14.0" y="602.0">sections and an archive</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="644.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="667.0">Email</text><text class="nl" x="14.0" y="688.0">same ranked list as the page</text><text class="nl" x="14.0" y="706.0">every item deep-links</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="748.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="771.0">Audio edition</text><text class="nl" x="14.0" y="792.0">text-to-speech reads the digest</text><text class="nl" x="14.0" y="810.0">player embedded in the page</text></g>
+</svg>
+      </div>
+      <figcaption>One ranked list feeds three surfaces. The editorial pass sits between ranking and publishing.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>Page, email and audio edition built from one ranked list</li><li>Editorial passes: five things to know, why it matters, a spoken digest</li><li>Section pages and an archive of past editions</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>It has to go out every day, and that is the whole job. It has not always: when the machine under it dropped off the network for several days, so did the edition. That is the case for self-healing operations (section 10), not for more features.</li><li>Room is reserved for a daily puzzle and comics. Neither exists yet.</li><li>Production is meant to move into Podcast Studio. For now the Studio only mirrors each day&rsquo;s edition.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="dispatch"></div>
+</section>
+<section class="sys" id="podcast" data-system="podcast" aria-labelledby="podcast-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">05 · Audio</p>
+    <h2 id="podcast-h">Podcast &amp; voice studio <span class="tag run">running</span></h2>
+    <p class="slede">A production line for audio shows: write it, voice it, check it, ship it. Voices are made somewhere else, on purpose.</p>
+    <div class="parts" aria-label="Built with"><span>FastAPI</span><span>React</span><span>Whisper</span><span>multi-speaker TTS engines</span><span>ffmpeg</span></div>
+  </div>
+  <div class="col prose"><p><b>Podcast Studio</b> is the production side. Work is organised as networks, shows, seasons and episodes, and each show has its own format and cast: about forty formats so far, from roundtable debates to single-voice explainers. A scheduler fires each show on its own schedule in its own timezone, picks the topic, and walks the episode through the phases: research, script, validation, voice, check, post, publish. Any phase can be regenerated on its own.</p><p>The phase I care about as a tester is the check. After the voice render, a speech-to-text model transcribes the finished audio, the transcript is diffed against the script, and speaker count and identity are checked. A bad take goes back for regeneration instead of out the door.</p><p><b>Voice Forge</b> is a separate tool, and the split is the point. The Studio uses voices from a shared pool but doesn&rsquo;t make them. Forge creates and remixes voices and has one hard rule: never a recognizable real person. Every voice is derived to be distinct and measured for it. Voice engines are pluggable per show, so a show can use a fast preset voice or a slower, higher-quality cloned one. The Dispatch&rsquo;s spoken edition uses the same stack.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 469" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-podcast-t dg-podcast-d"><title id="dg-podcast-t">Podcast Studio pipeline</title><desc id="dg-podcast-d">A scheduler picks a topic for a show. Research feeds a script, which is validated, then rendered to audio by a multi-speaker voice engine using voices from a shared pool made in Voice Forge. A verify step transcribes the audio, diffs it against the script and checks speakers; a bad take goes back to render. Mastering is planned.</desc><defs><marker id="dg-podcast-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-podcast-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-podcast-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-podcast-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Plan</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Write</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Voice</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Check and ship</text>
+<path class="ln" d="M103.5,174.5 V203.5" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln" d="M354.5,173.5 V202.5" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln" d="M856.5,146.0 V175.0" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln" d="M856.5,251.0 V280.0" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln" d="M207.0,243.5 H229.0 V134.5 H250.0" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln" d="M458.0,242.5 H480.0 V188.5 H501.0" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln" d="M709.0,174.5 H721.0 V76.0 H752.0" marker-end="url(#dg-podcast-w-e-dim)"/>
+<path class="ln dash acc" d="M753.0,104.0 H741.0 V202.5 H710.0" marker-end="url(#dg-podcast-w-e-acc)"/>
+<path class="ln dash" d="M605.5,384.0 V237.5" marker-end="url(#dg-podcast-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="94.5" width="207.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="117.5">Scheduler</text><text class="nl" x="14.0" y="138.5">per show, own timezone</text><text class="nl" x="14.0" y="156.5">about forty show formats</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="204.5" width="207.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="227.5">Research</text><text class="nl" x="14.0" y="248.5">topic picked, sources</text><text class="nl" x="14.0" y="264.5">gathered</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="95.5" width="207.0" height="78.0" rx="3"/><text class="nt" x="265.0" y="118.5">Script</text><text class="nl" x="265.0" y="139.5">an LLM writes to the</text><text class="nl" x="265.0" y="155.5">show format and cast</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="203.5" width="207.0" height="78.0" rx="3"/><text class="nt" x="265.0" y="226.5">Validate</text><text class="nl" x="265.0" y="247.5">fact-check, length,</text><text class="nl" x="265.0" y="263.5">format rules</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="502.0" y="140.5" width="207.0" height="96.0" rx="3"/><rect class="tick" x="502.0" y="140.5" width="2.5" height="96.0"/><text class="nt" x="516.0" y="163.5">Voice render</text><text class="nl" x="516.0" y="184.5">multi-speaker speech</text><text class="nl" x="516.0" y="200.5">engine</text><text class="nl" x="516.0" y="218.5">engine chosen per show</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="753.0" y="34.0" width="207.0" height="112.0" rx="3"/><rect class="tick" x="753.0" y="34.0" width="2.5" height="112.0"/><text class="nt" x="767.0" y="57.0">Verify</text><text class="nl" x="767.0" y="78.0">transcribe the audio,</text><text class="nl" x="767.0" y="94.0">diff against the script</text><text class="nl" x="767.0" y="112.0">speaker count and</text><text class="nl" x="767.0" y="128.0">identity</text></g>
+<g class="nodeg dotted"><rect class="nd dotted" x="753.0" y="176.0" width="207.0" height="75.0" rx="3"/><text class="bd" x="767.0" y="193.0">PLANNED</text><text class="nt" x="767.0" y="212.0">Master</text><text class="nl" x="767.0" y="233.0">its own service</text></g>
+<g class="nodeg std"><rect class="nd" x="753.0" y="281.0" width="207.0" height="62.0" rx="3"/><text class="nt" x="767.0" y="304.0">Publish</text><text class="nl" x="767.0" y="325.0">deliver the episode</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="502.0" y="385.0" width="207.0" height="80.0" rx="3"/><rect class="tick" x="502.0" y="385.0" width="2.5" height="80.0"/><text class="nt" x="516.0" y="408.0">Voice pool</text><text class="nl" x="516.0" y="429.0">made in Voice Forge,</text><text class="nl" x="516.0" y="447.0">the Studio only reads it</text></g>
+<text class="rl" transform="translate(737.0,153.2) rotate(-90)" text-anchor="middle">redo</text>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 1009" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-podcast-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-podcast-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-podcast-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-podcast-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="26" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="26" y="19.0">Plan</text>
+<line class="hl" x1="26" y1="222.5" x2="340" y2="222.5"/>
+<text class="lh" x="26" y="241.0">Write</text>
+<line class="hl" x1="26" y1="442.5" x2="340" y2="442.5"/>
+<text class="lh" x="26" y="461.0">Voice</text>
+<line class="hl" x1="26" y1="578.5" x2="340" y2="578.5"/>
+<text class="lh" x="26" y="597.0">Check and ship</text>
+<path class="ln" d="M183.0,108.0 V131.0" marker-end="url(#dg-podcast-t-e-dim)"/>
+<path class="ln acc" d="M183.0,194.0 V249.0" marker-end="url(#dg-podcast-t-e-acc)"/>
+<path class="ln" d="M183.0,328.0 V351.0" marker-end="url(#dg-podcast-t-e-dim)"/>
+<path class="ln acc" d="M183.0,414.0 V469.0" marker-end="url(#dg-podcast-t-e-acc)"/>
+<path class="ln acc" d="M183.0,550.0 V605.0" marker-end="url(#dg-podcast-t-e-acc)"/>
+<path class="ln" d="M183.0,702.0 V725.0" marker-end="url(#dg-podcast-t-e-dim)"/>
+<path class="ln" d="M183.0,801.0 V824.0" marker-end="url(#dg-podcast-t-e-dim)"/>
+<path class="ln dash acc" d="M26.0,654.0 H7 V510.0 H25.0" marker-end="url(#dg-podcast-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="26.0" y="28.0" width="314.0" height="80.0" rx="3"/><text class="nt" x="40.0" y="51.0">Scheduler</text><text class="nl" x="40.0" y="72.0">per show, own timezone</text><text class="nl" x="40.0" y="90.0">about forty show formats</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="132.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="155.0">Research</text><text class="nl" x="40.0" y="176.0">topic picked, sources gathered</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="250.0" width="314.0" height="78.0" rx="3"/><text class="nt" x="40.0" y="273.0">Script</text><text class="nl" x="40.0" y="294.0">an LLM writes to the show format and</text><text class="nl" x="40.0" y="310.0">cast</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="352.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="375.0">Validate</text><text class="nl" x="40.0" y="396.0">fact-check, length, format rules</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="26.0" y="470.0" width="314.0" height="80.0" rx="3"/><rect class="tick" x="26.0" y="470.0" width="2.5" height="80.0"/><text class="nt" x="40.0" y="493.0">Voice render</text><text class="nl" x="40.0" y="514.0">multi-speaker speech engine</text><text class="nl" x="40.0" y="532.0">engine chosen per show</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="26.0" y="606.0" width="314.0" height="96.0" rx="3"/><rect class="tick" x="26.0" y="606.0" width="2.5" height="96.0"/><text class="nt" x="40.0" y="629.0">Verify</text><text class="nl" x="40.0" y="650.0">transcribe the audio, diff against the</text><text class="nl" x="40.0" y="666.0">script</text><text class="nl" x="40.0" y="684.0">speaker count and identity</text></g>
+<g class="nodeg dotted"><rect class="nd dotted" x="26.0" y="726.0" width="314.0" height="75.0" rx="3"/><text class="bd" x="40.0" y="743.0">PLANNED</text><text class="nt" x="40.0" y="762.0">Master</text><text class="nl" x="40.0" y="783.0">its own service</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="825.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="848.0">Publish</text><text class="nl" x="40.0" y="869.0">deliver the episode</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="26.0" y="915.0" width="314.0" height="80.0" rx="3"/><rect class="tick" x="26.0" y="915.0" width="2.5" height="80.0"/><text class="nt" x="40.0" y="938.0">Voice pool</text><text class="nl" x="40.0" y="959.0">made in Voice Forge,</text><text class="nl" x="40.0" y="977.0">the Studio only reads it</text></g>
+</svg>
+      </div>
+      <figcaption>Dashed oxblood line: a failed verify sends the episode back to the voice render. The voice pool is written by Voice Forge and only read by the Studio.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>Studio and Forge both live, as separate services</li><li>Scheduled shows that produce on their own</li><li>A full end-to-end delivery, research to published audio, proven</li><li>The format catalog restores itself on every boot</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>For a long stretch, episodes silently didn&rsquo;t deliver. Three pieces of glue each worked out where the script file lived, two with stale paths, and the failure looked green. The fix was a design rule: stages hand files down directories, and the directory is the contract.</li><li>Mastering is meant to be its own service. It isn&rsquo;t built.</li><li>Delivery reliability is still the soft spot.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="podcast"></div>
+</section>
+<section class="sys" id="karakuri" data-system="karakuri" aria-labelledby="karakuri-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">06 · Software factory</p>
+    <h2 id="karakuri-h">Karakuri <span class="tag prog">in progress</span></h2>
+    <p class="slede">A factory made of small, cheap, local models that tries to behave like one big frontier model, with gates so it doesn&rsquo;t ship slop.</p>
+    <div class="parts" aria-label="Built with"><span>Go</span><span>NATS bus</span><span>rootless Docker</span><span>local open-weights models</span><span>per-service proxies</span></div>
+  </div>
+  <div class="col prose"><p>A frontier model works because one context holds everything. Karakuri&rsquo;s bet is that many small local models can get close if two things are true. First, <b>all the data is available to all the agents all the time</b>. That means access, not injection: push what is relevant, let agents look up the rest, because too much context overwhelms a small model. Second, <b>no slop</b>: the quality gates don&rsquo;t get lowered to make a run pass. When a gate fails I fix the gap behind it, not the gate.</p><p>A request becomes a story, and a story moves through a state machine on a message bus. Every hand-off is an event, and no service calls another directly. A PM agent writes acceptance criteria, researching unfamiliar mechanisms first instead of guessing. An architect designs. QA reviews the design and plans tests before any code exists. The coder builds in any language: there is no stack whitelist, so the coder declares the install, build, test and run commands in a manifest. Then the work is checked against the design, tested, and put through a security panel and a QA panel in parallel, and an SRE pass checks it can be deployed. Docs get written. The shipper opens a scored pull request. The agent that tests the code is not the one that reviewed the design.</p><p>When a story stalls, a <b>supervisor</b>, a stronger model, reads the situation and returns a structured directive: let a hollow objection through, fix the acceptance criteria, instruct a specific agent, or fail the story. The point is that I&rsquo;m not the one unsticking it. Karakuri lives on its own isolated container runtime at low priority with nothing reserved for it, because an early build once crashed a shared daemon and took my production services down for over a day. The same factory also runs non-software task types; the adventure generator in section 08 is one.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 506" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-karakuri-t dg-karakuri-d"><title id="dg-karakuri-t">Karakuri produce loop</title><desc id="dg-karakuri-d">A story moves from Define to Build to Prove to Ship. A PM agent writes acceptance criteria, an architect designs, QA reviews the design. The coder builds, work is checked against the design and tested. A security panel and a QA lens panel run in parallel, then an SRE audit. Docs are written and the shipper opens a scored pull request. Blocking findings go back to the coder. A supervisor watches for stalls and a message bus carries every hand-off.</desc><defs><marker id="dg-karakuri-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-karakuri-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-karakuri-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-karakuri-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Define</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Build</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Prove</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Ship</text>
+<rect class="grp" x="502.0" y="34.0" width="207.0" height="240.0" rx="4"/><text class="gl" x="512.0" y="47.0">in parallel</text>
+<path class="ln" d="M103.5,148.0 V177.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M103.5,240.0 V269.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M354.5,148.0 V177.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M354.5,238.0 V267.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M605.5,274.0 V303.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M856.5,185.0 V214.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M207.0,309.0 H229.0 V100.0 H250.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln" d="M458.0,308.0 H468.0 V154.0 H501.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<path class="ln dash acc" d="M502.0,128.0 H492.0 V100.0 H459.0" marker-end="url(#dg-karakuri-w-e-acc)"/>
+<path class="ln" d="M709.0,335.0 H731.0 V154.0 H752.0" marker-end="url(#dg-karakuri-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="52.0" width="207.0" height="96.0" rx="3"/><text class="nt" x="14.0" y="75.0">PM spec</text><text class="nl" x="14.0" y="96.0">acceptance criteria</text><text class="nl" x="14.0" y="114.0">researches unknowns</text><text class="nl" x="14.0" y="130.0">first</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="178.0" width="207.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="201.0">Architect</text><text class="nl" x="14.0" y="222.0">technical design</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="270.0" width="207.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="293.0">QA design review</text><text class="nl" x="14.0" y="314.0">tests planned before any</text><text class="nl" x="14.0" y="330.0">code</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="251.0" y="52.0" width="207.0" height="96.0" rx="3"/><rect class="tick" x="251.0" y="52.0" width="2.5" height="96.0"/><text class="nt" x="265.0" y="75.0">Coder</text><text class="nl" x="265.0" y="96.0">any language</text><text class="nl" x="265.0" y="114.0">manifest declares build,</text><text class="nl" x="265.0" y="130.0">test, run</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="178.0" width="207.0" height="60.0" rx="3"/><text class="nt" x="265.0" y="201.0">Review against</text><text class="nt" x="265.0" y="220.0">design</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="268.0" width="207.0" height="80.0" rx="3"/><text class="nt" x="265.0" y="291.0">Tests</text><text class="nl" x="265.0" y="312.0">generated and run</text><text class="nl" x="265.0" y="330.0">flaky ones self-heal</text></g>
+<g class="nodeg std"><rect class="nd" x="512.0" y="54.0" width="187.0" height="98.0" rx="3"/><text class="nt" x="526.0" y="77.0">Security panel</text><text class="nl" x="526.0" y="98.0">static analysis</text><text class="nl" x="526.0" y="116.0">OWASP-style review</text><text class="nl" x="526.0" y="134.0">dependency audit</text></g>
+<g class="nodeg std"><rect class="nd" x="512.0" y="166.0" width="187.0" height="98.0" rx="3"/><text class="nt" x="526.0" y="189.0">QA lens panel</text><text class="nl" x="526.0" y="210.0">visual, accessibility</text><text class="nl" x="526.0" y="228.0">performance</text><text class="nl" x="526.0" y="246.0">contract, integration</text></g>
+<g class="nodeg std"><rect class="nd" x="502.0" y="304.0" width="207.0" height="62.0" rx="3"/><text class="nt" x="516.0" y="327.0">SRE audit</text><text class="nl" x="516.0" y="348.0">can it be deployed?</text></g>
+<g class="nodeg std"><rect class="nd" x="753.0" y="123.0" width="207.0" height="62.0" rx="3"/><text class="nt" x="767.0" y="146.0">Docs</text><text class="nl" x="767.0" y="167.0">written once it passes</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="753.0" y="215.0" width="207.0" height="62.0" rx="3"/><rect class="tick" x="753.0" y="215.0" width="2.5" height="62.0"/><text class="nt" x="767.0" y="238.0">Shipper</text><text class="nl" x="767.0" y="259.0">a scored pull request</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="408.0" width="458.0" height="94.0" rx="3"/><rect class="tick" x="0.0" y="408.0" width="2.5" height="94.0"/><text class="nt" x="14.0" y="431.0">Supervisor</text><text class="nl" x="14.0" y="452.0">a stronger model watches for stalls and returns a</text><text class="nl" x="14.0" y="468.0">directive: let a hollow objection through, fix the spec,</text><text class="nl" x="14.0" y="484.0">instruct an agent, or fail</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="502.0" y="408.0" width="458.0" height="78.0" rx="3"/><rect class="tick" x="502.0" y="408.0" width="2.5" height="78.0"/><text class="nt" x="516.0" y="431.0">Message bus</text><text class="nl" x="516.0" y="452.0">every hand-off is an event; no service calls another</text><text class="nl" x="516.0" y="468.0">directly</text></g>
+
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 1413" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-karakuri-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-karakuri-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-karakuri-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-karakuri-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="26" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="26" y="19.0">Define</text>
+<line class="hl" x1="26" y1="308.5" x2="340" y2="308.5"/>
+<text class="lh" x="26" y="327.0">Build</text>
+<line class="hl" x1="26" y1="613.5" x2="340" y2="613.5"/>
+<text class="lh" x="26" y="632.0">Prove</text>
+<line class="hl" x1="26" y1="995.5" x2="340" y2="995.5"/>
+<text class="lh" x="26" y="1014.0">Ship</text>
+<rect class="grp" x="26.0" y="641.0" width="314.0" height="240.0" rx="4"/><text class="gl" x="36.0" y="654.0">in parallel</text>
+<path class="ln" d="M183.0,108.0 V131.0" marker-end="url(#dg-karakuri-t-e-dim)"/>
+<path class="ln" d="M183.0,194.0 V217.0" marker-end="url(#dg-karakuri-t-e-dim)"/>
+<path class="ln acc" d="M183.0,280.0 V335.0" marker-end="url(#dg-karakuri-t-e-acc)"/>
+<path class="ln" d="M183.0,416.0 V439.0" marker-end="url(#dg-karakuri-t-e-dim)"/>
+<path class="ln" d="M183.0,481.0 V504.0" marker-end="url(#dg-karakuri-t-e-dim)"/>
+<path class="ln acc" d="M183.0,585.0 V640.0" marker-end="url(#dg-karakuri-t-e-acc)"/>
+<path class="ln" d="M183.0,881.0 V904.0" marker-end="url(#dg-karakuri-t-e-dim)"/>
+<path class="ln acc" d="M183.0,967.0 V1022.0" marker-end="url(#dg-karakuri-t-e-acc)"/>
+<path class="ln" d="M183.0,1085.0 V1108.0" marker-end="url(#dg-karakuri-t-e-dim)"/>
+<path class="ln dash acc" d="M26.0,761.0 H7 V376.0 H25.0" marker-end="url(#dg-karakuri-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="26.0" y="28.0" width="314.0" height="80.0" rx="3"/><text class="nt" x="40.0" y="51.0">PM spec</text><text class="nl" x="40.0" y="72.0">acceptance criteria</text><text class="nl" x="40.0" y="90.0">researches unknowns first</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="132.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="155.0">Architect</text><text class="nl" x="40.0" y="176.0">technical design</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="218.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="241.0">QA design review</text><text class="nl" x="40.0" y="262.0">tests planned before any code</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="26.0" y="336.0" width="314.0" height="80.0" rx="3"/><rect class="tick" x="26.0" y="336.0" width="2.5" height="80.0"/><text class="nt" x="40.0" y="359.0">Coder</text><text class="nl" x="40.0" y="380.0">any language</text><text class="nl" x="40.0" y="398.0">manifest declares build, test, run</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="440.0" width="314.0" height="41.0" rx="3"/><text class="nt" x="40.0" y="463.0">Review against design</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="505.0" width="314.0" height="80.0" rx="3"/><text class="nt" x="40.0" y="528.0">Tests</text><text class="nl" x="40.0" y="549.0">generated and run</text><text class="nl" x="40.0" y="567.0">flaky ones self-heal</text></g>
+<g class="nodeg std"><rect class="nd" x="36.0" y="661.0" width="294.0" height="98.0" rx="3"/><text class="nt" x="50.0" y="684.0">Security panel</text><text class="nl" x="50.0" y="705.0">static analysis</text><text class="nl" x="50.0" y="723.0">OWASP-style review</text><text class="nl" x="50.0" y="741.0">dependency audit</text></g>
+<g class="nodeg std"><rect class="nd" x="36.0" y="773.0" width="294.0" height="98.0" rx="3"/><text class="nt" x="50.0" y="796.0">QA lens panel</text><text class="nl" x="50.0" y="817.0">visual, accessibility</text><text class="nl" x="50.0" y="835.0">performance</text><text class="nl" x="50.0" y="853.0">contract, integration</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="905.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="928.0">SRE audit</text><text class="nl" x="40.0" y="949.0">can it be deployed?</text></g>
+<g class="nodeg std"><rect class="nd" x="26.0" y="1023.0" width="314.0" height="62.0" rx="3"/><text class="nt" x="40.0" y="1046.0">Docs</text><text class="nl" x="40.0" y="1067.0">written once it passes</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="26.0" y="1109.0" width="314.0" height="62.0" rx="3"/><rect class="tick" x="26.0" y="1109.0" width="2.5" height="62.0"/><text class="nt" x="40.0" y="1132.0">Shipper</text><text class="nl" x="40.0" y="1153.0">a scored pull request</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="26.0" y="1199.0" width="314.0" height="110.0" rx="3"/><rect class="tick" x="26.0" y="1199.0" width="2.5" height="110.0"/><text class="nt" x="40.0" y="1222.0">Supervisor</text><text class="nl" x="40.0" y="1243.0">a stronger model watches for stalls</text><text class="nl" x="40.0" y="1259.0">and returns a directive: let a hollow</text><text class="nl" x="40.0" y="1275.0">objection through, fix the spec,</text><text class="nl" x="40.0" y="1291.0">instruct an agent, or fail</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="26.0" y="1321.0" width="314.0" height="78.0" rx="3"/><rect class="tick" x="26.0" y="1321.0" width="2.5" height="78.0"/><text class="nt" x="40.0" y="1344.0">Message bus</text><text class="nl" x="40.0" y="1365.0">every hand-off is an event; no service</text><text class="nl" x="40.0" y="1381.0">calls another directly</text></g>
+</svg>
+      </div>
+      <figcaption>Dashed oxblood line: blocking findings from the proving stage go back to the coder. The supervisor and the bus run underneath everything.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>The full loop from request to scored pull request, with specialist review panels</li><li>A seven-app suite (web UIs, REST APIs, a Go service and a Rust CLI) delivered as pull requests</li><li>Batches of API apps shipped unattended, end to end</li><li>A rule I hold: I never hand-fix an app Karakuri built. The fix goes into the factory, so the factory gets better.</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>My bar is seven of ten fresh requests packaged at grade A, twice in a row. It isn&rsquo;t reliably there yet. Most of the work now is the plumbing between agents, because that is where it loses context.</li><li>Complex apps in any language, with persistence, Docker and end-to-end tests, is the target. It has shipped web, API, Go and Rust work. The rest of that list is still ahead.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="karakuri"></div>
+</section>
+<section class="sys" id="qa" data-system="qa" aria-labelledby="qa-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">07 · Quality</p>
+    <h2 id="qa-h">QA &amp; test tooling <span class="tag prog">in progress</span></h2>
+    <p class="slede">A test-generation pipeline built from separate stages that meet only at model-free contracts, plus the harness that tells me whether it works.</p>
+    <div class="parts" aria-label="Built with"><span>Python</span><span>Playwright</span><span>ChromaDB</span><span>JSON-schema contracts</span><span>pytest</span></div>
+  </div>
+  <div class="col prose"><p>I have been a tester my whole career, so this is the system I am hardest on. The pipeline has five small services. <b>Spec intake</b> reads a spec or ticket, interrogates it for assumptions and gaps, asks clarifying questions, and normalises the acceptance criteria into BDD. Creating anything in a system of record needs a human&rsquo;s approval. The <b>test-case designer</b> expands that into positive, negative and boundary cases. The <b>synthesizer</b> turns each step into automation: it reuses a proven step from the library when one matches, and otherwise derives the step by driving the live app (map it, walk the journey, adapt) and compiles the test from what it observed. The <b>runner</b> executes the test, heals locator drift, and on green promotes the new steps into the <b>step library</b>, which only ever holds steps that passed. A human merges the pull request.</p><p>Stages meet only at <b>contracts</b>: versioned JSON schemas with no model calls in them, so any stage can be swapped out or run alone. <b>qa-eval</b> is the harness that keeps me honest. It runs the whole pipeline N times on every spec in a corpus and reports green rate, run-to-run consistency and why tests failed.</p><p>The result that changed the project: when the pipeline failed on basic demo apps, the model was not the bottleneck. A 27-billion-parameter local model, quantised to 4-bit, matched a frontier model on a controlled run (17 to 18 of 18 genuine passes) once the harness observed the real page and could address repeated elements. The earlier &ldquo;small models hallucinate&rdquo; results were harness bugs. Observation, not model size, was the fix. Alongside it are agent skills for generating test documents from specs and for coaching red-green-refactor, and a QA review panel inside Karakuri.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 346" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-qa-t dg-qa-d"><title id="dg-qa-t">QA and test-generation pipeline</title><desc id="dg-qa-d">Spec intake normalises a spec into BDD. The test-case designer expands it into positive, negative and boundary cases. The synthesizer reuses a proven step from the step library or derives one by driving the live app. The runner executes, heals locator drift, and on green promotes new steps into the library. Versioned contracts sit between every stage and an eval harness runs the whole pipeline repeatedly.</desc><defs><marker id="dg-qa-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-qa-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-qa-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-qa-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Spec</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Cases</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Synthesize</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Run</text>
+<path class="ln" d="M207.0,107.0 H250.0" marker-end="url(#dg-qa-w-e-dim)"/>
+<path class="ln" d="M458.0,107.0 H501.0" marker-end="url(#dg-qa-w-e-dim)"/>
+<path class="ln" d="M709.0,107.0 H752.0" marker-end="url(#dg-qa-w-e-dim)"/>
+<path class="ln dash acc" d="M856.5,180.0 V198.0 H633.5 V231.0" marker-end="url(#dg-qa-w-e-acc)"/>
+<path class="ln dash" d="M583.5,163.0 V231.0" marker-start="url(#dg-qa-w-s-dim)" marker-end="url(#dg-qa-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="50.0" width="207.0" height="114.0" rx="3"/><text class="nt" x="14.0" y="73.0">Spec intake</text><text class="nl" x="14.0" y="94.0">interrogates the spec</text><text class="nl" x="14.0" y="110.0">for gaps</text><text class="nl" x="14.0" y="128.0">asks questions</text><text class="nl" x="14.0" y="146.0">normalises to BDD</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="68.0" width="207.0" height="78.0" rx="3"/><text class="nt" x="265.0" y="91.0">Test-case designer</text><text class="nl" x="265.0" y="112.0">positive, negative,</text><text class="nl" x="265.0" y="128.0">boundary</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="502.0" y="51.0" width="207.0" height="112.0" rx="3"/><rect class="tick" x="502.0" y="51.0" width="2.5" height="112.0"/><text class="nt" x="516.0" y="74.0">Synthesizer</text><text class="nl" x="516.0" y="95.0">reuse a proven step if</text><text class="nl" x="516.0" y="111.0">one matches</text><text class="nl" x="516.0" y="129.0">else derive it by</text><text class="nl" x="516.0" y="145.0">driving the live app</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="753.0" y="34.0" width="207.0" height="146.0" rx="3"/><rect class="tick" x="753.0" y="34.0" width="2.5" height="146.0"/><text class="nt" x="767.0" y="57.0">Runner</text><text class="nl" x="767.0" y="78.0">executes, heals locator</text><text class="nl" x="767.0" y="94.0">drift</text><text class="nl" x="767.0" y="112.0">on green: promote new</text><text class="nl" x="767.0" y="128.0">steps</text><text class="nl" x="767.0" y="146.0">opens a PR; a human</text><text class="nl" x="767.0" y="162.0">merges</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="232.0" width="458.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="232.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="255.0">Model-free contracts</text><text class="nl" x="14.0" y="276.0">versioned JSON schemas between every stage; swap a stage</text><text class="nl" x="14.0" y="292.0">or run it alone</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="502.0" y="232.0" width="207.0" height="94.0" rx="3"/><rect class="tick" x="502.0" y="232.0" width="2.5" height="94.0"/><text class="nt" x="516.0" y="255.0">Step library</text><text class="nl" x="516.0" y="276.0">proven steps only;</text><text class="nl" x="516.0" y="292.0">searched before anything</text><text class="nl" x="516.0" y="308.0">is synthesized</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="753.0" y="232.0" width="207.0" height="110.0" rx="3"/><rect class="tick" x="753.0" y="232.0" width="2.5" height="110.0"/><text class="nt" x="767.0" y="255.0">qa-eval harness</text><text class="nl" x="767.0" y="276.0">whole pipeline, N runs</text><text class="nl" x="767.0" y="292.0">per spec: green rate,</text><text class="nl" x="767.0" y="308.0">consistency, why it</text><text class="nl" x="767.0" y="324.0">failed</text></g>
+<g class="pill"><rect x="685.8" y="189.0" width="118.4" height="18" rx="9"/><text x="745.0" y="201.6" text-anchor="middle">promote on green</text></g>
+<g class="pill"><rect x="556.3" y="188.0" width="54.4" height="18" rx="9"/><text x="583.5" y="200.6" text-anchor="middle">search</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 834" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-qa-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-qa-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-qa-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-qa-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Spec</text>
+<line class="hl" x1="0" y1="154.5" x2="340" y2="154.5"/>
+<text class="lh" x="0" y="173.0">Cases</text>
+<line class="hl" x1="0" y1="272.5" x2="340" y2="272.5"/>
+<text class="lh" x="0" y="291.0">Synthesize</text>
+<line class="hl" x1="0" y1="408.5" x2="340" y2="408.5"/>
+<text class="lh" x="0" y="427.0">Run</text>
+<path class="ln acc" d="M170.0,126.0 V181.0" marker-end="url(#dg-qa-t-e-acc)"/>
+<path class="ln acc" d="M170.0,244.0 V299.0" marker-end="url(#dg-qa-t-e-acc)"/>
+<path class="ln acc" d="M170.0,380.0 V435.0" marker-end="url(#dg-qa-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="51.0">Spec intake</text><text class="nl" x="14.0" y="72.0">interrogates the spec for gaps</text><text class="nl" x="14.0" y="90.0">asks questions</text><text class="nl" x="14.0" y="108.0">normalises to BDD</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="182.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="205.0">Test-case designer</text><text class="nl" x="14.0" y="226.0">positive, negative, boundary</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="300.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="300.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="323.0">Synthesizer</text><text class="nl" x="14.0" y="344.0">reuse a proven step if one matches</text><text class="nl" x="14.0" y="362.0">else derive it by driving the live app</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="436.0" width="340.0" height="98.0" rx="3"/><rect class="tick" x="0.0" y="436.0" width="2.5" height="98.0"/><text class="nt" x="14.0" y="459.0">Runner</text><text class="nl" x="14.0" y="480.0">executes, heals locator drift</text><text class="nl" x="14.0" y="498.0">on green: promote new steps</text><text class="nl" x="14.0" y="516.0">opens a PR; a human merges</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="562.0" width="340.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="562.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="585.0">Model-free contracts</text><text class="nl" x="14.0" y="606.0">versioned JSON schemas between every</text><text class="nl" x="14.0" y="622.0">stage; swap a stage or run it alone</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="652.0" width="340.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="652.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="675.0">Step library</text><text class="nl" x="14.0" y="696.0">proven steps only; searched before</text><text class="nl" x="14.0" y="712.0">anything is synthesized</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="742.0" width="340.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="742.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="765.0">qa-eval harness</text><text class="nl" x="14.0" y="786.0">whole pipeline, N runs per spec: green</text><text class="nl" x="14.0" y="802.0">rate, consistency, why it failed</text></g>
+</svg>
+      </div>
+      <figcaption>Dashed oxblood line: a green run promotes new steps into the library. The library is searched before anything is synthesized.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>Five stage services plus the shared contracts, each runnable alone</li><li>A step library that only ever learns from green runs, so it compounds</li><li>An eval harness that repeats the whole pipeline and reports consistency, not one lucky run</li><li>Derive-by-observation as the default synthesis mode</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>File and text specs work. Adapters for ticket trackers and wikis are stubs.</li><li>Validation so far is a corpus of small apps and specs. Scale is the next question, and I haven&rsquo;t answered it yet.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="qa"></div>
+</section>
+<section class="sys" id="gm" data-system="gm" aria-labelledby="gm-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">08 · Games</p>
+    <h2 id="gm-h">AI game master <span class="tag prog">in progress</span></h2>
+    <p class="slede">Generate a tabletop adventure, then hand it to an LLM that runs it like a game master: you talk, it narrates, and the dice stay honest.</p>
+    <div class="parts" aria-label="Built with"><span>Go</span><span>YAML rule adapters</span><span>Whisper (speech in)</span><span>multi-voice TTS (speech out)</span><span>generated ambience</span></div>
+  </div>
+  <div class="col prose"><p>It started as a Karakuri task type. The <b>generator</b> produces a complete module: scenes, boxed read-aloud text, skill checks, branching, NPCs, monsters, treasure and pregenerated characters, plus maps and handouts in four genres (fantasy, space, modern and western) and a vintage-style module booklet you can print. Maps cover regions, cities, dungeon interiors and star maps.</p><p>The <b>runtime</b> plays a module. The design splits three layers on purpose: <b>content</b> (what happens), a <b>system adapter</b> (how actions resolve), and the <b>engine</b> (the loop that plays it). The adapter is a config file, not code, so a new rule system is data and prompt, not a rewrite. And precision is an architecture property: all randomness goes through a deterministic dice engine. The LLM asks for a roll and consumes the result. It never invents one. Combat state (hit points, conditions, initiative) lives in code, turn order is enforced, and a player who tries to act out of turn is redirected instead of resolved.</p><p>On top of that the loop is voice-driven: speech-to-text takes what you say, a fast text-to-speech engine narrates with different voices for different characters, ambient beds and sound effects play, and the maps appear in the loop. A bake-off, not an assumption, chooses which model runs the table.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 505" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-gm-t dg-gm-d"><title id="dg-gm-t">AI game master</title><desc id="dg-gm-d">The generator produces a module with maps and handouts. A game-master director, an LLM, narrates and adjudicates. A system adapter holds the rules as configuration and a deterministic dice engine rolls the dice; the LLM asks for rolls and code resolves them. Voice in, voice out, ambience, sound effects and maps are built; a proper table interface is planned.</desc><defs><marker id="dg-gm-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-gm-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-gm-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-gm-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="277.3" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Generate</text>
+<line class="hl" x1="341.3" y1="0.5" x2="618.7" y2="0.5"/>
+<text class="lh" x="341.3" y="21">Run</text>
+<line class="hl" x1="682.7" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="682.7" y="21">Play</text>
+<path class="ln" d="M277.3,126.5 H301.3 V181.5 H340.3" marker-end="url(#dg-gm-w-e-dim)"/>
+<path class="ln" d="M277.3,245.5 H301.3 V181.5 H340.3" marker-end="url(#dg-gm-w-e-dim)"/>
+<path class="ln" d="M618.7,181.5 H642.7 V74.0 H681.7" marker-end="url(#dg-gm-w-e-dim)"/>
+<path class="ln" d="M618.7,181.5 H642.7 V184.0 H681.7" marker-end="url(#dg-gm-w-e-dim)"/>
+<path class="ln dash" d="M618.7,181.5 H642.7 V291.5 H681.7" marker-end="url(#dg-gm-w-e-dim)"/>
+<path class="ln dash" d="M480.0,221.5 V370.0" marker-start="url(#dg-gm-w-s-dim)" marker-end="url(#dg-gm-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="77.5" width="277.3" height="98.0" rx="3"/><text class="nt" x="14.0" y="100.5">Adventure generator</text><text class="nl" x="14.0" y="121.5">scenes, read-aloud text, checks</text><text class="nl" x="14.0" y="139.5">NPCs, monsters, treasure</text><text class="nl" x="14.0" y="157.5">print-ready module booklet</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="205.5" width="277.3" height="80.0" rx="3"/><text class="nt" x="14.0" y="228.5">Maps and handouts</text><text class="nl" x="14.0" y="249.5">region, city, dungeon, star map</text><text class="nl" x="14.0" y="267.5">four genres</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="341.3" y="141.5" width="277.3" height="80.0" rx="3"/><rect class="tick" x="341.3" y="141.5" width="2.5" height="80.0"/><text class="nt" x="355.3" y="164.5">GM director</text><text class="nl" x="355.3" y="185.5">an LLM narrates and adjudicates</text><text class="nl" x="355.3" y="203.5">turn order enforced</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="34.0" width="277.3" height="80.0" rx="3"/><text class="nt" x="696.7" y="57.0">Voice in, voice out</text><text class="nl" x="696.7" y="78.0">speech-to-text for the player</text><text class="nl" x="696.7" y="96.0">different voices per character</text></g>
+<g class="nodeg std"><rect class="nd" x="682.7" y="144.0" width="277.3" height="80.0" rx="3"/><text class="nt" x="696.7" y="167.0">Ambience and maps</text><text class="nl" x="696.7" y="188.0">ambient beds, sound effects</text><text class="nl" x="696.7" y="206.0">maps shown in the loop</text></g>
+<g class="nodeg dotted"><rect class="nd dotted" x="682.7" y="254.0" width="277.3" height="75.0" rx="3"/><text class="bd" x="696.7" y="271.0">PLANNED</text><text class="nt" x="696.7" y="290.0">Table surface</text><text class="nl" x="696.7" y="311.0">a proper player-facing interface</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="341.3" y="371.0" width="277.3" height="130.0" rx="3"/><rect class="tick" x="341.3" y="371.0" width="2.5" height="130.0"/><text class="nt" x="355.3" y="394.0">Game state and rules engine</text><text class="nl" x="355.3" y="415.0">HP, conditions, initiative,</text><text class="nl" x="355.3" y="431.0">scene; saved and resumable</text><text class="nl" x="355.3" y="449.0">rules as YAML config, not code</text><text class="nl" x="355.3" y="467.0">deterministic dice: the LLM asks,</text><text class="nl" x="355.3" y="483.0">code rolls</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 877" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-gm-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-gm-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-gm-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-gm-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Generate</text>
+<line class="hl" x1="0" y1="258.5" x2="340" y2="258.5"/>
+<text class="lh" x="0" y="277.0">Run</text>
+<line class="hl" x1="0" y1="394.5" x2="340" y2="394.5"/>
+<text class="lh" x="0" y="413.0">Play</text>
+<path class="ln acc" d="M170.0,230.0 V285.0" marker-end="url(#dg-gm-t-e-acc)"/>
+<path class="ln acc" d="M170.0,366.0 V421.0" marker-end="url(#dg-gm-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="51.0">Adventure generator</text><text class="nl" x="14.0" y="72.0">scenes, read-aloud text, checks</text><text class="nl" x="14.0" y="90.0">NPCs, monsters, treasure</text><text class="nl" x="14.0" y="108.0">print-ready module booklet</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="150.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="173.0">Maps and handouts</text><text class="nl" x="14.0" y="194.0">region, city, dungeon, star map</text><text class="nl" x="14.0" y="212.0">four genres</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="286.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="286.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="309.0">GM director</text><text class="nl" x="14.0" y="330.0">an LLM narrates and adjudicates</text><text class="nl" x="14.0" y="348.0">turn order enforced</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="422.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="445.0">Voice in, voice out</text><text class="nl" x="14.0" y="466.0">speech-to-text for the player</text><text class="nl" x="14.0" y="484.0">different voices per character</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="526.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="549.0">Ambience and maps</text><text class="nl" x="14.0" y="570.0">ambient beds, sound effects</text><text class="nl" x="14.0" y="588.0">maps shown in the loop</text></g>
+<g class="nodeg dotted"><rect class="nd dotted" x="0.0" y="630.0" width="340.0" height="75.0" rx="3"/><text class="bd" x="14.0" y="647.0">PLANNED</text><text class="nt" x="14.0" y="666.0">Table surface</text><text class="nl" x="14.0" y="687.0">a proper player-facing interface</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="733.0" width="340.0" height="130.0" rx="3"/><rect class="tick" x="0.0" y="733.0" width="2.5" height="130.0"/><text class="nt" x="14.0" y="756.0">Game state and rules engine</text><text class="nl" x="14.0" y="777.0">HP, conditions, initiative, scene; saved</text><text class="nl" x="14.0" y="793.0">and resumable</text><text class="nl" x="14.0" y="811.0">rules as YAML config, not code</text><text class="nl" x="14.0" y="829.0">deterministic dice: the LLM asks, code</text><text class="nl" x="14.0" y="845.0">rolls</text></g>
+</svg>
+      </div>
+      <figcaption>The generator hands a module to the director. The director asks the rules engine for rolls and state; voice, sound and maps are built, the table surface is not.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>Generator: modules, maps, handouts and booklets across four genres</li><li>A text play-loop proven end to end on a real module, saved and resumable</li><li>Voice in, multi-voice out, ambience, sound effects and maps in the loop</li><li>Turn-order enforcement, plus rules depth such as unconscious at zero hit points and advantage from conditions</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>It is driven from a terminal. A proper player-facing table, a virtual tabletop, is the missing piece.</li><li>One rule system is fully wired in. More are drafted but not merged, and proving the adapter idea across several systems, including a non-fantasy one, is still ahead.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="gm"></div>
+</section>
+<section class="sys" id="meetings" data-system="meetings" aria-labelledby="meetings-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">09 · Meetings</p>
+    <h2 id="meetings-h">Meeting intelligence <span class="tag run">running</span></h2>
+    <p class="slede">Recordings go in. Transcripts, speakers and summaries come out, and the work runs on my own machines.</p>
+    <div class="parts" aria-label="Built with"><span>FastAPI</span><span>React</span><span>SQLite</span><span>local ASR + diarization</span><span>voiceprints</span><span>CPU-only</span></div>
+  </div>
+  <div class="col prose"><p>A self-hosted app, built on an open-source base I forked and then fixed where it fell short. Recordings arrive from handheld recorders and a phone app. A small watcher notices new audio files, sends them to the app, de-duplicates by hash, and sets the real recording date, which the app would otherwise stamp as &ldquo;now&rdquo;. Transcription, speaker diarization and voiceprint matching all run locally on the CPU. No GPU, by design, so it can live on a modest box. Summaries are written by a local model through the fleet proxy.</p><p><b>Speaker identification</b> is the interesting part. The app keeps voiceprints and matches each speaker against the people who are enrolled. It can only name someone who is enrolled, and so far that is just me, so everyone else stays Speaker 1, Speaker 2. I would rather show &ldquo;Speaker 2&rdquo; than a confident wrong name.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 279" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-meet-t dg-meet-d"><title id="dg-meet-t">Meeting intelligence</title><desc id="dg-meet-d">Recordings sync from handheld recorders and a phone app to a folder. A watcher sends new audio to the app, which transcribes it locally, works out who spoke when, matches speakers against enrolled voiceprints, and has a local model write the summary.</desc><defs><marker id="dg-meet-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-meet-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-meet-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-meet-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Capture</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Transcribe</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Identify</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Insight</text>
+<path class="ln" d="M103.5,115.0 V144.0" marker-end="url(#dg-meet-w-e-dim)"/>
+<path class="ln" d="M354.5,139.5 V168.5" marker-end="url(#dg-meet-w-e-dim)"/>
+<path class="ln" d="M856.5,139.5 V168.5" marker-end="url(#dg-meet-w-e-dim)"/>
+<path class="ln" d="M207.0,210.0 H229.0 V108.5 H250.0" marker-end="url(#dg-meet-w-e-dim)"/>
+<path class="ln" d="M458.0,200.5 H480.0 V154.5 H501.0" marker-end="url(#dg-meet-w-e-dim)"/>
+<path class="ln" d="M709.0,154.5 H731.0 V100.5 H752.0" marker-end="url(#dg-meet-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="34.0" width="207.0" height="81.0" rx="3"/><text class="nt" x="14.0" y="57.0">Recorders and phone</text><text class="nt" x="14.0" y="76.0">app</text><text class="nl" x="14.0" y="97.0">audio syncs to a folder</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="145.0" width="207.0" height="130.0" rx="3"/><text class="nt" x="14.0" y="168.0">Watcher</text><text class="nl" x="14.0" y="189.0">sends new audio to the</text><text class="nl" x="14.0" y="205.0">app</text><text class="nl" x="14.0" y="223.0">de-dupes by hash</text><text class="nl" x="14.0" y="241.0">stamps the real</text><text class="nl" x="14.0" y="257.0">recording date</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="77.5" width="207.0" height="62.0" rx="3"/><text class="nt" x="265.0" y="100.5">Speech-to-text</text><text class="nl" x="265.0" y="121.5">local, on CPU</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="169.5" width="207.0" height="62.0" rx="3"/><text class="nt" x="265.0" y="192.5">Diarization</text><text class="nl" x="265.0" y="213.5">who spoke when</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="502.0" y="98.5" width="207.0" height="112.0" rx="3"/><rect class="tick" x="502.0" y="98.5" width="2.5" height="112.0"/><text class="nt" x="516.0" y="121.5">Voiceprints</text><text class="nl" x="516.0" y="142.5">match speakers to</text><text class="nl" x="516.0" y="158.5">enrolled people</text><text class="nl" x="516.0" y="176.5">everyone else stays</text><text class="nl" x="516.0" y="192.5">Speaker N</text></g>
+<g class="nodeg std"><rect class="nd" x="753.0" y="61.5" width="207.0" height="78.0" rx="3"/><text class="nt" x="767.0" y="84.5">Summary</text><text class="nl" x="767.0" y="105.5">written by a local model</text><text class="nl" x="767.0" y="121.5">through the fleet proxy</text></g>
+<g class="nodeg std"><rect class="nd" x="753.0" y="169.5" width="207.0" height="78.0" rx="3"/><text class="nt" x="767.0" y="192.5">Meeting notes</text><text class="nl" x="767.0" y="213.5">transcript, speakers,</text><text class="nl" x="767.0" y="229.5">summary</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 802" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-meet-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-meet-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-meet-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-meet-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Capture</text>
+<line class="hl" x1="0" y1="240.5" x2="340" y2="240.5"/>
+<text class="lh" x="0" y="259.0">Transcribe</text>
+<line class="hl" x1="0" y1="444.5" x2="340" y2="444.5"/>
+<text class="lh" x="0" y="463.0">Identify</text>
+<line class="hl" x1="0" y1="580.5" x2="340" y2="580.5"/>
+<text class="lh" x="0" y="599.0">Insight</text>
+<path class="ln" d="M170.0,90.0 V113.0" marker-end="url(#dg-meet-t-e-dim)"/>
+<path class="ln acc" d="M170.0,212.0 V267.0" marker-end="url(#dg-meet-t-e-acc)"/>
+<path class="ln" d="M170.0,330.0 V353.0" marker-end="url(#dg-meet-t-e-dim)"/>
+<path class="ln acc" d="M170.0,416.0 V471.0" marker-end="url(#dg-meet-t-e-acc)"/>
+<path class="ln acc" d="M170.0,552.0 V607.0" marker-end="url(#dg-meet-t-e-acc)"/>
+<path class="ln" d="M170.0,686.0 V709.0" marker-end="url(#dg-meet-t-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="51.0">Recorders and phone app</text><text class="nl" x="14.0" y="72.0">audio syncs to a folder</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="114.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="137.0">Watcher</text><text class="nl" x="14.0" y="158.0">sends new audio to the app</text><text class="nl" x="14.0" y="176.0">de-dupes by hash</text><text class="nl" x="14.0" y="194.0">stamps the real recording date</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="268.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="291.0">Speech-to-text</text><text class="nl" x="14.0" y="312.0">local, on CPU</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="354.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="377.0">Diarization</text><text class="nl" x="14.0" y="398.0">who spoke when</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="472.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="472.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="495.0">Voiceprints</text><text class="nl" x="14.0" y="516.0">match speakers to enrolled people</text><text class="nl" x="14.0" y="534.0">everyone else stays Speaker N</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="608.0" width="340.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="631.0">Summary</text><text class="nl" x="14.0" y="652.0">written by a local model through the</text><text class="nl" x="14.0" y="668.0">fleet proxy</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="710.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="733.0">Meeting notes</text><text class="nl" x="14.0" y="754.0">transcript, speakers, summary</text></g>
+</svg>
+      </div>
+      <figcaption>Everything after the watcher runs locally. Matching only ever names enrolled voices.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>The whole pipeline end to end: capture, transcribe, diarize, identify, summarize</li><li>Automatic speaker matching on ingest for enrolled voices</li><li>A back catalog from a recorder&rsquo;s archive re-transcribed locally</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>It is still a trial deployment on a shared server, running on a capped slice of CPU, one meeting at a time. A dedicated old box is the plan.</li><li>Only enrolled voices get names. Enrolling more people needs clean per-person samples, and that isn&rsquo;t done.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="meetings"></div>
+</section>
+<section class="sys" id="selfheal" data-system="selfheal" aria-labelledby="selfheal-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">10 · Operations</p>
+    <h2 id="selfheal-h">Self-healing operations <span class="tag prog">in progress</span></h2>
+    <p class="slede">The goal is zero alerts. An alert means the automation gave up and handed the problem to me.</p>
+    <div class="parts" aria-label="Built with"><span>cron + launchd + systemd</span><span>event bus</span><span>local triage models</span><span>IPMI watchdog</span><span>smart plugs</span></div>
+  </div>
+  <div class="col prose"><p>The rule I run the fleet by: for every recurring failure, prevent it and recover from it. Prevention means finding the real root cause, not a restart or a nag. Recovery means an autonomous fix, so that if it breaks anyway, no human has to be there. Two layers do most of the work. A <b>mechanical monitor</b> runs on a short cycle, checks the nodes and services, and fixes the failures it recognises: restart the agent, force a stuck git pull, bring a service back. Underneath that is hardware recovery: a watchdog that resets a hung machine, and smart plugs that let me power-cycle a box remotely.</p><p>Anything it can&rsquo;t fix lands on an <b>event bus</b>, and a <b>triage</b> loop picks it up. A small local model reads the failure and diagnoses it. A bigger local model takes over only if the first is unsure. Triage is advisory: it never touches the fleet itself. If it recommends escalation, a <b>fix runner</b> can start a coding agent in a throwaway worktree with no push rights, and a human clicks Fix. Local models always go first. A frontier model is the last resort, never the first call.</p><p><b>Red Alert</b> is the dispatcher: when self-healing fails, it sends an agent to investigate, with an escalation chain per issue type and a cooldown so one outage doesn&rsquo;t spawn a swarm. An <b>absence monitor</b> watches for the quiet failures. It alerts on how stale an output is, not on whether a process is alive, and only on state changes, so a persistent failure doesn&rsquo;t turn into hourly noise. The status page shows only what is down and says &ldquo;all systems nominal&rdquo; otherwise. Each machine also has its own runbook, and agents are required to read it before they touch that machine; a hook blocks them until they have.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 468" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-heal-t dg-heal-d"><title id="dg-heal-t">Self-healing operations</title><desc id="dg-heal-d">Monitors detect failures and stale output. Known failures are healed automatically; if that fails, Red Alert dispatches an agent. Unresolved failures reach the event bus, where a small local model triages and a bigger local model takes over only if unsure. A fix runner recommends and a human clicks Fix; the last resort is a message to me. A hardware watchdog, a status page and per-machine runbooks sit underneath.</desc><defs><marker id="dg-heal-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-heal-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-heal-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-heal-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Detect</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Heal</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Triage</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Escalate</text>
+<path class="ln" d="M354.5,174.0 V203.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M605.5,112.0 V141.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M605.5,220.0 V249.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M856.5,183.0 V212.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M207.0,118.0 H250.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M207.0,243.0 H221.0 V118.0 H250.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M458.0,252.0 H480.0 V73.0 H501.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<path class="ln" d="M709.0,289.0 H731.0 V127.0 H752.0" marker-end="url(#dg-heal-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="71.0" width="207.0" height="94.0" rx="3"/><text class="nt" x="14.0" y="94.0">Mechanical monitor</text><text class="nl" x="14.0" y="115.0">checks nodes and</text><text class="nl" x="14.0" y="131.0">services on a short</text><text class="nl" x="14.0" y="147.0">cycle</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="195.0" width="207.0" height="96.0" rx="3"/><text class="nt" x="14.0" y="218.0">Absence monitor</text><text class="nl" x="14.0" y="239.0">how stale is the output?</text><text class="nl" x="14.0" y="257.0">alerts on change, not</text><text class="nl" x="14.0" y="273.0">repeats</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="251.0" y="62.0" width="207.0" height="112.0" rx="3"/><rect class="tick" x="251.0" y="62.0" width="2.5" height="112.0"/><text class="nt" x="265.0" y="85.0">Auto-heal</text><text class="nl" x="265.0" y="106.0">restart the agent, force</text><text class="nl" x="265.0" y="122.0">the pull, bring the</text><text class="nl" x="265.0" y="138.0">service back</text><text class="nl" x="265.0" y="156.0">known failures only</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="204.0" width="207.0" height="96.0" rx="3"/><text class="nt" x="265.0" y="227.0">Red Alert</text><text class="nl" x="265.0" y="248.0">dispatches an agent to</text><text class="nl" x="265.0" y="264.0">investigate</text><text class="nl" x="265.0" y="282.0">cooldown, so no swarm</text></g>
+<g class="nodeg std"><rect class="nd" x="502.0" y="34.0" width="207.0" height="78.0" rx="3"/><text class="nt" x="516.0" y="57.0">Event bus</text><text class="nl" x="516.0" y="78.0">unresolved failures land</text><text class="nl" x="516.0" y="94.0">here</text></g>
+<g class="nodeg std"><rect class="nd" x="502.0" y="142.0" width="207.0" height="78.0" rx="3"/><text class="nt" x="516.0" y="165.0">Small local model</text><text class="nl" x="516.0" y="186.0">reads the failure,</text><text class="nl" x="516.0" y="202.0">diagnoses</text></g>
+<g class="nodeg std"><rect class="nd" x="502.0" y="250.0" width="207.0" height="78.0" rx="3"/><text class="nt" x="516.0" y="273.0">Bigger local model</text><text class="nl" x="516.0" y="294.0">only if the first is</text><text class="nl" x="516.0" y="310.0">unsure</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="753.0" y="71.0" width="207.0" height="112.0" rx="3"/><rect class="tick" x="753.0" y="71.0" width="2.5" height="112.0"/><text class="nt" x="767.0" y="94.0">Fix runner</text><text class="nl" x="767.0" y="115.0">coding agent in a</text><text class="nl" x="767.0" y="131.0">throwaway worktree, no</text><text class="nl" x="767.0" y="147.0">push</text><text class="nl" x="767.0" y="165.0">a human clicks Fix</text></g>
+<g class="nodeg ref"><rect class="nd ref" x="753.0" y="213.0" width="207.0" height="78.0" rx="3"/><text class="nt" x="767.0" y="236.0">A message to me</text><text class="nl" x="767.0" y="257.0">what a failed automation</text><text class="nl" x="767.0" y="273.0">looks like</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="370.0" width="207.0" height="62.0" rx="3"/><rect class="tick" x="0.0" y="370.0" width="2.5" height="62.0"/><text class="nt" x="14.0" y="393.0">Status page</text><text class="nl" x="14.0" y="414.0">shows only what is down</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="251.0" y="370.0" width="207.0" height="94.0" rx="3"/><rect class="tick" x="251.0" y="370.0" width="2.5" height="94.0"/><text class="nt" x="265.0" y="393.0">Hardware recovery</text><text class="nl" x="265.0" y="414.0">watchdog resets a hung</text><text class="nl" x="265.0" y="430.0">box; smart plugs power-</text><text class="nl" x="265.0" y="446.0">cycle remotely</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="502.0" y="370.0" width="458.0" height="78.0" rx="3"/><rect class="tick" x="502.0" y="370.0" width="2.5" height="78.0"/><text class="nt" x="516.0" y="393.0">Runbook per machine</text><text class="nl" x="516.0" y="414.0">agents must read it before touching a box; a hook blocks</text><text class="nl" x="516.0" y="430.0">them until they have</text></g>
+<text class="rl" transform="translate(492.0,162.5) rotate(-90)" text-anchor="middle">unresolved</text>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 1278" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-heal-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-heal-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-heal-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-heal-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">Detect</text>
+<line class="hl" x1="0" y1="238.5" x2="340" y2="238.5"/>
+<text class="lh" x="0" y="257.0">Heal</text>
+<line class="hl" x1="0" y1="494.5" x2="340" y2="494.5"/>
+<text class="lh" x="0" y="513.0">Triage</text>
+<line class="hl" x1="0" y1="784.5" x2="340" y2="784.5"/>
+<text class="lh" x="0" y="803.0">Escalate</text>
+<path class="ln acc" d="M170.0,210.0 V265.0" marker-end="url(#dg-heal-t-e-acc)"/>
+<path class="ln" d="M170.0,362.0 V385.0" marker-end="url(#dg-heal-t-e-dim)"/>
+<path class="ln acc" d="M170.0,466.0 V521.0" marker-end="url(#dg-heal-t-e-acc)"/>
+<path class="ln" d="M170.0,584.0 V607.0" marker-end="url(#dg-heal-t-e-dim)"/>
+<path class="ln" d="M170.0,670.0 V693.0" marker-end="url(#dg-heal-t-e-dim)"/>
+<path class="ln acc" d="M170.0,756.0 V811.0" marker-end="url(#dg-heal-t-e-acc)"/>
+<path class="ln" d="M170.0,908.0 V931.0" marker-end="url(#dg-heal-t-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="51.0">Mechanical monitor</text><text class="nl" x="14.0" y="72.0">checks nodes and services on a short</text><text class="nl" x="14.0" y="88.0">cycle</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="130.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="153.0">Absence monitor</text><text class="nl" x="14.0" y="174.0">how stale is the output?</text><text class="nl" x="14.0" y="192.0">alerts on change, not repeats</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="266.0" width="340.0" height="96.0" rx="3"/><rect class="tick" x="0.0" y="266.0" width="2.5" height="96.0"/><text class="nt" x="14.0" y="289.0">Auto-heal</text><text class="nl" x="14.0" y="310.0">restart the agent, force the pull, bring</text><text class="nl" x="14.0" y="326.0">the service back</text><text class="nl" x="14.0" y="344.0">known failures only</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="386.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="409.0">Red Alert</text><text class="nl" x="14.0" y="430.0">dispatches an agent to investigate</text><text class="nl" x="14.0" y="448.0">cooldown, so no swarm</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="522.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="545.0">Event bus</text><text class="nl" x="14.0" y="566.0">unresolved failures land here</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="608.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="631.0">Small local model</text><text class="nl" x="14.0" y="652.0">reads the failure, diagnoses</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="694.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="717.0">Bigger local model</text><text class="nl" x="14.0" y="738.0">only if the first is unsure</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="812.0" width="340.0" height="96.0" rx="3"/><rect class="tick" x="0.0" y="812.0" width="2.5" height="96.0"/><text class="nt" x="14.0" y="835.0">Fix runner</text><text class="nl" x="14.0" y="856.0">coding agent in a throwaway worktree, no</text><text class="nl" x="14.0" y="872.0">push</text><text class="nl" x="14.0" y="890.0">a human clicks Fix</text></g>
+<g class="nodeg ref"><rect class="nd ref" x="0.0" y="932.0" width="340.0" height="62.0" rx="3"/><text class="nt" x="14.0" y="955.0">A message to me</text><text class="nl" x="14.0" y="976.0">what a failed automation looks like</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="1022.0" width="340.0" height="62.0" rx="3"/><rect class="tick" x="0.0" y="1022.0" width="2.5" height="62.0"/><text class="nt" x="14.0" y="1045.0">Status page</text><text class="nl" x="14.0" y="1066.0">shows only what is down</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="1096.0" width="340.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="1096.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="1119.0">Hardware recovery</text><text class="nl" x="14.0" y="1140.0">watchdog resets a hung box; smart plugs</text><text class="nl" x="14.0" y="1156.0">power-cycle remotely</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="1186.0" width="340.0" height="78.0" rx="3"/><rect class="tick" x="0.0" y="1186.0" width="2.5" height="78.0"/><text class="nt" x="14.0" y="1209.0">Runbook per machine</text><text class="nl" x="14.0" y="1230.0">agents must read it before touching a</text><text class="nl" x="14.0" y="1246.0">box; a hook blocks them until they have</text></g>
+</svg>
+      </div>
+      <figcaption>Each rung only catches what the one before it could not. Rails underneath run all the time: the status page, hardware recovery and the runbooks.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>A mechanical monitor, an event bus and two tiers of local-model triage</li><li>An absence monitor on intake, backups, memory indexing and telemetry</li><li>A status page that only shows trouble</li><li>A hardware watchdog on one big box and remote power control on others</li><li>Per-machine runbooks that agents are forced to read first</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>Zero alerts is the north star, not the current state. Plenty of failures still end up as a message to me.</li><li>The last step is human on purpose: triage recommends, a person clicks Fix. Closing that loop safely is the open problem.</li><li>Success codes lie. Several checks reported healthy while doing nothing, including a backup job that had silently stopped for months, which is why monitors now measure output, not process state.</li><li>The monitors mostly run from one automation workstation. If it goes down, so does fleet-wide self-heal.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="selfheal"></div>
+</section>
+<section class="sys" id="storage" data-system="storage" aria-labelledby="storage-h">
+  <div class="wide"><div class="rule"></div></div>
+  <div class="col head">
+    <p class="kick">11 · Data</p>
+    <h2 id="storage-h">Storage &amp; backup <span class="tag run">running</span></h2>
+    <p class="slede">Hundreds of terabytes on shucked drives. The rule: if I can&rsquo;t find it or reach it, I don&rsquo;t really have it.</p>
+    <div class="parts" aria-label="Built with"><span>rsync</span><span>AES-256 (openssl)</span><span>SSH</span><span>cron + launchd</span><span>USB drive enclosures</span></div>
+  </div>
+  <div class="col prose"><p>Most of it is bulk on external drives in multi-bay enclosures. I sort the data by what losing it would mean. A slice is irreplaceable and gets real protection. The rest can be re-acquired and gets indexed and organised instead of blanket-backed-up. For the irreplaceable set, a <b>nightly job mirrors every disk, one to one, to a backup server</b>. It runs in an overnight window only, resumes where it left off, and refuses to write to a target that isn&rsquo;t actually mounted, so a dropped drive can&rsquo;t silently fill a boot disk.</p><p>State that exists nowhere else (agent memory, session history, configuration) gets a separate nightly encrypted backup: archived, compressed, encrypted with AES-256 and streamed over SSH to two destinations, with no plaintext archive ever on disk. Code isn&rsquo;t in it, because git already replicates that to GitHub. Leaving out about a hundred gigabytes of repos is what makes the payload small enough to run every night.</p><p>I built this after a bad week. Something wiped two weeks of conversation history, and four systems that were supposed to prevent it were reporting healthy while doing nothing. Now an absence monitor checks the output: is the newest backup fresh, does a second copy exist, does the snapshot decrypt. A check that can&rsquo;t tell reports failure, not silence.</p></div>
+  <div class="wide">
+    <figure class="dgm">
+      <div class="dgm-in">
+<svg class="dg d-wide" viewBox="0 0 960 433" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dg-store-t dg-store-d"><title id="dg-store-t">Storage and backup</title><desc id="dg-store-d">Two tracks run nightly. The irreplaceable set is mirrored one-to-one to a backup server. State that exists nowhere else is archived, encrypted and streamed to two destinations. Code is excluded because git replicates it to GitHub. An absence monitor checks both outputs.</desc><defs><marker id="dg-store-w-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-store-w-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-store-w-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-store-w-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0.0" y1="0.5" x2="207.0" y2="0.5"/>
+<text class="lh" x="0.0" y="21">Data</text>
+<line class="hl" x1="251.0" y1="0.5" x2="458.0" y2="0.5"/>
+<text class="lh" x="251.0" y="21">Nightly job</text>
+<line class="hl" x1="502.0" y1="0.5" x2="709.0" y2="0.5"/>
+<text class="lh" x="502.0" y="21">Copy</text>
+<line class="hl" x1="753.0" y1="0.5" x2="960.0" y2="0.5"/>
+<text class="lh" x="753.0" y="21">Watch</text>
+<path class="ln" d="M207.0,107.0 H250.0" marker-end="url(#dg-store-w-e-dim)"/>
+<path class="ln" d="M207.0,267.5 H250.0" marker-end="url(#dg-store-w-e-dim)"/>
+<path class="ln" d="M458.0,107.0 H501.0" marker-end="url(#dg-store-w-e-dim)"/>
+<path class="ln" d="M458.0,267.5 H501.0" marker-end="url(#dg-store-w-e-dim)"/>
+<path class="ln" d="M709.0,107.0 H723.0 V179.5 H752.0" marker-end="url(#dg-store-w-e-dim)"/>
+<path class="ln" d="M709.0,267.5 H723.0 V179.5 H752.0" marker-end="url(#dg-store-w-e-dim)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="34.0" width="207.0" height="146.0" rx="3"/><text class="nt" x="14.0" y="57.0">Irreplaceable set</text><text class="nl" x="14.0" y="78.0">a large slice of the</text><text class="nl" x="14.0" y="94.0">total</text><text class="nl" x="14.0" y="112.0">can&#x27;t be recreated</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="210.0" width="207.0" height="115.0" rx="3"/><text class="nt" x="14.0" y="233.0">State that exists</text><text class="nt" x="14.0" y="252.0">nowhere else</text><text class="nl" x="14.0" y="273.0">agent memory, session</text><text class="nl" x="14.0" y="289.0">history, configuration</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="34.0" width="207.0" height="146.0" rx="3"/><text class="nt" x="265.0" y="57.0">Mirror job</text><text class="nl" x="265.0" y="78.0">overnight window only</text><text class="nl" x="265.0" y="96.0">resumes where it stopped</text><text class="nl" x="265.0" y="114.0">skips an unmounted</text><text class="nl" x="265.0" y="130.0">target</text></g>
+<g class="nodeg std"><rect class="nd" x="251.0" y="210.0" width="207.0" height="115.0" rx="3"/><text class="nt" x="265.0" y="233.0">Encrypted backup</text><text class="nl" x="265.0" y="254.0">archive, compress,</text><text class="nl" x="265.0" y="270.0">AES-256</text><text class="nl" x="265.0" y="288.0">streamed over SSH</text><text class="nl" x="265.0" y="306.0">no plaintext on disk</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="502.0" y="34.0" width="207.0" height="146.0" rx="3"/><rect class="tick" x="502.0" y="34.0" width="2.5" height="146.0"/><text class="nt" x="516.0" y="57.0">Backup server</text><text class="nl" x="516.0" y="78.0">one-to-one whole-disk</text><text class="nl" x="516.0" y="94.0">mirror</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="502.0" y="210.0" width="207.0" height="115.0" rx="3"/><rect class="tick" x="502.0" y="210.0" width="2.5" height="115.0"/><text class="nt" x="516.0" y="233.0">Two encrypted</text><text class="nt" x="516.0" y="252.0">copies</text><text class="nl" x="516.0" y="273.0">primary and secondary</text><text class="nl" x="516.0" y="291.0">second promoted only if</text><text class="nl" x="516.0" y="307.0">sizes match</text></g>
+<g class="nodeg std"><rect class="nd" x="753.0" y="106.5" width="207.0" height="146.0" rx="3"/><text class="nt" x="767.0" y="129.5">Absence monitor</text><text class="nl" x="767.0" y="150.5">is the newest backup</text><text class="nl" x="767.0" y="166.5">fresh?</text><text class="nl" x="767.0" y="184.5">does a second copy</text><text class="nl" x="767.0" y="200.5">exist?</text><text class="nl" x="767.0" y="218.5">does the snapshot</text><text class="nl" x="767.0" y="234.5">decrypt?</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="367.0" width="458.0" height="62.0" rx="3"/><rect class="tick" x="0.0" y="367.0" width="2.5" height="62.0"/><text class="nt" x="14.0" y="390.0">Code is not in the nightly payload</text><text class="nl" x="14.0" y="411.0">it lives in git, replicated to GitHub</text></g>
+</svg>
+<svg class="dg d-tall" viewBox="0 0 340 934" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><marker id="dg-store-t-e-dim" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-store-t-s-dim" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-dim" d="M9,1 L1,5 L9,9 Z"/></marker><marker id="dg-store-t-e-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M1,1 L9,5 L1,9 Z"/></marker><marker id="dg-store-t-s-acc" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="mk-acc" d="M9,1 L1,5 L9,9 Z"/></marker></defs>
+<line class="hl" x1="0" y1="0.5" x2="340" y2="0.5"/>
+<text class="lh" x="0" y="19.0">The irreplaceable set</text>
+<line class="hl" x1="0" y1="344.5" x2="340" y2="344.5"/>
+<text class="lh" x="0" y="363.0">State that exists nowhere else</text>
+<line class="hl" x1="0" y1="704.5" x2="340" y2="704.5"/>
+<text class="lh" x="0" y="723.0">Watch</text>
+<path class="ln" d="M170.0,108.0 V131.0" marker-end="url(#dg-store-t-e-dim)"/>
+<path class="ln" d="M170.0,230.0 V253.0" marker-end="url(#dg-store-t-e-dim)"/>
+<path class="ln" d="M170.0,450.0 V473.0" marker-end="url(#dg-store-t-e-dim)"/>
+<path class="ln" d="M170.0,572.0 V595.0" marker-end="url(#dg-store-t-e-dim)"/>
+<path class="ln acc" d="M170.0,676.0 V731.0" marker-end="url(#dg-store-t-e-acc)"/>
+<g class="nodeg std"><rect class="nd" x="0.0" y="28.0" width="340.0" height="80.0" rx="3"/><text class="nt" x="14.0" y="51.0">Irreplaceable set</text><text class="nl" x="14.0" y="72.0">a large slice of the total</text><text class="nl" x="14.0" y="90.0">can&#x27;t be recreated</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="132.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="155.0">Mirror job</text><text class="nl" x="14.0" y="176.0">overnight window only</text><text class="nl" x="14.0" y="194.0">resumes where it stopped</text><text class="nl" x="14.0" y="212.0">skips an unmounted target</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="254.0" width="340.0" height="62.0" rx="3"/><rect class="tick" x="0.0" y="254.0" width="2.5" height="62.0"/><text class="nt" x="14.0" y="277.0">Backup server</text><text class="nl" x="14.0" y="298.0">one-to-one whole-disk mirror</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="372.0" width="340.0" height="78.0" rx="3"/><text class="nt" x="14.0" y="395.0">State that exists nowhere else</text><text class="nl" x="14.0" y="416.0">agent memory, session history,</text><text class="nl" x="14.0" y="432.0">configuration</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="474.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="497.0">Encrypted backup</text><text class="nl" x="14.0" y="518.0">archive, compress, AES-256</text><text class="nl" x="14.0" y="536.0">streamed over SSH</text><text class="nl" x="14.0" y="554.0">no plaintext on disk</text></g>
+<g class="nodeg acc"><rect class="nd acc" x="0.0" y="596.0" width="340.0" height="80.0" rx="3"/><rect class="tick" x="0.0" y="596.0" width="2.5" height="80.0"/><text class="nt" x="14.0" y="619.0">Two encrypted copies</text><text class="nl" x="14.0" y="640.0">primary and secondary</text><text class="nl" x="14.0" y="658.0">second promoted only if sizes match</text></g>
+<g class="nodeg std"><rect class="nd" x="0.0" y="732.0" width="340.0" height="98.0" rx="3"/><text class="nt" x="14.0" y="755.0">Absence monitor</text><text class="nl" x="14.0" y="776.0">is the newest backup fresh?</text><text class="nl" x="14.0" y="794.0">does a second copy exist?</text><text class="nl" x="14.0" y="812.0">does the snapshot decrypt?</text></g>
+<g class="nodeg rail"><rect class="nd rail" x="0.0" y="858.0" width="340.0" height="62.0" rx="3"/><rect class="tick" x="0.0" y="858.0" width="2.5" height="62.0"/><text class="nt" x="14.0" y="881.0">Code is not in the nightly payload</text><text class="nl" x="14.0" y="902.0">it lives in git, replicated to GitHub</text></g>
+</svg>
+      </div>
+      <figcaption>Two nightly tracks. Code is left out on purpose; the absence monitor checks the output of both.</figcaption>
+    </figure>
+  </div>
+  <div class="col">
+    <div class="two">
+      <div class="works"><h3 class="lbl">What works</h3><ul><li>A nightly one-to-one mirror of the irreplaceable set to a backup server, with a mount guard</li><li>An encrypted nightly backup of state that exists nowhere else, to two destinations, with a verify mode that decrypts the newest snapshot</li><li>Backup freshness watched by an absence monitor</li></ul></div>
+      <div class="gaps"><h3 class="lbl">What doesn&rsquo;t yet</h3><ul><li>macOS drops external disks on sleep and power events, and the file servers running it were unreliable and unindexed. The plan is Linux file servers that mount by UUID and pool with a union filesystem, no parity, on purpose. That rebuild is planned, not finished.</li><li>A set this big takes weeks of overnight windows to copy the first time. The mount guard exists because drives do drop.</li></ul></div>
+    </div>
+  </div>
+  
+  <div class="wide shots" data-system="storage"></div>
+</section>
+
+  <section class="sys" id="open" aria-labelledby="open-h">
+    <div class="wide"><div class="rule"></div></div>
+    <div class="col head">
+      <p class="kick">12 · The public parts</p>
+      <h2 id="open-h">Open them</h2>
+      <p class="slede">Everything above runs behind my own network and a login. These are the pieces you can open right now.</p>
+    </div>
+    <div class="col">
+      <div class="grid">
+        <a class="card" href="https://philmcneely.github.io/draconis-fleet-map/">
+          <div class="ct">Fleet LLM Map <span class="tag run">live</span></div>
+          <div class="cd">An interactive map of every GPU box and the models it serves, the cloud providers and fallbacks, the crew agents, and the Karakuri software factory with its subagents.</div>
+          <div class="go">open the map &rarr;</div>
+        </a>
+        <a class="card" href="https://daemon.draconis.io/">
+          <div class="ct">Daemon <span class="tag run">live</span></div>
+          <div class="cd">My living identity: a queryable, always-current &ldquo;digital me,&rdquo; broadcast in a machine-readable form.</div>
+          <div class="go">meet the daemon &rarr;</div>
+        </a>
+        <a class="card" href="https://unwatched.draconis.io/">
+          <div class="ct">Unwatched <span class="tag run">live</span></div>
+          <div class="cd">An island of AI citizens with free will. You write letters, not orders, and the town keeps living while you are away.</div>
+          <div class="go">visit the island &rarr;</div>
+        </a>
+        <a class="card" href="https://philmcneely.github.io/skill-browser/">
+          <div class="ct">Skill Browser</div>
+          <div class="cd">A browsable catalog of the agent skills I use, from the fleet and from the marketplace.</div>
+          <div class="go">browse the skills &rarr;</div>
+        </a>
+        <a class="card" href="https://philmcneely.github.io/how-to-work-with-me/">
+          <div class="ct">How to Work With Me</div>
+          <div class="cd">The way I think, build and collaborate: how I lead, how I think about technology, and my career story.</div>
+          <div class="go">read it &rarr;</div>
+        </a>
+      </div>
+    </div>
+    <div class="wide shots" data-system="open"></div>
+    <div class="wide shots" id="more-shots" data-system="more"></div>
+  </section>
+
+  <footer class="col foot">
+    <span>&copy; Phil McNeely</span>
+    <a href="../">Home</a>
+    <a href="https://github.com/philmcneely">GitHub</a>
+    <a href="https://philmcneely.github.io/how-to-work-with-me/">How to Work With Me</a>
+    <span>&middot; Draconis</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var d = document;
+
+  /* ---------- section nav: highlight the section in view ---------- */
+  var links = [].slice.call(d.querySelectorAll('.sec-nav a'));
+  var secs = [].slice.call(d.querySelectorAll('section.sys'));
+
+  function keepVisible(a) {
+    var nav = a.parentNode;
+    var left = a.offsetLeft - nav.offsetLeft;
+    var target = left - (nav.clientWidth - a.offsetWidth) / 2;
+    nav.scrollLeft = Math.max(0, target);
+  }
+  function setActive(id) {
+    links.forEach(function (a) {
+      if (a.getAttribute('href') === '#' + id) {
+        if (a.getAttribute('aria-current') !== 'true') {
+          a.setAttribute('aria-current', 'true');
+          keepVisible(a);
+        }
+      } else {
+        a.removeAttribute('aria-current');
+      }
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-25% 0px -65% 0px' });
+    secs.forEach(function (s) { io.observe(s); });
+  }
+
+  /* ---------- screenshots: img/manifest.json -> figures with numbered callouts ---------- */
+  var ALIAS = {
+    fleet: ['fleet', 'architecture', 'switchboard', 'llm-map', 'fleet-map', 'proxy', 'proxies', 'gpu', 'telemetry', 'bridge', 'pixel', 'shell', 'desk', 'fleet-desk', 'viewscreen-fleet'],
+    memory: ['memory', 'fleet-memory', 'mnemo'],
+    intake: ['intake', 'content', 'librarian', 'ladder', 'workshop', 'reading', 'console'],
+    dispatch: ['dispatch', 'fleet-dispatch', 'news', 'briefing'],
+    podcast: ['podcast', 'studio', 'voice', 'forge', 'voice-forge'],
+    karakuri: ['karakuri', 'sentinel', 'factory', 'viewscreen', 'conn'],
+    qa: ['qa', 'test', 'testing', 'eval'],
+    gm: ['gm', 'game', 'dungeon', 'dm', 'adventure', 'maps', 'dnd', 'ttrpg'],
+    meetings: ['meeting', 'meetings', 'olive', 'transcript'],
+    selfheal: ['selfheal', 'self-heal', 'heal', 'status', 'watchdog', 'ops', 'operations', 'runbook'],
+    storage: ['storage', 'backup', 'backups'],
+    open: ['open', 'daemon', 'unwatched']
+  };
+  function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+  function resolve(system) {
+    var s = slug(system);
+    var ids = Object.keys(ALIAS), i, j;
+    for (i = 0; i < ids.length; i++) if (s === ids[i]) return ids[i];
+    for (i = 0; i < ids.length; i++) for (j = 0; j < ALIAS[ids[i]].length; j++) if (s === ALIAS[ids[i]][j]) return ids[i];
+    for (i = 0; i < ids.length; i++) for (j = 0; j < ALIAS[ids[i]].length; j++) {
+      var k = ALIAS[ids[i]][j];
+      if (k.length > 3 && (s.indexOf(k) !== -1)) return ids[i];
+    }
+    return null;
+  }
+  function src(file) {
+    file = String(file || '');
+    if (/^(https?:)?\/\//.test(file) || file.charAt(0) === '/') return file;
+    if (file.indexOf('img/') === 0) return file;
+    return 'img/' + file;
+  }
+  function el(tag, cls, text) {
+    var n = d.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function pct(v) { v = Number(v); return isFinite(v) ? Math.max(0, Math.min(100, v)) : 0; }
+
+  function figure(e) {
+    var fig = el('figure', 'shot');
+    var frame = el('div', 'shot-frame');
+    var img = new Image();
+    var url = src(e.file);
+    img.src = url;
+    img.alt = e.alt || e.caption || 'Screenshot';
+    if (e.w && e.h) { img.width = Number(e.w); img.height = Number(e.h); }
+    img.decoding = 'async';
+    img.loading = 'lazy';
+    img.onerror = function () { if (fig.parentNode) fig.parentNode.removeChild(fig); };
+    frame.appendChild(img);
+
+    var cos = [];
+    var legend = el('ol', 'legend');
+    var callouts = Array.isArray(e.callouts) ? e.callouts : [];
+
+    function activate(i, on) {
+      cos.forEach(function (c, k) {
+        var is = (k === i) && on;
+        c.btn.classList.toggle('on', is);
+        c.leg.classList.toggle('on', is);
+        c.leg.setAttribute('aria-pressed', is ? 'true' : 'false');
+      });
+    }
+
+    callouts.forEach(function (c, i) {
+      var x = pct(c.x), y = pct(c.y), w = pct(c.w), h = pct(c.h);
+      var label = String(c.label || ('Callout ' + (i + 1)));
+      var text = String(c.text || '');
+      var btn = el('button', 'co');
+      btn.type = 'button';
+      btn.style.left = x + '%'; btn.style.top = y + '%';
+      btn.style.width = w + '%'; btn.style.height = h + '%';
+      btn.setAttribute('aria-label', (i + 1) + '. ' + label + (text ? ': ' + text : ''));
+      var cx = x + w / 2;
+      btn.classList.add(cx > 62 ? 'tip-r' : (cx < 38 ? 'tip-l' : 'tip-c'));
+      if (y + h > 72) btn.classList.add('tip-up');
+      if (x < 2 || y < 2) btn.classList.add('n-in');
+      btn.appendChild(el('span', 'co-n', String(i + 1)));
+      var tip = el('span', 'co-tip');
+      tip.setAttribute('aria-hidden', 'true');
+      tip.appendChild(el('b', null, label));
+      tip.appendChild(d.createTextNode(text));
+      btn.appendChild(tip);
+      frame.appendChild(btn);
+
+      var li = el('li');
+      var leg = el('button');
+      leg.type = 'button';
+      leg.setAttribute('aria-pressed', 'false');
+      leg.appendChild(el('span', 'lg-n', String(i + 1)));
+      var t = el('span', 'lg-t');
+      t.appendChild(el('b', null, label));
+      t.appendChild(d.createTextNode(text));
+      leg.appendChild(t);
+      li.appendChild(leg);
+      legend.appendChild(li);
+      cos.push({ btn: btn, leg: leg });
+
+      btn.addEventListener('click', function () { activate(i, !btn.classList.contains('on')); });
+      leg.addEventListener('click', function () { activate(i, !btn.classList.contains('on')); });
+      btn.addEventListener('mouseenter', function () { leg.classList.add('on'); });
+      btn.addEventListener('mouseleave', function () { if (!btn.classList.contains('on')) leg.classList.remove('on'); });
+      leg.addEventListener('mouseenter', function () { btn.classList.add('on'); });
+      leg.addEventListener('mouseleave', function () { if (leg.getAttribute('aria-pressed') !== 'true') btn.classList.remove('on'); });
+    });
+    d.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') activate(-1, false); });
+
+    fig.appendChild(frame);
+    var cap = el('figcaption');
+    cap.appendChild(el('span', null, e.caption || ''));
+    var open = el('a', null, 'open full size');
+    open.href = url; open.target = '_blank'; open.rel = 'noopener';
+    cap.appendChild(open);
+    fig.appendChild(cap);
+    if (callouts.length) fig.appendChild(legend);
+    return fig;
+  }
+
+  function mount(entries) {
+    entries.forEach(function (e) {
+      if (!e || !e.file) return;
+      var f = String(e.file || '').toLowerCase();
+      var id = /^(img\/)?(daemon|unwatched)/.test(f) ? 'open' : resolve(e.system);
+      var slot = (id && d.querySelector('.shots[data-system="' + id + '"]')) || d.getElementById('more-shots');
+      if (!slot) return;
+      if (!slot.firstChild) {
+        slot.appendChild(el('p', 'lbl shots-h', slot.id === 'more-shots' ? 'More screenshots' : 'From the real thing'));
+      }
+      slot.appendChild(figure(e));
+    });
+  }
+
+  if (window.fetch) {
+    fetch('img/manifest.json', { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('no manifest');
+      return r.json();
+    }).then(function (m) {
+      var list = Array.isArray(m) ? m : (m && Array.isArray(m.items) ? m.items : []);
+      mount(list);
+    }).catch(function () { /* no screenshots yet: the page is complete without them */ });
+  }
+})();
+
+</script>
+</body>
+</html>
