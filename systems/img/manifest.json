@@ -181,43 +181,43 @@
     ]
   },
   {
-    "file": "karakuri-intake-pm.webp",
+    "file": "karakuri-intake-board.webp",
     "system": "karakuri",
-    "w": 820,
-    "h": 1090,
-    "caption": "Karakuri intake: a plain-language spec for a community-garden app goes in, the PM agent asks one clarifying question about accounts, then slices the work into six stories with dependencies before anything is built. Captured live today; this one was not confirmed, so no story was created.",
+    "w": 1640,
+    "h": 1162,
+    "caption": "Karakuri intake, captured live: a plain-language request for a community-garden app became a board of five cards. The planner stated its assumptions and drew the build order; nothing is built until Make is pressed.",
     "callouts": [
       {
-        "x": 23,
-        "y": 1.5,
-        "w": 75,
-        "h": 11,
-        "label": "Answering the PM",
-        "text": "The PM asked how members sign in before it would lock the requirements."
+        "x": 1.4,
+        "y": 27.2,
+        "w": 57.6,
+        "h": 17.4,
+        "label": "Build order",
+        "text": "Each column starts when the cards to its left are done. The end-to-end tests wait for everything."
       },
       {
-        "x": 2.4,
-        "y": 21.5,
-        "w": 75,
-        "h": 10,
-        "label": "Foundation first",
-        "text": "Accounts and roles come first because everything else depends on them."
+        "x": 47.8,
+        "y": 16.8,
+        "w": 11.2,
+        "h": 6.6,
+        "label": "Make",
+        "text": "Several cards go in as one campaign, and a card waits for the cards it needs."
       },
       {
-        "x": 2.4,
-        "y": 69.5,
-        "w": 75,
-        "h": 7.5,
-        "label": "Docker and E2E",
-        "text": "Persistence on a named volume and a Playwright suite over the real flows."
+        "x": 1.4,
+        "y": 83.2,
+        "w": 57.6,
+        "h": 4.4,
+        "label": "Shape the plan",
+        "text": "Refine a card, split it, merge it with others, edit or reorder it. The planner rewrites only the cards you chose."
       },
       {
-        "x": 2.4,
-        "y": 81,
-        "w": 75,
-        "h": 4,
-        "label": "Dependencies",
-        "text": "The PM states the build order before the factory starts."
+        "x": 63.4,
+        "y": 38.6,
+        "w": 31.6,
+        "h": 42.4,
+        "label": "Assumptions up front",
+        "text": "The planner says what it assumed, so you can change it before anything is built."
       }
     ]
   },
