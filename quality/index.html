@@ -459,6 +459,19 @@
   .phase-panel p{margin:0;font-size:18px;line-height:1.65;color:var(--read-ink);max-width:70ch}
   .phase-panel .px{font:500 18px var(--mono);color:var(--paper-dim);background:none;border:0;cursor:pointer;padding:0 4px}
   .phase-panel .px:hover{color:var(--ox)}
+  .isnt{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 24px}
+  .is-col{border-radius:12px;padding:18px 20px 8px;border:1px solid rgba(236,228,213,.09)}
+  .is-col.yes{background:linear-gradient(160deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 60%);border-color:rgba(143,163,122,.35)}
+  .is-col.no{background:linear-gradient(160deg,rgba(192,85,69,.15),rgba(255,240,220,.01) 60%);border-color:rgba(192,85,69,.35)}
+  .is-col .ih{font:500 11px var(--mono);letter-spacing:.22em;text-transform:uppercase;margin:0 0 10px}
+  .is-col.yes .ih{color:var(--moss)}.is-col.no .ih{color:var(--ox)}
+  .is-col ul{list-style:none;margin:0;padding:0}
+  .is-col li{font-size:16.5px;line-height:1.45;color:var(--read-ink);padding:9px 0 9px 26px;border-top:1px solid rgba(236,228,213,.06);position:relative}
+  .is-col li:first-child{border-top:0}
+  .is-col li::before{position:absolute;left:0;top:9px;font:500 14px var(--mono)}
+  .is-col.yes li::before{content:"✓";color:var(--moss)}
+  .is-col.no li::before{content:"✕";color:var(--ox)}
+  @media (max-width:640px){.isnt{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -959,6 +972,33 @@
       <h3>Continuous integration</h3>
       <blockquote><p>"Continuous Integration does not get rid of bugs, but it does make them dramatically easier to find and remove."</p><cite>Martin Fowler</cite></blockquote>
       <p>Commit daily, if not every few hours. The point is that nothing new breaks existing functionality, and that testing doesn't pile up at the end. When a test fails, we know which change caused it, and that person can fix it quickly. Keep tasks and branches as small as possible; it makes the code easier to write and the review easier to do. Before a review, the new code should have tests and they should pass. Code review is not the primary bug-finding instrument; a robust set of unit, functional and integration tests is.</p>
+
+      <h4>What continuous integration is, and is not</h4>
+    </div>
+    <div class="isnt rv">
+      <div class="is-col yes">
+        <p class="ih">CI is</p>
+        <ul>
+          <li>Everyone merges small changes to main at least daily. Branches live hours, not weeks.</li>
+          <li>Every merge triggers a build and the full automated suite, automatically. Nobody kicks it off.</li>
+          <li>Tests are fast enough to run on every change: minutes, not hours.</li>
+          <li>A red main is the team's top priority, fixed or reverted in minutes.</li>
+          <li>Main is always releasable.</li>
+        </ul>
+      </div>
+      <div class="is-col no">
+        <p class="ih">CI is not</p>
+        <ul>
+          <li>Owning a CI server. The tool is not the practice.</li>
+          <li>Long-lived feature branches merged at the end of a sprint.</li>
+          <li>Merging, then someone has to kick off a build.</li>
+          <li>Running the full suite nightly, or only before a release.</li>
+          <li>A broken build that sits overnight while people keep merging.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose">
+      <p>If someone has to start the build after a merge, you have a build server, not continuous integration. Plenty of teams work that way, and it's a fine place to start. Call it what it is, and know what's missing: the feedback that tells you within minutes which change broke what, while the person who made it still has it in their head. The path from there is small steps: trigger the build on merge, then run the fast tests on every push, then shrink branches until they last a day.</p>
 
       <h3>Continuous delivery</h3>
       <p>CI works only when continuous delivery and continuous testing are practiced too. We are continuously delivering software to somebody, somewhere: to production or to lower environments. The best organizations release many times a day. Small, frequent releases deliver value without delays and keep each change small enough to understand and undo. Releases are also a communication problem, not only a technical one: tell people what shipped and what's still open.</p>
