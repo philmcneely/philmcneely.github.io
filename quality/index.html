@@ -869,13 +869,14 @@
         </ul>
         <p><b>Examples:</b> Playwright, axe for accessibility, Lighthouse, Karate.</p>
         <p><b>AI-assisted:</b> visual regression; test healing when locators or APIs change; risk-based suggestions for exploratory testing; accessibility scanning; user-journey analysis from production data; test generation from stories; flaky-test management; clustering failures for root cause.</p>
-        <p><b>Use test doubles in PR branches and real dependencies after merge</b>, as a limited subset to avoid data issues.</p>
+        <p><b>Use test doubles or an ephemeral stack in PR branches, and real dependencies after merge</b>, as a limited subset to avoid data issues.</p>
       </div>
     </details>
     <details class="ly">
       <summary><span class="lk">End to end</span><span class="lt">The whole business flow, across apps<span class="ls">Real services, real data, no test doubles. Few of these.</span></span><span class="pl" aria-hidden="true">+</span></summary>
       <div class="body prose">
         <p>E2E tests cross multiple applications and services, which makes them harder to keep stable when the underlying services change. That often means false positives and flakiness. Used as the main gate in an application's pipeline, they bring flakiness, failures and long test cycles. Same tools as system tests, wider scope, and the same rule: a minimal set of critical business flows.</p>
+        <p><b>Where they run.</b> E2E needs the whole system running. If you own most of it, spin it up ephemeral per pipeline with seeded data. If the flow crosses large external integrations or data sets, it needs a shared E2E environment to deploy to (section 06).</p>
         <p><b>System vs end to end, with an example.</b> Say the app under test is a post-purchase page that needs a logged-in user with a completed order.</p>
         <ul>
           <li><b>System test:</b> simulate login with a cookie that the login app would normally set, and pass the order id as a query parameter to the page where the test starts. You skip the flows and applications you aren't testing. For APIs, string a few calls together to simulate the workflow.</li>
@@ -918,7 +919,7 @@
       <div class="rail" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="split"><span>BUILD TIME │ RUN TIME</span></span><span class="pk"></span><span class="pk b"></span></div>
       <div class="phase"><span class="pn">1</span><span class="pt">Pre-coding</span><ul><li>Story &amp; AC review</li><li>Risk analysis</li><li>Test strategy, DoD</li><li class="ai">ambiguity check</li></ul></div>
       <div class="phase"><span class="pn">2</span><span class="pt">Pre-commit</span><ul><li>Static, unit, integration</li><li>TDD, pairing</li><li>Local exploratory</li><li class="ai">review, test gen</li></ul></div>
-      <div class="phase"><span class="pn">3</span><span class="pt">Pre-merge</span><ul><li>All build-time layers</li><li>Deploy to test env</li><li>System tests, doubles</li><li class="ai">impact analysis</li></ul></div>
+      <div class="phase"><span class="pn">3</span><span class="pt">Pre-merge</span><ul><li>All build-time layers</li><li>Ephemeral stack or test env</li><li>System tests, doubles</li><li class="ai">impact analysis</li></ul></div>
       <div class="phase"><span class="pn">4</span><span class="pt">Post-merge</span><ul><li>System, real deps</li><li>Contract, perf, a11y</li><li>Deployable artifact</li><li class="ai">failure triage</li></ul></div>
       <div class="phase"><span class="pn">5</span><span class="pt">Prod deploy</span><ul><li>Smoke / synthetics</li><li>Flag off (dark)</li><li>Rollback on fail</li><li class="ai">anomaly detection</li></ul></div>
       <div class="phase"><span class="pn">6</span><span class="pt">Go-live</span><ul><li>Flag on, canary</li><li>SLOs, RUM</li><li>Ramp or roll back</li><li class="ai">journey analysis</li></ul></div>
@@ -929,15 +930,19 @@
   <div class="col" style="padding:0">
     <div class="prose">
       <h3>Build time and run time</h3>
-      <p>The pipeline splits in two at the deployed artifact: phases 1–3 test code, phases 4–6 test something running.</p>
+      <p>The split is between testing code and testing something running. Where that running thing lives is what has changed most.</p>
       <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static and unit.</p>
-      <p><b>Run-time tests</b> run against deployed artifacts. For UI apps: system, and end to end if required. For services: integration and system.</p>
+      <p><b>Run-time tests</b> run against a running system: an ephemeral stack the pipeline spins up, or an artifact deployed to a shared environment. For UI apps: system, and end to end if required. For services: integration and system.</p>
+
+      <h3>Ephemeral stacks vs. a shared E2E environment</h3>
+      <p>The traditional answer was to deploy to a shared test environment and run the run-time tests there. For E2E that was basically required. But I've also worked places where we could spin up the full stack, ephemeral, per pipeline run, seed it with test data, run the tests, and throw it away, with no deploy at all. In a modern setup that's preferable: every branch gets a clean, known state, nobody else's half-finished change breaks your run, data doesn't drift, and tests can run in parallel without fighting over shared records.</p>
+      <p>It doesn't fit everyone. Large enterprises with huge data sets and many external integrations still need a shared E2E environment to deploy to, because the integration points and the data are too large or too external to stand up per run. Partner sandboxes, payment and identity providers, and mainframe-era systems don't come in containers. The practical mix: ephemeral stacks for everything you own, test doubles or contract tests at the edges you don't, and a shared environment kept for the few E2E flows that truly need the real integrations.</p>
       <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
 
       <h3>The phases</h3>
       <p><b>Pre-coding.</b> The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</p>
       <p><b>Pre-commit.</b> Development on the local machine before pushing: pairing, local review, and every test that can run locally.</p>
-      <p><b>Pre-merge to main.</b> Code is pushed, CI runs, and a deployed artifact lands in the test environment.</p>
+      <p><b>Pre-merge to main.</b> Code is pushed and CI runs. Run-time tests run against an ephemeral full stack the pipeline spins up with seeded test data, or, where the integrations and data are too large for that, a deployed artifact in the shared test environment.</p>
       <p><b>Post-merge to main.</b> Reviewed and merged; the post-merge CI steps lead to a production-deployable artifact.</p>
       <p><b>Production deploy.</b> The artifact is deployed to production.</p>
       <p><b>Production go-live.</b> The artifact is live and taking traffic, or the feature flag is enabled.</p>
