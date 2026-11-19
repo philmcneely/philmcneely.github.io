@@ -514,6 +514,21 @@
   .quotes blockquote{margin:14px 0}
   .quotes blockquote p{font-size:clamp(18px,2.2vw,21px)}
   @media (max-width:760px){.dvr{grid-template-columns:1fr}}
+  .tri-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tri{display:grid;grid-template-columns:110px repeat(6,minmax(0,1fr));gap:6px;min-width:860px}
+  .tri-h,.tri-r{display:contents}
+  .tri-h span{font:500 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--paper-faint);padding:0 4px 6px}
+  .tri-n{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--paper);display:flex;align-items:center;padding-left:10px;border-radius:8px}
+  .tri-c{font-size:14px;line-height:1.42;color:var(--read-ink);padding:10px 11px;border-radius:8px;background:rgba(0,0,0,.22);border:1px solid rgba(236,228,213,.06)}
+  .tri-r.pr .tri-n{border-left:3px solid var(--brass)}.tri-r.qa .tri-n{border-left:3px solid var(--ox)}.tri-r.en .tri-n{border-left:3px solid var(--moss)}
+  .tri-r.pr .tri-c.lead{background:rgba(201,163,91,.16);border-color:rgba(201,163,91,.45);color:var(--paper)}
+  .tri-r.qa .tri-c{background:rgba(192,85,69,.08);border-color:rgba(192,85,69,.22)}
+  .tri-r.qa .tri-c.lead{background:rgba(192,85,69,.2);border-color:rgba(192,85,69,.55);color:var(--paper)}
+  .tri-r.en .tri-c.lead{background:rgba(143,163,122,.18);border-color:rgba(143,163,122,.45);color:var(--paper)}
+  .trifig{padding:22px;width:min(1120px,calc(100vw - 32px));margin-left:50%;transform:translateX(-50%)}
+  .js .trifig.rv{transform:translateX(-50%) translateY(18px)}
+  .js .trifig.rv.in{transform:translateX(-50%)}
+  @media (max-width:640px){.trifig .scroll-hint{display:block}.trifig{padding:14px 10px 10px}}
 </style>
 </head>
 <body>
@@ -1257,6 +1272,15 @@
   <div class="prose">
     <p>Back in 2000, automated tools pretty much sucked and cost $20k a seat or more; manual testing was "the way." In 2008 manual was still the main way, with a small set of automated tests augmenting. Around 2010 the real shift toward automation began, and by 2015 automated testing was heavily used, understood and trusted. Now there are very few manual testers around, and a lot of that skill set is gone. Teams need to deliver fast and automation is key to that, but there is still room for manual practice: exploratory work on edge cases, boundaries, error handling and usability. I'm not saying a team needs a dedicated person doing this full time. The team itself needs to be capable of effective manual testing in those areas, and product should look at the app from the customer's view too.</p>
   </div>
+  <div class="prose">
+    <h3>Product, quality, engineering: the three together</h3>
+    <p>Most of what works in agile and modern delivery comes from the three working together, not in sequence. Each has a role. Product defines the thing; quality and engineering ask questions to help refine it. Engineering builds it, quality tests it, and product accepts it, and helps test it, as does engineering. That's the shape whether you call it the Three Amigos, a triad, or just a good team.</p>
+  </div>
+  <figure class="fig rv trifig" aria-labelledby="tri-cap">
+    <div class="tri-scroll"><div class="tri" role="table" aria-label="Who does what across delivery: product, quality and engineering"><div class="tri-h" role="row"><span role="columnheader"></span><span role="columnheader">Define</span><span role="columnheader">Refine</span><span role="columnheader">Build</span><span role="columnheader">Test</span><span role="columnheader">Accept</span><span role="columnheader">Run &amp; learn</span></div><div class="tri-r pr" role="row"><span class="tri-n" role="rowheader">Product</span><span class="tri-c lead" role="cell">Defines the thing: the problem, the outcome, acceptance criteria.</span><span class="tri-c" role="cell">Answers questions, trims scope, sharpens criteria.</span><span class="tri-c" role="cell">Stays reachable; reviews early builds.</span><span class="tri-c" role="cell">Helps test it from the customer&rsquo;s view.</span><span class="tri-c lead" role="cell">Accepts it, or doesn&rsquo;t. Decides when it releases.</span><span class="tri-c" role="cell">Reads outcomes and customer feedback.</span></div><div class="tri-r qa" role="row"><span class="tri-n" role="rowheader">Quality</span><span class="tri-c" role="cell">Asks questions: risks, edge cases, testability.</span><span class="tri-c" role="cell">Refines criteria; risk analysis, test strategy, Definition of Done. Estimates time to test.</span><span class="tri-c" role="cell">Pairs; builds test data and automation alongside the code.</span><span class="tri-c lead" role="cell">Tests it: exploratory, automated, non-functional. Reports what it found.</span><span class="tri-c" role="cell">Brings the evidence the acceptance decision rests on.</span><span class="tri-c" role="cell">Owns the quality system: monitors, escape analysis, metrics. Coaches the other two.</span></div><div class="tri-r en" role="row"><span class="tri-n" role="rowheader">Engineering</span><span class="tri-c" role="cell">Asks questions: feasibility, design, cost.</span><span class="tri-c" role="cell">Designs; estimates with testing included.</span><span class="tri-c lead" role="cell">Builds it, TDD, unit and integration tests.</span><span class="tri-c" role="cell">Helps test; fixes what testing finds.</span><span class="tri-c" role="cell">Demos it; makes it shippable.</span><span class="tri-c" role="cell">Runs it: on-call, rollback, fixes.</span></div></div></div>
+    <p class="scroll-hint">scroll the table →</p>
+    <figcaption id="tri-cap">Highlighted cells are where each role leads. Seems like quality gets off light, huh? Read across its row. Product leads at the two ends, engineering leads in the middle, and quality carries load in every column without ever handing off. Quality isn't a stage between build and accept; it runs the length of the line.</figcaption>
+  </figure>
   <div class="note">
     <p class="nh">Know how to use what you own</p>
     <p>A product owner who can't run their own product, and perform and verify most of their own requirements, doesn't understand the product well enough to own it. Same goes for engineering: nobody should be so specialized they can't sign in, place an order, or walk the main flow of the thing they build. There are exceptions to every rule, but they should be rare and deliberate, not the default.</p>
@@ -1321,7 +1345,7 @@
       <li><b>New:</b> risky changes ship behind a flag; the rollback path is known and has been exercised; a synthetic check covers any new critical flow.</li>
     </ul>
     <h4>Growing it</h4>
-    <p>The DoD doesn't magically appear, and the software doesn't magically comply. Seed it in a workshop with the whole team and the expertise you need (code, test, security, UX, architecture), then grow it. Reflect on it every retrospective, and add to it mid-sprint if something is missing. If a problem means you don't have working software, stop and fix it before adding features, then raise the DoD so future increments meet it. If it's smaller, put the work in the backlog, resolve it, and pin the outcome by adding it to the DoD. The next increment can only reach the quality bar of all those before it.</p>
+    <p>The DoD doesn't magically appear, and the software doesn't magically comply. Seed it in a workshop with the whole team and the expertise you need (code, test, security, UX, architecture), then grow it. Reflect on it every retrospective, and add to it mid-sprint if something is missing. Check whether the estimates held, testing included. If a problem means you don't have working software, stop and fix it before adding features, then raise the DoD so future increments meet it. If it's smaller, put the work in the backlog, resolve it, and pin the outcome by adding it to the DoD. The next increment can only reach the quality bar of all those before it.</p>
   </div>
 </section>
 
