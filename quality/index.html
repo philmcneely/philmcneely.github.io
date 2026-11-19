@@ -739,7 +739,7 @@
     <ol>
       <li><b>Prevent defects.</b> Avoid mistakes in the early stages. Prevention means root cause analysis of past defects, then specific measures so those types don't happen again.</li>
       <li><b>Evaluate work products</b> such as requirements, design, user stories and code. Find ambiguity or contradictions before a developer picks the work up. Reviews, walk-throughs and static analysis happen before code integrates. This is <em>verification</em>.</li>
-      <li><b>Verify that all specified requirements are met.</b> Ideally with a requirement traceability matrix mapping tests to requirements, so coverage of requirements is visible.</li>
+      <li><b>Verify that all specified requirements are met.</b> Know which tests cover which requirements, so gaps are visible. The old factory-QA version of this was a ponderous traceability matrix document. I want the lightweight version: tag tests with the story or acceptance criterion they cover, and let the pipeline report what has no test. AI can help find the gaps and draft the mapping, but the output stays small. I'm here to test and deliver quality, not to raise my page count.</li>
       <li><b>Validate that the product works as users and stakeholders expect.</b> This is <em>validation</em>: checking the product after development, manually or automated, opaque box or transparent box, and by stakeholders through acceptance testing.</li>
       <li><b>Build confidence in the quality level.</b> Fewer defects, higher satisfaction, lower maintenance costs.</li>
       <li><b>Reduce the risk of insufficient quality.</b> Every project carries uncertainty: launch time, budget, technology, implementation, maintenance. Testing brings risk management in early so risks are found as soon as possible.</li>
@@ -1348,6 +1348,9 @@
         <tr><td>Test case</td><td>Feature</td><td>Conditions, steps, data, expected and actual result</td><td>Constantly</td></tr>
       </tbody>
     </table>
+  </div>
+  <div class="prose">
+    <p>Same rule as the traceability matrix: these are levels of thinking, not a stack of documents to produce. On a fast-moving team the policy is a page, the strategy lives in the repo next to the code, the plan is the story and its acceptance criteria, and the test cases are the tests. Write only what someone will read and act on.</p>
   </div>
   <div class="prose">
     <h3>Testing maturity (TMMi)</h3>
