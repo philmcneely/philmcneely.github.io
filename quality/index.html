@@ -71,6 +71,15 @@
   .toc a::before{content:"";position:absolute;left:-14px;top:0;bottom:0;width:2px;background:var(--ox);opacity:0;transition:opacity .16s}
   .toc a:hover::before,.toc a:focus-visible::before{opacity:1}
   .toc a:focus-visible{outline:2px solid var(--ox);outline-offset:2px}
+  .toc .tpart{grid-column:1/-1;border-top:0;font:500 11px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--ox);padding:28px 0 10px}
+  .toc .tpart:first-child{padding-top:4px}
+  .part{margin-top:120px}
+  .part .lbl{color:var(--ox);font-size:13px}
+  .toc .tgrp{grid-column:1/-1;border-top:0;font-family:var(--serif);font-weight:600;font-size:26px;color:var(--paper);padding:30px 0 10px}
+  .toc .tgrp span{font:500 11px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ox);margin-left:12px}
+  .grp{margin-top:140px;padding-top:28px;border-top:2px solid var(--ox)}
+  .grp-h{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7vw,72px);line-height:1;letter-spacing:-.02em;margin:0;color:var(--paper)}
+  .grp-s{font:500 12px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--ox);margin:14px 0 0}
   .toc .n{font:500 12px var(--mono);color:var(--ox);padding-top:7px;letter-spacing:.06em}
   .toc .t,.toc .d{display:block}
   .toc .t{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.25;color:var(--paper)}
@@ -636,16 +645,16 @@
     <a class="home" href="/">Phil McNeely</a>
     <nav class="sec-nav" aria-label="Sections">
       <a href="#quality"><i>01</i>Quality</a>
-      <a href="#enough"><i>02</i>Enough</a>
-      <a href="#rules"><i>03</i>Two rules</a>
+      <a href="#rules"><i>02</i>Two rules</a>
+      <a href="#enough"><i>03</i>Enough</a>
       <a href="#objectives"><i>04</i>Objectives</a>
       <a href="#layers"><i>05</i>Layers</a>
       <a href="#pipeline"><i>06</i>CI/CD/CT/CO</a>
       <a href="#production"><i>07</i>Production</a>
-      <a href="#ai"><i>08</i>AI</a>
-      <a href="#people"><i>09</i>People</a>
-      <a href="#done"><i>10</i>Done</a>
-      <a href="#measure"><i>11</i>Measure</a>
+      <a href="#people"><i>08</i>People</a>
+      <a href="#ai"><i>09</i>AI</a>
+      <a href="#measure"><i>10</i>Measure</a>
+      <a href="#done"><i>11</i>Done</a>
       <a href="#risk"><i>12</i>Defects &amp; risk</a>
       <a href="#radar"><i>13</i>Then &amp; now</a>
       <a href="#foundations"><i>14</i>Foundations</a>
@@ -721,17 +730,23 @@
 <section class="toc-wrap col" aria-labelledby="toc-h">
   <p class="lbl" id="toc-h">Contents</p>
   <ol class="toc">
+    <li class="tpart">The argument</li>
     <li><a href="#quality"><span class="n">01</span><span><span class="t">What quality is</span><span class="d">Value to some person who matters, at some point in time.</span></span></a></li>
-    <li><a href="#enough"><span class="n">02</span><span><span class="t">How much is enough</span><span class="d">Reach × harm × time, and the changes you can't undo.</span></span></a></li>
-    <li><a href="#rules"><span class="n">03</span><span><span class="t">Two rules I don't bend</span><span class="d">Trust, but verify. If you didn't measure it, it didn't happen.</span></span></a></li>
+    <li><a href="#rules"><span class="n">02</span><span><span class="t">Two rules I don't bend</span><span class="d">Trust, but verify. If you didn't measure it, it didn't happen.</span></span></a></li>
+    <li><a href="#enough"><span class="n">03</span><span><span class="t">How much is enough</span><span class="d">Reach × harm × time, and the changes you can't undo.</span></span></a></li>
+    <li class="tgrp">Lower the odds <span>Before merge</span></li>
     <li><a href="#objectives"><span class="n">04</span><span><span class="t">What testing is for</span><span class="d">Nine objectives, and the one that matters most at speed.</span></span></a></li>
     <li><a href="#layers"><span class="n">05</span><span><span class="t">The test layers</span><span class="d">Static, unit, integration, system, end to end.</span></span></a></li>
     <li><a href="#pipeline"><span class="n">06</span><span><span class="t">CI / CD / CT / CO</span><span class="d">Six delivery phases and what runs in each.</span></span></a></li>
+    <li class="tgrp">Shrink the cost <span>After deploy</span></li>
     <li><a href="#production"><span class="n">07</span><span><span class="t">After the deploy</span><span class="d">Monitoring as testing, dark launches, canaries, rollback.</span></span></a></li>
-    <li><a href="#ai"><span class="n">08</span><span><span class="t">AI in the loop</span><span class="d">Where AI helps, and why its output is a claim.</span></span></a></li>
-    <li><a href="#people"><span class="n">09</span><span><span class="t">People still test</span><span class="d">Exploratory work, dojos, and a story.</span></span></a></li>
-    <li><a href="#done"><span class="n">10</span><span><span class="t">Definition of Done</span><span class="d">A short, measurable checklist that mirrors shippable.</span></span></a></li>
-    <li><a href="#measure"><span class="n">11</span><span><span class="t">Measuring it</span><span class="d">DORA, quality metrics, and reading them right.</span></span></a></li>
+    <li class="tgrp">Who checks <span>People, then AI</span></li>
+    <li><a href="#people"><span class="n">08</span><span><span class="t">People still test</span><span class="d">Exploratory work, dojos, and a story.</span></span></a></li>
+    <li><a href="#ai"><span class="n">09</span><span><span class="t">AI in the loop</span><span class="d">Where AI helps, and why its output is a claim.</span></span></a></li>
+    <li class="tgrp">How you know <span>Measuring it</span></li>
+    <li><a href="#measure"><span class="n">10</span><span><span class="t">Measuring it</span><span class="d">DORA, quality metrics, and reading them right.</span></span></a></li>
+    <li class="tpart">The practices</li>
+    <li><a href="#done"><span class="n">11</span><span><span class="t">Definition of Done</span><span class="d">A short, measurable checklist that mirrors shippable.</span></span></a></li>
     <li><a href="#risk"><span class="n">12</span><span><span class="t">Defects, risk, debt</span><span class="d">Priorities, SLAs, and managing risk.</span></span></a></li>
     <li><a href="#radar"><span class="n">13</span><span><span class="t">Then and now</span><span class="d">The practice radar I used before AI, and where I'd put things today.</span></span></a></li>
     <li><a href="#foundations"><span class="n">14</span><span><span class="t">The foundations</span><span class="d">ISO 25010, 5055, 29119, TMMi, the planning hierarchy.</span></span></a></li>
@@ -782,18 +797,40 @@
       <li>Testing is a skilled development activity, like writing code and like reviews; it starts when we start planning the work.</li>
       <li>Testing shows the presence of mistakes; it can only reduce the number of unfound issues.</li>
       <li>Exhaustive testing is impossible.</li>
-      <li>The cost of an error grows as it moves through the delivery lifecycle, so testing must begin at the earliest stages. (<a href="#enough">Section 02</a> says where that curve has flattened, and where it hasn't.)</li>
+      <li>The cost of an error grows as it moves through the delivery lifecycle, so testing must begin at the earliest stages. (<a href="#enough">Section 03</a> says where that curve has flattened, and where it hasn't.)</li>
     </ul>
-    <h4>Two ways to get there</h4>
-    <p><b>Defect management</b> counts and manages defects, usually by severity. A defect is any failure to address end-user requirements: missed or misunderstood requirements, errors in design, logic, data relationships, timing, validity checks, and code. This is generally a <em>reactive</em> approach.</p>
-    <p><b>Software quality attributes</b> assesses conformance with a quality model such as <a href="https://www.iso.org/standard/35733.html" rel="noopener">ISO/IEC 25010</a> (<a href="#foundations">section 14</a>), and guides testing of both functional and non-functional attributes. This is generally a <em>proactive</em> approach. A good team does both.</p>
   </div>
 </section>
 
 <!-- 02 -->
-<section class="sec col" id="enough" aria-labelledby="h-enough">
+<section class="sec col" id="rules" aria-labelledby="h-rules">
   <div class="rule"></div>
   <span class="ghost" aria-hidden="true">02</span><p class="snum">02</p>
+  <h2 id="h-rules">Two rules I don't bend</h2>
+  <p class="slede">Everything else on this page is context and judgment. These two are not.</p>
+  <div class="laws">
+    <div class="law rv" data-g="Д">
+      <p class="ru">Доверяй, но проверяй</p>
+      <p class="tr">doveryai, no proveryai · trust, but verify</p>
+      <p>I test to see, not to confirm. A green check is a claim. A passing build is a claim. An AI agent saying "done, all tests pass" is a claim. I trust the people and the tools, and I still look at the output.</p>
+      <p>Verify the thing that matters: what is served, not what is committed; what the test asserted, not that it was green; the element the healed locator found, not that it found one.</p>
+    </div>
+    <div class="law rv" data-g="∑">
+      <p class="ru">If you didn't measure it, it didn't happen</p>
+      <p class="tr">no measurement · no proof · no learning</p>
+      <p>A management cliché says what gets measured gets done. And what does not get measured does not get done, because it is easy to ignore. A deploy without a metric, a fix without a before-and-after, a "faster" with no timing: none of it happened.</p>
+      <p>Measure outcomes, not activity. Read numbers to learn, never as a target: the moment a metric becomes a goal, it gets gamed.</p>
+    </div>
+  </div>
+  <div class="prose">
+    <p>The two work together. Measurement is how you verify at scale; verification is how you know the measurement isn't lying. <a href="#measure">Section 10</a> covers what to measure; <a href="#ai">section 09</a> covers what verification looks like when the code, the tests and the reviewer may all be AI.</p>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="sec col" id="enough" aria-labelledby="h-enough">
+  <div class="rule"></div>
+  <span class="ghost" aria-hidden="true">03</span><p class="snum">03</p>
   <h2 id="h-enough">How much is enough <span class="new">updated</span></h2>
   <p class="slede">If we can put a fix out in a few hours, how much quality do we need before we ship, and how much testing?</p>
   <div class="prose">
@@ -891,30 +928,7 @@
   </div>
 </section>
 
-<!-- 03 -->
-<section class="sec col" id="rules" aria-labelledby="h-rules">
-  <div class="rule"></div>
-  <span class="ghost" aria-hidden="true">03</span><p class="snum">03</p>
-  <h2 id="h-rules">Two rules I don't bend</h2>
-  <p class="slede">Everything else on this page is context and judgment. These two are not.</p>
-  <div class="laws">
-    <div class="law rv" data-g="Д">
-      <p class="ru">Доверяй, но проверяй</p>
-      <p class="tr">doveryai, no proveryai · trust, but verify</p>
-      <p>I test to see, not to confirm. A green check is a claim. A passing build is a claim. An AI agent saying "done, all tests pass" is a claim. I trust the people and the tools, and I still look at the output.</p>
-      <p>Verify the thing that matters: what is served, not what is committed; what the test asserted, not that it was green; the element the healed locator found, not that it found one.</p>
-    </div>
-    <div class="law rv" data-g="∑">
-      <p class="ru">If you didn't measure it, it didn't happen</p>
-      <p class="tr">no measurement · no proof · no learning</p>
-      <p>A management cliché says what gets measured gets done. And what does not get measured does not get done, because it is easy to ignore. A deploy without a metric, a fix without a before-and-after, a "faster" with no timing: none of it happened.</p>
-      <p>Measure outcomes, not activity. Read numbers to learn, never as a target: the moment a metric becomes a goal, it gets gamed.</p>
-    </div>
-  </div>
-  <div class="prose">
-    <p>The two work together. Measurement is how you verify at scale; verification is how you know the measurement isn't lying. <a href="#measure">Section 11</a> covers what to measure; <a href="#ai">section 08</a> covers what verification looks like when the code, the tests and the reviewer may all be AI.</p>
-  </div>
-</section>
+<div class="grp col"><h2 class="grp-h">Lower the odds</h2><p class="grp-s">Before merge</p></div>
 
 <!-- 04 -->
 <section class="sec col" id="objectives" aria-labelledby="h-obj">
@@ -1022,7 +1036,7 @@
       <div class="body prose">
         <p><b>Finds:</b> local data structure issues, boundary conditions, error-handling paths, variable issues, incorrect initialization, wrong expressions and arithmetic precedence.</p>
         <p><b>Value:</b> finds bugs early, when they're fastest to fix; testable code is usually well-decoupled and more maintainable; tests document the author's intent; refactoring becomes safe; it shows the implementation solved the problem.</p>
-        <p><b>Approach:</b> TDD. Add a test for each defect found. Run in CI. Watch coverage as a trend, not a target (<a href="#measure">section 11</a>).</p>
+        <p><b>Approach:</b> TDD. Add a test for each defect found. Run in CI. Watch coverage as a trend, not a target (<a href="#measure">section 10</a>).</p>
         <p><b>AI-assisted:</b> generate unit tests from code changes; find untested paths; flag flaky tests from run history. Generated tests should be checked against the requirement, not just the code: a test written from the code asserts what the code does, not what it should do.</p>
         <p>Teams with low unit coverage find more defects at higher layers, where they take far more effort to find and fix.</p>
       </div>
@@ -1317,6 +1331,8 @@ n't target them.</p>
   </div>
 </section>
 
+<div class="grp col"><h2 class="grp-h">Shrink the cost</h2><p class="grp-s">After deploy</p></div>
+
 <!-- 07 -->
 <section class="sec col" id="production" aria-labelledby="h-prod">
   <div class="rule"></div>
@@ -1333,7 +1349,7 @@ n't target them.</p>
   </figure>
   <div class="prose">
     <p>A test is a known input, an expected result, a check, and a report. A synthetic check that logs in every minute and places a test order is that same thing, run against production instead of a build. An SLO alert is an assertion: "p99 checkout latency under 800 ms" is an expected result. Real user monitoring is exploratory testing done by your customers, at a scale no team can match. You just have to be able to see what they found.</p>
-    <p>The difference is who pays when it fails. A failing test in CI costs a red build. A failing check in production costs some users a bad experience. Monitoring is testing where the test data is real people. That's an acceptable trade when reach is small and recovery is fast (<a href="#enough">section 02</a>). It is not acceptable for the one-way doors.</p>
+    <p>The difference is who pays when it fails. A failing test in CI costs a red build. A failing check in production costs some users a bad experience. Monitoring is testing where the test data is real people. That's an acceptable trade when reach is small and recovery is fast (<a href="#enough">section 03</a>). It is not acceptable for the one-way doors.</p>
 
     <h3>What makes monitoring count as testing</h3>
     <ul>
@@ -1390,7 +1406,7 @@ n't target them.</p>
       <g class="sl-axis"><text x="60" y="252">day 0</text><text x="500" y="252" text-anchor="middle">day 15</text><text x="940" y="252" text-anchor="end">day 30</text></g>
     </svg></div>
     <p class="scroll-hint">scroll the charts →</p>
-    <figcaption id="sl-cap">The SLI is measured continuously. The SLO turns it into a pass/fail assertion, which is what makes monitoring a test. The gap between 100% and the SLO is the error budget: the amount of failure the team has agreed is acceptable. While budget is left, ship. When it runs low, the same rule that let you move fast tells you to slow down. That is <a href="#enough">section 02</a>'s "how much is enough," written as a number.</figcaption>
+    <figcaption id="sl-cap">The SLI is measured continuously. The SLO turns it into a pass/fail assertion, which is what makes monitoring a test. The gap between 100% and the SLO is the error budget: the amount of failure the team has agreed is acceptable. While budget is left, ship. When it runs low, the same rule that let you move fast tells you to slow down. That is <a href="#enough">section 03</a>'s "how much is enough," written as a number.</figcaption>
   </figure>
   <div class="prose">
     <p>Three things go wrong most often. SLIs that measure the server instead of the user (CPU is not an SLI). SLOs set at 100%, which leaves no budget and makes every change a violation. And SLAs set equal to the SLO, so the first internal miss is already a contract breach. Measure what the user feels, set the target below perfect on purpose, and keep the promise looser than the target.</p>
@@ -1402,7 +1418,7 @@ n't target them.</p>
   <div class="dvr rv">
     <div class="dv-col dep"><p class="dk">Deploy</p><p class="dt">Pushing code artifacts to production with the flags off.</p><p class="dd">Nobody sees anything new. Smoke and synthetic checks confirm the deploy itself. Do it continuously, any time of day.</p><p class="dr">Risk: the deploy</p></div>
     <div class="dv-col rel"><p class="dk">Release</p><p class="dt">Knowingly turning a flag on, for a cohort, a percentage, or everyone.</p><p class="dd">A two-way door. If it misbehaves, the flag goes off in seconds, no deploy needed. Canary it, watch the SLOs, ramp.</p><p class="dr">Risk: the feature, reversible</p></div>
-    <div class="dv-col one"><p class="dk">Release with no switch</p><p class="dt">Something that goes live the moment it ships, with no way to turn it off.</p><p class="dd">Schema migrations, data backfills, emails sent, money moved, a partner integration cut over. A one-way door: deploy and release are the same act. <a href="#enough">Section 02</a>'s old bar applies.</p><p class="dr">Risk: all of it, at once</p></div>
+    <div class="dv-col one"><p class="dk">Release with no switch</p><p class="dt">Something that goes live the moment it ships, with no way to turn it off.</p><p class="dd">Schema migrations, data backfills, emails sent, money moved, a partner integration cut over. A one-way door: deploy and release are the same act. <a href="#enough">Section 03</a>'s old bar applies.</p><p class="dr">Risk: all of it, at once</p></div>
   </div>
   <div class="quotes rv">
     <blockquote><p>"You should deploy your code continuously throughout the day or week. But you should wrap any large, user-visible behavior changes behind a feature flag, so you can release that code by flipping a flag."</p><cite>Charity Majors · Deploys Are the Wrong Way to Change User Experience</cite></blockquote>
@@ -1429,10 +1445,63 @@ n't target them.</p>
   </div>
 </section>
 
+<div class="grp col"><h2 class="grp-h">Who checks</h2><p class="grp-s">People, then AI</p></div>
+
 <!-- 08 -->
-<section class="sec col" id="ai" aria-labelledby="h-ai">
+<section class="sec col" id="people" aria-labelledby="h-people">
   <div class="rule"></div>
   <span class="ghost" aria-hidden="true">08</span><p class="snum">08</p>
+  <h2 id="h-people">People still test</h2>
+  <p class="slede">Automation can't judge whether a flow makes sense. It can't test usability. Somebody has to write each automated flow and tell the machine what to do. So what's the deal with manual testing?</p>
+  <div class="prose">
+    <p>Back in 2000, automated tools pretty much sucked and cost $20k a seat or more; manual testing was "the way." In 2008 manual was still the main way, with a small set of automated tests augmenting. Around 2010 the real shift toward automation began, and by 2015 automated testing was heavily used, understood and trusted. Now there are very few manual testers around, and a lot of that skill set is gone. Teams need to deliver fast and automation is key to that, but there is still room for manual practice: exploratory work on edge cases, boundaries, error handling and usability. I'm not saying a team needs a dedicated person doing this full time. The team itself needs to be capable of effective manual testing in those areas, and product should look at the app from the customer's view too.</p>
+  </div>
+  <div class="prose">
+    <h3>Product, quality, engineering: the three together</h3>
+    <p>Most of what works in agile and modern delivery comes from the three working together, not in sequence. Each has a role. Product defines the thing; quality and engineering ask questions to help refine it. Engineering builds it, quality tests it, and product accepts it, and helps test it, as does engineering. That's the shape whether you call it the Three Amigos, a triad, or just a good team.</p>
+  </div>
+  <figure class="fig rv trifig" aria-labelledby="tri-cap">
+    <div class="tri-scroll"><div class="tri" role="table" aria-label="Who does what across delivery: product, quality and engineering"><div class="tri-h" role="row"><span role="columnheader"></span><span role="columnheader">Define</span><span role="columnheader">Refine</span><span role="columnheader">Build</span><span role="columnheader">Test</span><span role="columnheader">Accept</span><span role="columnheader">Run &amp; learn</span></div><div class="tri-r pr" role="row"><span class="tri-n" role="rowheader">Product</span><span class="tri-c lead" role="cell">Defines the thing: the problem, the outcome, acceptance criteria.</span><span class="tri-c" role="cell">Answers questions, trims scope, sharpens criteria.</span><span class="tri-c" role="cell">Stays reachable; reviews early builds.</span><span class="tri-c" role="cell">Helps test it from the customer&rsquo;s view.</span><span class="tri-c lead" role="cell">Accepts it, or doesn&rsquo;t. Decides when it releases.</span><span class="tri-c" role="cell">Reads outcomes and customer feedback.</span></div><div class="tri-r qa" role="row"><span class="tri-n" role="rowheader">Quality</span><span class="tri-c" role="cell">Asks questions: risks, edge cases, testability.</span><span class="tri-c" role="cell">Refines criteria; risk analysis, test strategy, Definition of Done. Estimates time to test.</span><span class="tri-c" role="cell">Pairs; builds test data and automation alongside the code.</span><span class="tri-c lead" role="cell">Tests it: exploratory, automated, non-functional. Reports what it found.</span><span class="tri-c" role="cell">Brings the evidence the acceptance decision rests on.</span><span class="tri-c" role="cell">Owns the quality system: monitors, escape analysis, metrics. Coaches the other two.</span></div><div class="tri-r en" role="row"><span class="tri-n" role="rowheader">Engineering</span><span class="tri-c" role="cell">Asks questions: feasibility, design, cost.</span><span class="tri-c" role="cell">Designs; estimates with testing included.</span><span class="tri-c lead" role="cell">Builds it, TDD, unit and integration tests.</span><span class="tri-c" role="cell">Helps test; fixes what testing finds.</span><span class="tri-c" role="cell">Demos it; makes it shippable.</span><span class="tri-c" role="cell">Runs it: on-call, rollback, fixes.</span></div></div></div>
+    <p class="scroll-hint">scroll the table →</p>
+    <figcaption id="tri-cap">Highlighted cells are where each role leads. Seems like quality gets off light, huh? Read across its row. Product leads at the two ends, engineering leads in the middle, and quality carries load in every column without ever handing off. Quality isn't a stage between build and accept; it runs the length of the line.</figcaption>
+  </figure>
+  <div class="note">
+    <p class="nh">Know how to use what you own</p>
+    <p>A product owner who can't run their own product, and perform and verify most of their own requirements, doesn't understand the product well enough to own it. Same goes for engineering: nobody should be so specialized they can't sign in, place an order, or walk the main flow of the thing they build. There are exceptions to every rule, but they should be rare and deliberate, not the default.</p>
+  </div>
+  <div class="prose">
+    <p>Here's how that works in practice.</p>
+  </div>
+  <div class="story prose">
+    <p class="beat">Developer 1</p>
+    <p>Developer 1 grabs a ticket. They code furiously to do the best they can. They use TDD to write unit tests, they create or expand the integration tests, and heck, they even write a system test that exercises the new functionality. AWESOME. Along the way they open the app to check navigation for that system test. Guess what: that's manual testing. Then, to be super thorough, they open the app and try some field validation: too many characters, numbers in a text field, navigating away and back. There are a lot of heuristics for testing new code. All tests pass, so they open a PR.</p>
+    <p>The PR build runs the new test and it fails. What the...? Locally they were using stubbed data; now it's real (test) data, and there's a mismatch. More manual effort: digging through logs, using the browser dev tools. Found it. Fix the code, rerun the tests, update the stubs, re-test the area by hand, paying attention to similar spots. Push. Green across the board.</p>
+    <p class="beat">Developer 2</p>
+    <p>During review, Developer 2 notices something that might be a problem, opens the app in test, and tries what they think will break. Bam. The new code has the same issue seen nine months ago in a similar function that needed hardening against certain data. More manual testing. They point Developer 1 at the old fix; the change is made, tests updated, a new stub and test added to prove it, more manual validation. Push another revision.</p>
+    <p class="beat">Product</p>
+    <p>At demo, product sees what was built, and something seems off. It works, but the new field's placement makes sense inside the component and not on the page; users could miss it until they submit and get an error. Product clicks around, pins down the usability issue, requests a change, then reopens the app and confirms the flow is better. All checks pass, merge to main. Feature in production about 45 minutes later.</p>
+  </div>
+  <div class="prose">
+    <p>Developer 1 did manual verification plus boundary and heuristic exploration, missed a defect, and fixed it quickly. Developer 2 reviewed the code and manually checked the area they expected trouble in, and found a real issue. Product sensed a problem they couldn't name and used manual exploration to find a usability issue. <b>This is the new world of manual testing:</b> techniques and heuristics for getting the result you need in the limited time you have.</p>
+    <p>Rewrite that story today and an AI agent is in it: drafting the tests, reviewing the PR, maybe flagging the nine-month-old pattern. It doesn't replace any of the three people. It gives each of them more to check.</p>
+
+    <h3>Exploratory testing and dojos</h3>
+    <p>As features grow, you test more, and every fixed bug needs to stay fixed. Automation makes that possible. Manual testing is still worth doing, focused on exploration, where the goal is to uncover non-obvious errors. Let computers do what they're good at, repetition, and reserve people for thinking and the most imaginative scenarios.</p>
+    <ul>
+      <li>Time-box a session to at most two hours, with a clear scope and a short, simple charter.</li>
+      <li>Run a dojo for significant new capability, with all impacted teams and stakeholders.</li>
+      <li>Do it after development testing is finished, when the feature needs an objective look.</li>
+      <li>Aim at the unknown knowns (issues you aren't aware of but would understand) and the unknown unknowns.</li>
+      <li>Buddy or pair testing: a developer has a buddy test the code before delivering it, for direct, immediate feedback.</li>
+    </ul>
+    <p>AI can draft charters and point at risky areas. People decide what's worth an afternoon.</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="sec col" id="ai" aria-labelledby="h-ai">
+  <div class="rule"></div>
+  <span class="ghost" aria-hidden="true">09</span><p class="snum">09</p>
   <h2 id="h-ai">AI in the loop <span class="new">updated</span></h2>
   <p class="slede">AI is augmenting both manual and automated testing. It speeds up test creation, improves coverage, detects anomalies, and helps with exploratory work.</p>
   <div class="prose">
@@ -1488,7 +1557,7 @@ n't target them.</p>
       <div class="am-g e"><p class="am-h">Exploratory &amp; upkeep</p><ul><li><span class="am-n">Risk-area suggestions</span><span class="am-d">Point exploratory testing at high-risk or untested areas.</span><span class="am-t after">check after</span></li><li><span class="am-n">Traceability and gaps</span><span class="am-d">Map requirements to tests and find the gaps.</span><span class="am-t after">check after</span></li><li><span class="am-n">Test maintenance</span><span class="am-d">Recommend obsolete or redundant tests for removal.</span><span class="am-t before">gate before</span></li></ul></div>
       <div class="am-g p"><p class="am-h">Production</p><ul><li><span class="am-n">Performance regression</span><span class="am-d">Detect performance regressions and predict scalability problems.</span><span class="am-t after">check after</span></li><li><span class="am-n">Log and result anomalies</span><span class="am-d">Detect anomalies in logs and test results.</span><span class="am-t after">check after</span></li></ul></div>
     </div>
-    <figcaption id="am-cap">The trust level follows the two rules in <a href="#rules">section 03</a> and the doors in <a href="#enough">section 02</a>: anything that changes what a test asserts, adds or removes tests, or sets a visual baseline gets a person's approval first. Everything else is checked after the fact. Tools named are examples (GitHub; Snyk; Applitools).</figcaption>
+    <figcaption id="am-cap">The trust level follows the two rules in <a href="#rules">section 02</a> and the doors in <a href="#enough">section 03</a>: anything that changes what a test asserts, adds or removes tests, or sets a visual baseline gets a person's approval first. Everything else is checked after the fact. Tools named are examples (GitHub; Snyk; Applitools).</figcaption>
   </figure>
   <div class="prose">
     <h3>What changes when AI writes the code</h3>
@@ -1505,61 +1574,52 @@ n't target them.</p>
   </div>
 </section>
 
-<!-- 09 -->
-<section class="sec col" id="people" aria-labelledby="h-people">
-  <div class="rule"></div>
-  <span class="ghost" aria-hidden="true">09</span><p class="snum">09</p>
-  <h2 id="h-people">People still test</h2>
-  <p class="slede">Automation can't judge whether a flow makes sense. It can't test usability. Somebody has to write each automated flow and tell the machine what to do. So what's the deal with manual testing?</p>
-  <div class="prose">
-    <p>Back in 2000, automated tools pretty much sucked and cost $20k a seat or more; manual testing was "the way." In 2008 manual was still the main way, with a small set of automated tests augmenting. Around 2010 the real shift toward automation began, and by 2015 automated testing was heavily used, understood and trusted. Now there are very few manual testers around, and a lot of that skill set is gone. Teams need to deliver fast and automation is key to that, but there is still room for manual practice: exploratory work on edge cases, boundaries, error handling and usability. I'm not saying a team needs a dedicated person doing this full time. The team itself needs to be capable of effective manual testing in those areas, and product should look at the app from the customer's view too.</p>
-  </div>
-  <div class="prose">
-    <h3>Product, quality, engineering: the three together</h3>
-    <p>Most of what works in agile and modern delivery comes from the three working together, not in sequence. Each has a role. Product defines the thing; quality and engineering ask questions to help refine it. Engineering builds it, quality tests it, and product accepts it, and helps test it, as does engineering. That's the shape whether you call it the Three Amigos, a triad, or just a good team.</p>
-  </div>
-  <figure class="fig rv trifig" aria-labelledby="tri-cap">
-    <div class="tri-scroll"><div class="tri" role="table" aria-label="Who does what across delivery: product, quality and engineering"><div class="tri-h" role="row"><span role="columnheader"></span><span role="columnheader">Define</span><span role="columnheader">Refine</span><span role="columnheader">Build</span><span role="columnheader">Test</span><span role="columnheader">Accept</span><span role="columnheader">Run &amp; learn</span></div><div class="tri-r pr" role="row"><span class="tri-n" role="rowheader">Product</span><span class="tri-c lead" role="cell">Defines the thing: the problem, the outcome, acceptance criteria.</span><span class="tri-c" role="cell">Answers questions, trims scope, sharpens criteria.</span><span class="tri-c" role="cell">Stays reachable; reviews early builds.</span><span class="tri-c" role="cell">Helps test it from the customer&rsquo;s view.</span><span class="tri-c lead" role="cell">Accepts it, or doesn&rsquo;t. Decides when it releases.</span><span class="tri-c" role="cell">Reads outcomes and customer feedback.</span></div><div class="tri-r qa" role="row"><span class="tri-n" role="rowheader">Quality</span><span class="tri-c" role="cell">Asks questions: risks, edge cases, testability.</span><span class="tri-c" role="cell">Refines criteria; risk analysis, test strategy, Definition of Done. Estimates time to test.</span><span class="tri-c" role="cell">Pairs; builds test data and automation alongside the code.</span><span class="tri-c lead" role="cell">Tests it: exploratory, automated, non-functional. Reports what it found.</span><span class="tri-c" role="cell">Brings the evidence the acceptance decision rests on.</span><span class="tri-c" role="cell">Owns the quality system: monitors, escape analysis, metrics. Coaches the other two.</span></div><div class="tri-r en" role="row"><span class="tri-n" role="rowheader">Engineering</span><span class="tri-c" role="cell">Asks questions: feasibility, design, cost.</span><span class="tri-c" role="cell">Designs; estimates with testing included.</span><span class="tri-c lead" role="cell">Builds it, TDD, unit and integration tests.</span><span class="tri-c" role="cell">Helps test; fixes what testing finds.</span><span class="tri-c" role="cell">Demos it; makes it shippable.</span><span class="tri-c" role="cell">Runs it: on-call, rollback, fixes.</span></div></div></div>
-    <p class="scroll-hint">scroll the table →</p>
-    <figcaption id="tri-cap">Highlighted cells are where each role leads. Seems like quality gets off light, huh? Read across its row. Product leads at the two ends, engineering leads in the middle, and quality carries load in every column without ever handing off. Quality isn't a stage between build and accept; it runs the length of the line.</figcaption>
-  </figure>
-  <div class="note">
-    <p class="nh">Know how to use what you own</p>
-    <p>A product owner who can't run their own product, and perform and verify most of their own requirements, doesn't understand the product well enough to own it. Same goes for engineering: nobody should be so specialized they can't sign in, place an order, or walk the main flow of the thing they build. There are exceptions to every rule, but they should be rare and deliberate, not the default.</p>
-  </div>
-  <div class="prose">
-    <p>Here's how that works in practice.</p>
-  </div>
-  <div class="story prose">
-    <p class="beat">Developer 1</p>
-    <p>Developer 1 grabs a ticket. They code furiously to do the best they can. They use TDD to write unit tests, they create or expand the integration tests, and heck, they even write a system test that exercises the new functionality. AWESOME. Along the way they open the app to check navigation for that system test. Guess what: that's manual testing. Then, to be super thorough, they open the app and try some field validation: too many characters, numbers in a text field, navigating away and back. There are a lot of heuristics for testing new code. All tests pass, so they open a PR.</p>
-    <p>The PR build runs the new test and it fails. What the...? Locally they were using stubbed data; now it's real (test) data, and there's a mismatch. More manual effort: digging through logs, using the browser dev tools. Found it. Fix the code, rerun the tests, update the stubs, re-test the area by hand, paying attention to similar spots. Push. Green across the board.</p>
-    <p class="beat">Developer 2</p>
-    <p>During review, Developer 2 notices something that might be a problem, opens the app in test, and tries what they think will break. Bam. The new code has the same issue seen nine months ago in a similar function that needed hardening against certain data. More manual testing. They point Developer 1 at the old fix; the change is made, tests updated, a new stub and test added to prove it, more manual validation. Push another revision.</p>
-    <p class="beat">Product</p>
-    <p>At demo, product sees what was built, and something seems off. It works, but the new field's placement makes sense inside the component and not on the page; users could miss it until they submit and get an error. Product clicks around, pins down the usability issue, requests a change, then reopens the app and confirms the flow is better. All checks pass, merge to main. Feature in production about 45 minutes later.</p>
-  </div>
-  <div class="prose">
-    <p>Developer 1 did manual verification plus boundary and heuristic exploration, missed a defect, and fixed it quickly. Developer 2 reviewed the code and manually checked the area they expected trouble in, and found a real issue. Product sensed a problem they couldn't name and used manual exploration to find a usability issue. <b>This is the new world of manual testing:</b> techniques and heuristics for getting the result you need in the limited time you have.</p>
-    <p>Rewrite that story today and an AI agent is in it: drafting the tests, reviewing the PR, maybe flagging the nine-month-old pattern. It doesn't replace any of the three people. It gives each of them more to check.</p>
+<div class="grp col"><h2 class="grp-h">How you know</h2><p class="grp-s">Measuring it</p></div>
 
-    <h3>Exploratory testing and dojos</h3>
-    <p>As features grow, you test more, and every fixed bug needs to stay fixed. Automation makes that possible. Manual testing is still worth doing, focused on exploration, where the goal is to uncover non-obvious errors. Let computers do what they're good at, repetition, and reserve people for thinking and the most imaginative scenarios.</p>
-    <ul>
-      <li>Time-box a session to at most two hours, with a clear scope and a short, simple charter.</li>
-      <li>Run a dojo for significant new capability, with all impacted teams and stakeholders.</li>
-      <li>Do it after development testing is finished, when the feature needs an objective look.</li>
-      <li>Aim at the unknown knowns (issues you aren't aware of but would understand) and the unknown unknowns.</li>
-      <li>Buddy or pair testing: a developer has a buddy test the code before delivering it, for direct, immediate feedback.</li>
-    </ul>
-    <p>AI can draft charters and point at risky areas. People decide what's worth an afternoon.</p>
+<!-- 10 -->
+<section class="sec col" id="measure" aria-labelledby="h-measure">
+  <div class="rule"></div>
+  <span class="ghost" aria-hidden="true">10</span><p class="snum">10</p>
+  <h2 id="h-measure">Measuring it</h2>
+  <p class="slede">A limited set of useful metrics, defined for balance, automated, and interpreted the same way by everyone.</p>
+  <div class="prose">
+    <p>Define metrics from specific objectives for the project, process or product. Define them for balance, because a single metric can give a misleading picture. Agree on their interpretation with all stakeholders before you discuss the numbers. Resist defining too many. Automate collection and reporting so measurement doesn't eat the time it's meant to save. And watch for variation that reflects something other than what you agreed it meant.</p>
+
+    <h3>Delivery: the DORA metrics</h3>
+    <p>DORA is the widely adopted standard for delivery performance, and several of its measures are direct measures of automation and quality.</p>
+  </div>
+  <div class="tw rv">
+    <table>
+      <thead><tr><th>Metric</th><th>What it is</th><th>What it says about quality</th></tr></thead>
+      <tbody>
+        <tr><td>Deployment frequency</td><td>How often you successfully release to production</td><td>Needs a robust, reliable pipeline and tests</td></tr>
+        <tr><td>Lead time for changes</td><td>Commit to production</td><td>Slow tests and manual gates show up here</td></tr>
+        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>Reflects testing, along with change size, design and release practice</td></tr>
+        <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from <a href="#enough">section 03</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>Quality and testing</h3>
+    <p><b>Product risks:</b> % of risks fully covered by passing tests; % with some or all tests failing; % not yet fully tested; coverage by risk category; risks found after the initial analysis.</p>
+    <p><b>Defects:</b> found vs. fixed over time; mean time between failures; breakdown by root cause, phase introduced/detected/removed, priority, rejected or duplicate, leaked to production, and defect age.</p>
+    <p><b>Coverage:</b> requirements and design, risk, environment and configuration, and code.</p>
+    <p><b>Operations:</b> MTTD (average time to detect) and MTTR (detection plus recovery), rollbacks, build success rate, test success rate, flaky rate.</p>
+    <p><b>Confidence:</b> often reported subjectively. Measure it through surveys, or use coverage as a surrogate, and say which you did.</p>
+    <p><b>Business:</b> map engineering metrics to business ones. A shorter time to restore means better customer satisfaction. Change failure rate, defect escape rate, usage, churn, conversion after a release, repeat purchase.</p>
+    <p><b>AI:</b> catches, misses, false positives, wrong heals, and cost per useful finding.</p>
+
+    <h3>A scorecard, not a target</h3>
+    <p>A quality scorecard measures software against KPIs and your quality policy, and shows pipeline strengths and weaknesses: commits, production deploys, builds, lead time, CI/CD adoption, change failure rate, rollbacks, MTTD, MTTR, build and test success rates. A balanced scorecard connects the dots between the work, the measures, and the goals. Read it to learn. The moment one number becomes the goal, it gets gamed, and you're measuring the gaming.</p>
   </div>
 </section>
 
-<!-- 10 -->
+<div class="part col"><p class="lbl">Part two &middot; The practices</p></div>
+
+<!-- 11 -->
 <section class="sec col" id="done" aria-labelledby="h-done">
   <div class="rule"></div>
-  <span class="ghost" aria-hidden="true">10</span><p class="snum">10</p>
+  <span class="ghost" aria-hidden="true">11</span><p class="snum">11</p>
   <h2 id="h-done">Definition of Done</h2>
   <p class="slede">Before we cut a single line of code, we need to decide what done means for our product.</p>
   <div class="prose">
@@ -1591,44 +1651,6 @@ n't target them.</p>
   </div>
 </section>
 
-<!-- 11 -->
-<section class="sec col" id="measure" aria-labelledby="h-measure">
-  <div class="rule"></div>
-  <span class="ghost" aria-hidden="true">11</span><p class="snum">11</p>
-  <h2 id="h-measure">Measuring it</h2>
-  <p class="slede">A limited set of useful metrics, defined for balance, automated, and interpreted the same way by everyone.</p>
-  <div class="prose">
-    <p>Define metrics from specific objectives for the project, process or product. Define them for balance, because a single metric can give a misleading picture. Agree on their interpretation with all stakeholders before you discuss the numbers. Resist defining too many. Automate collection and reporting so measurement doesn't eat the time it's meant to save. And watch for variation that reflects something other than what you agreed it meant.</p>
-
-    <h3>Delivery: the DORA metrics</h3>
-    <p>DORA is the widely adopted standard for delivery performance, and several of its measures are direct measures of automation and quality.</p>
-  </div>
-  <div class="tw rv">
-    <table>
-      <thead><tr><th>Metric</th><th>What it is</th><th>What it says about quality</th></tr></thead>
-      <tbody>
-        <tr><td>Deployment frequency</td><td>How often you successfully release to production</td><td>Needs a robust, reliable pipeline and tests</td></tr>
-        <tr><td>Lead time for changes</td><td>Commit to production</td><td>Slow tests and manual gates show up here</td></tr>
-        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>Reflects testing, along with change size, design and release practice</td></tr>
-        <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from <a href="#enough">section 02</a></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="prose">
-    <h3>Quality and testing</h3>
-    <p><b>Product risks:</b> % of risks fully covered by passing tests; % with some or all tests failing; % not yet fully tested; coverage by risk category; risks found after the initial analysis.</p>
-    <p><b>Defects:</b> found vs. fixed over time; mean time between failures; breakdown by root cause, phase introduced/detected/removed, priority, rejected or duplicate, leaked to production, and defect age.</p>
-    <p><b>Coverage:</b> requirements and design, risk, environment and configuration, and code.</p>
-    <p><b>Operations:</b> MTTD (average time to detect) and MTTR (detection plus recovery), rollbacks, build success rate, test success rate, flaky rate.</p>
-    <p><b>Confidence:</b> often reported subjectively. Measure it through surveys, or use coverage as a surrogate, and say which you did.</p>
-    <p><b>Business:</b> map engineering metrics to business ones. A shorter time to restore means better customer satisfaction. Change failure rate, defect escape rate, usage, churn, conversion after a release, repeat purchase.</p>
-    <p><b>AI:</b> catches, misses, false positives, wrong heals, and cost per useful finding.</p>
-
-    <h3>A scorecard, not a target</h3>
-    <p>A quality scorecard measures software against KPIs and your quality policy, and shows pipeline strengths and weaknesses: commits, production deploys, builds, lead time, CI/CD adoption, change failure rate, rollbacks, MTTD, MTTR, build and test success rates. A balanced scorecard connects the dots between the work, the measures, and the goals. Read it to learn. The moment one number becomes the goal, it gets gamed, and you're measuring the gaming.</p>
-  </div>
-</section>
-
 <!-- 12 -->
 <section class="sec col" id="risk" aria-labelledby="h-risk">
   <div class="rule"></div>
@@ -1636,6 +1658,9 @@ n't target them.</p>
   <h2 id="h-risk">Defects, risk, debt</h2>
   <p class="slede">Defects are inevitable. How many escape to production, and how long they stay, can be controlled.</p>
   <div class="prose">
+    <h3>Two ways to get there</h3>
+    <p><b>Defect management</b> counts and manages defects, usually by severity. A defect is any failure to address end-user requirements: missed or misunderstood requirements, errors in design, logic, data relationships, timing, validity checks, and code. This is generally a <em>reactive</em> approach.</p>
+    <p><b>Software quality attributes</b> assesses conformance with a quality model such as <a href="https://www.iso.org/standard/35733.html" rel="noopener">ISO/IEC 25010</a> (<a href="#foundations">section 14</a>), and guides testing of both functional and non-functional attributes. This is generally a <em>proactive</em> approach. A good team does both.</p>
     <h3>Defect management</h3>
     <p>Detect, triage, resolve, analyze. Capture the right data with each defect so the person fixing it, possibly on another team, can make an informed decision. Triage often; an unprioritized defect is a risk lying unattended. Give each priority an SLA you can actually meet, and track the ones past it.</p>
   </div>
