@@ -1504,6 +1504,7 @@
         <tr><td>Production smoke tests</td><td><span class="rt assess">Assess</span></td><td><span class="rt adopt">Adopt</span></td><td>Continuous synthetics on critical flows, with rollback on failure.</td></tr>
         <tr><td>Chaos testing</td><td><span class="rt trial">Trial</span></td><td><span class="rt trial">Trial</span></td><td>Worth it once observability is solid.</td></tr>
         <tr><td>Exploratory testing</td><td><span class="rt adopt">Adopt</span></td><td><span class="rt adopt">Adopt</span></td><td>More valuable as automation and AI absorb the repetitive checks.</td></tr>
+        <tr><td>Confidence engineering</td><td><span class="rt none">—</span></td><td><span class="rt assess">Assess</span></td><td>Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.</td></tr>
         <tr><td>Fixed unit coverage target</td><td><span class="rt adopt">Adopt</span> 90%</td><td><span class="rt hold">Hold</span></td><td>Generated tests make the number easy to hit and meaningless. Watch the trend.</td></tr>
         <tr><td>Feature flags, dark launch</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>Separates deploy from release; release becomes reversible.</td></tr>
         <tr><td>Automated rollback</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>The "time" lever. Rehearse it.</td></tr>
@@ -1544,7 +1545,7 @@
     <p>29119 is the software testing standard: concepts, processes, documentation and techniques. ISO 9000:2015 gives seven quality management principles: customer focus, leadership, engagement of people, process approach, improvement, evidence-based decision making, and relationship management. I didn't recommend aligning a delivery organization to an ISO standard; the overhead would need dedicated QA staff to be practical. They're the vocabulary and the checklist, not the process.</p>
 
     <h3>Quality assurance vs. quality control</h3>
-    <p><b>Quality assurance</b> is preventive and works on the process: process definition, training, audits, tool selection. <b>Quality control</b> is corrective and works on the product: reviews, testing, inspections. Testing sits in QC; a quality culture needs both.</p>
+    <p><b>Quality assurance</b> is preventive and works on the process: process definition, training, audits, tool selection. <b>Quality control</b> is corrective and works on the product: reviews, testing, inspections. Testers don't assure quality. We can't. We don't control the schedule, the budget, the staffing, the scope, or the development model (Bolton).</p>
 
     <h3>The planning hierarchy</h3>
   </div>
@@ -1606,6 +1607,7 @@
     <li>Majors, C. "Deploys Are the Wrong Way to Change User Experience." charity.wtf.</li>
     <li>LaunchDarkly. "Why decouple deployments from releases."</li>
     <li>Bezos, J. Amazon letter to shareholders, 2015 (Type 1 and Type 2 decisions).</li>
+    <li>Bolton, Michael. "Testers: Get Out of the Quality Assurance Business." <em>DevelopSense</em>, 3 May 2010, developsense.com/blog/2010/05/testers-get-out-of-the-quality-assurance-business/.</li>
     <li>Clarke, A. C. <em>Profiles of the Future</em> (the third law Keyes borrowed).</li>
   </ol>
 
@@ -1693,6 +1695,7 @@
     [0,'Continuous testing','A','A','Now runs past the deploy.'],
     [0,'Risk-based testing','S','A','Was Adopt for programs, Assess for everything else. It is how you decide what "enough" is for each change.'],
     [0,'Exploratory testing','A','A','More valuable as automation and AI absorb the repetitive checks.'],
+    [0,'Confidence engineering',null,'S','Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.'],
     [1,'Contract testing','T','A','More services and generated clients mean more contracts to break.'],
     [1,'Visual tests','T','T','AI diffing reduced the noise; still tune per app.'],
     [1,'Automated E2E as pipeline gate','H','H','Still flaky and slow; a few critical flows only.'],
