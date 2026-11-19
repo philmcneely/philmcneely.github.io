@@ -885,12 +885,6 @@
     </details>
   </div>
 
-  <div class="prose">
-    <h3>Build time and run time</h3>
-    <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static and unit.</p>
-    <p><b>Run-time tests</b> run against deployed artifacts. For UI apps: system, and end to end if required. For services: integration and system.</p>
-    <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
-  </div>
 
   <div class="tw rv">
     <table>
@@ -934,6 +928,11 @@
 
   <div class="col" style="padding:0">
     <div class="prose">
+      <h3>Build time and run time</h3>
+      <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static and unit.</p>
+      <p><b>Run-time tests</b> run against deployed artifacts. For UI apps: system, and end to end if required. For services: integration and system.</p>
+      <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
+
       <h3>The phases</h3>
       <p><b>Pre-coding.</b> The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</p>
       <p><b>Pre-commit.</b> Development on the local machine before pushing: pairing, local review, and every test that can run locally.</p>
