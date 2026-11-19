@@ -834,7 +834,7 @@
     <p>Testing's job, in that view, is to find problems, including the ones in our own perceptions that would lead to <em>unwarranted</em> confidence.</p>
     <p><b>Confidence engineering.</b> The newest framing, from the AI era. When AI makes producing software cheap, the bottleneck becomes deciding whether you have <em>justified</em> confidence to release it. Jason Arbon describes the people who own that decision as Confidence Engineers, who "supply context, judgment, and accountability" while AI produces much of the code and the evidence. The term is still emerging; a draft manifesto opens with "Perfect software isn't achievable, but confidence is."</p>
     <p>I don't see these as rivals. Bolton warns against unwarranted confidence; Arbon asks for justified confidence. Same idea from two sides. Testing finds the problems. Confidence engineering decides whether the confidence is earned. The process school decides how much of that has to be written down and signed, and that should scale with the risk. Where I sit on any given day depends on what I'm shipping, and that's the point of this whole page.</p>
-    <p>I've shipped both ways. At some companies, sign-off was the pipeline itself: the tests passed, and the change went to production. At others, every release needs a recorded sign-off before it deploys and a verification sign-off after. Both can deliver quality. The second costs more per release, and that cost falls fastest when the evidence behind each sign-off comes from tooling — test results, monitors, dashboards — instead of people re-checking by hand. Modern tooling doesn't remove the sign-off; it makes the sign-off faster and better informed.</p>
+    <p>I've shipped under a lot of release models. At one end, sign-off was the pipeline itself: the tests passed and the change went to production. At the other, every release needs a recorded sign-off before it deploys and a verification sign-off after, with plenty of variations in between. All of them can deliver quality. The heavier models cost more per release, and that cost falls fastest when the evidence behind each sign-off comes from tooling — test results, monitors, dashboards — instead of people re-checking by hand. Modern tooling doesn't remove the sign-off; it makes the sign-off faster and better informed.</p>
   </div>
 </section>
 
@@ -1421,7 +1421,7 @@
     </table>
   </div>
   <div class="prose">
-    <p>I first wrote that change failure rate was "a direct measure of how effective the testing is." That was the metrics-alignment world I came up in talking, where a delivery number maps straight onto a testing number. The context-driven school, Cem Kaner in particular, taught me to ask what a metric actually measures before trusting it. Change failure rate moves with testing, but also with how big the changes are, how the system is designed, and how releases are run. It's a good signal to investigate, not a scorecard for the testers.</p>
+    <p>I used to call change failure rate "a direct measure of how effective the testing is." That's how the metrics-alignment world I came up in talks: a delivery number maps straight onto a testing number. The context-driven school, Cem Kaner in particular, taught me to ask what a metric actually measures before trusting it. Change failure rate moves with testing, but also with how big the changes are, how the system is designed, and how releases are run. It's a good signal to investigate, not a scorecard for the testers.</p>
     <h3>Quality and testing</h3>
     <p><b>Product risks:</b> % of risks fully covered by passing tests; % with some or all tests failing; % not yet fully tested; coverage by risk category; risks found after the initial analysis.</p>
     <p><b>Defects:</b> found vs. fixed over time; mean time between failures; breakdown by root cause, phase introduced/detected/removed, priority, rejected or duplicate, leaked to production, and defect age.</p>
@@ -1553,6 +1553,7 @@
         <tr><td>Production smoke tests</td><td><span class="rt assess">Assess</span></td><td><span class="rt adopt">Adopt</span></td><td>Continuous synthetics on critical flows, with rollback on failure.</td></tr>
         <tr><td>Chaos testing</td><td><span class="rt trial">Trial</span></td><td><span class="rt trial">Trial</span></td><td>Worth it once observability is solid.</td></tr>
         <tr><td>Exploratory testing</td><td><span class="rt adopt">Adopt</span></td><td><span class="rt adopt">Adopt</span></td><td>More valuable as automation and AI absorb the repetitive checks.</td></tr>
+        <tr><td>Confidence engineering</td><td><span class="rt none">—</span></td><td><span class="rt assess">Assess</span></td><td>Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.</td></tr>
         <tr><td>Fixed unit coverage target</td><td><span class="rt adopt">Adopt</span> 90%</td><td><span class="rt hold">Hold</span></td><td>Generated tests make the number easy to hit and meaningless. Watch the trend.</td></tr>
         <tr><td>Feature flags, dark launch</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>Separates deploy from release; release becomes reversible.</td></tr>
         <tr><td>Automated rollback</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>The "time" lever. Rehearse it.</td></tr>
@@ -1749,6 +1750,7 @@
     [0,'Continuous testing','A','A','Now runs past the deploy.'],
     [0,'Risk-based testing','S','A','Was Adopt for programs, Assess for everything else. It is how you decide what "enough" is for each change.'],
     [0,'Exploratory testing','A','A','More valuable as automation and AI absorb the repetitive checks.'],
+    [0,'Confidence engineering',null,'S','Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.'],
     [1,'Contract testing','T','A','More services and generated clients mean more contracts to break.'],
     [1,'Visual tests','T','T','AI diffing reduced the noise; still tune per app.'],
     [1,'Automated E2E as pipeline gate','H','H','Still flaky and slow; a few critical flows only.'],
