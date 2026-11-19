@@ -529,6 +529,21 @@
   .js .trifig.rv{transform:translateX(-50%) translateY(18px)}
   .js .trifig.rv.in{transform:translateX(-50%)}
   @media (max-width:640px){.trifig .scroll-hint{display:block}.trifig{padding:14px 10px 10px}}
+  .spec{margin:30px 0 10px}
+  .spec-bar{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--moss),var(--brass) 45%,var(--ox) 75%,#7a2a20);margin:0 0 12px;box-shadow:0 0 18px rgba(192,85,69,.35)}
+  .spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .sp{border-radius:12px;padding:16px 16px 12px;border:1px solid rgba(236,228,213,.09);display:flex;flex-direction:column}
+  .sp.s1{background:linear-gradient(170deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 65%)}
+  .sp.s2{background:linear-gradient(170deg,rgba(201,163,91,.14),rgba(255,240,220,.01) 65%)}
+  .sp.s3{background:linear-gradient(170deg,rgba(192,85,69,.15),rgba(255,240,220,.01) 65%)}
+  .sp.s4{background:linear-gradient(170deg,rgba(122,42,32,.3),rgba(255,240,220,.01) 65%);border-color:rgba(192,85,69,.35)}
+  .sp .sk{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--paper);margin:0;line-height:1.2}
+  .sp .sw{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--paper-faint);margin:4px 0 10px}
+  .sp .sd{font-size:15px;line-height:1.45;color:var(--read-ink);margin:0 0 12px}
+  .sp .se{margin:auto 0 0;font:400 11.5px var(--mono);color:var(--paper-dim);border-top:1px solid rgba(236,228,213,.08);padding-top:8px}
+  .spec-ax{display:flex;justify-content:space-between;margin-top:10px;font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--paper-faint)}
+  @media (max-width:760px){.spec-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:420px){.spec-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -792,6 +807,34 @@
     <p class="nh">The precondition</p>
     <p>"We can just fix it forward" is a claim, and it needs evidence. If you've never measured how long it takes you to notice a problem and roll it back, you don't know that it's fast. Measure MTTD and MTTR (rule two), rehearse the rollback, and only then lower the pre-merge bar. Until then, fast iteration is a hope, not a control.</p>
   </div>
+
+  <div class="prose">
+    <h3>The bar also moves with regulation</h3>
+    <p>Reversibility isn't the only thing that sets the bar. Rigor follows context: the same team can rightly run a marketing page on flags and canaries and run a payments ledger on traceability and recorded release decisions. That's the context-driven school's own first principle, that the value of any practice depends on its context, and it's why I keep the older frameworks close even where I don't use all of them.</p>
+  </div>
+  <figure class="spec rv" aria-label="Rigor spectrum from consumer web to safety-critical">
+    <div class="spec-bar" aria-hidden="true"></div>
+    <div class="spec-grid">
+      <div class="sp s1"><p class="sk">Consumer web</p><p class="sw">Reversible changes</p><p class="sd">Flags, canaries, SLOs, AI-generated evidence. Confidence engineering lives here.</p><p class="se">A marketing page behind a flag</p></div>
+      <div class="sp s2"><p class="sk">Enterprise</p><p class="sw">Shared integrations</p><p class="sd">Risk-based testing, product, quality and engineering together, a shared E2E environment where the integrations need it.</p><p class="se">Most of this page</p></div>
+      <div class="sp s3"><p class="sk">Regulated</p><p class="sw">Finance, payments, privacy</p><p class="sd">Traceability, a recorded release decision with its evidence, audit trails, standards as the reference.</p><p class="se">A payments ledger</p></div>
+      <div class="sp s4"><p class="sk">Safety-critical</p><p class="sw">Medical, military, aviation</p><p class="sd">Formal traceability, ISO and IEC standards, independent verification. This is where the full frameworks earn their keep.</p><p class="se">An infusion pump</p></div>
+    </div>
+    <div class="spec-ax"><span>lighter, faster, reversible</span><span>heavier, formal, irreversible</span></div>
+  </figure>
+
+  <div class="prose">
+    <h3>Three traditions, one decision</h3>
+    <p>Three schools of thought sit along that spectrum, and I've worked in all three.</p>
+    <p><b>Process and standards.</b> The traditional school: defined processes, standards, maturity models, traceability, formal sign-off. It's the right default where failure isn't reversible, and it's the vocabulary regulated organizations audit against. Section 14 keeps it as the reference library.</p>
+    <p><b>Context-driven testing.</b> James Bach, Michael Bolton, Cem Kaner and the people around them taught me that testing is an investigation, that practices only have value in context, and that a tester's job is information, not assurance. Bolton put the line about confidence precisely:</p>
+  </div>
+  <blockquote class="rv"><p>"It is not the job of testing to build confidence in the product. … Confidence is a relationship between the product and some stakeholder."</p><cite>Michael Bolton · Very Short Blog Posts: Confidence, 2013</cite></blockquote>
+  <div class="prose">
+    <p>Testing's job, in that view, is to find problems, including the ones in our own perceptions that would lead to <em>unwarranted</em> confidence.</p>
+    <p><b>Confidence engineering.</b> The newest framing, from the AI era. When AI makes producing software cheap, the bottleneck becomes deciding whether you have <em>justified</em> confidence to release it. Jason Arbon describes the people who own that decision as Confidence Engineers, who "supply context, judgment, and accountability" while AI produces much of the code and the evidence. The term is still emerging; a draft manifesto opens with "Perfect software isn't achievable, but confidence is."</p>
+    <p>I don't see these as rivals. Bolton warns against unwarranted confidence; Arbon asks for justified confidence. Same idea from two sides. Testing finds the problems. Confidence engineering decides whether the confidence is earned. The process school decides how much of that has to be written down and signed, and that should scale with the risk. Where I sit on any given day depends on what I'm shipping, and that's the point of this whole page.</p>
+  </div>
 </section>
 
 <!-- 03 -->
@@ -831,7 +874,7 @@
       <li><b>Evaluate work products</b> such as requirements, design, user stories and code. Find ambiguity or contradictions before a developer picks the work up. Reviews, walk-throughs and static analysis happen before code integrates. This is <em>verification</em>.</li>
       <li><b>Verify that all specified requirements are met.</b> Know which tests cover which requirements, so gaps are visible. The old factory-QA version of this was a ponderous traceability matrix document. I want the lightweight version: tag tests with the story or acceptance criterion they cover, and let the pipeline report what has no test. AI can help find the gaps and draft the mapping, but the output stays small. I'm here to test and deliver quality, not to raise my page count.</li>
       <li><b>Validate that the product works as users and stakeholders expect.</b> This is <em>validation</em>: checking the product after development, manually or automated, opaque box or transparent box, and by stakeholders through acceptance testing.</li>
-      <li><b>Build confidence in the quality level.</b> Fewer defects, higher satisfaction, lower maintenance costs.</li>
+      <li><b>Show whether confidence in the quality level is justified.</b> Testing doesn't create confidence; it shows how much the evidence supports, and where it doesn't. Earned confidence is what lets a team ship, and it pays back in fewer escapes, happier customers and lower maintenance costs.</li>
       <li><b>Reduce the risk of insufficient quality.</b> Every project carries uncertainty: launch time, budget, technology, implementation, maintenance. Testing brings risk management in early so risks are found as soon as possible.</li>
       <li><b>Give stakeholders enough information to make informed decisions</b>, especially about the level of quality. Be transparent: coverage, what is missing, what went wrong, and the constraints and risks behind them.</li>
       <li><b>Find defects</b>, as early as possible. Unit testing finds them where they're cheapest; integration testing finds them at the touchpoints between systems; regression testing makes sure changes didn't add new ones; operational testing checks reliability and performance under maximum load.</li>
@@ -1526,7 +1569,7 @@
   <div class="rule"></div>
   <span class="ghost" aria-hidden="true">14</span><p class="snum">14</p>
   <h2 id="h-found">The foundations</h2>
-  <p class="slede">None of the speed above replaces the fundamentals. These are the standards and models underneath how I think about quality.</p>
+  <p class="slede">None of the speed above replaces the fundamentals. These are the standards and models underneath how I think about quality. Treat them as a reference library, not a rulebook. How things should be done varies with context; these describe one well-documented way, the one that fits best when failure can't be undone. You draw on more of them the further right you sit on the rigor spectrum in section 02.</p>
   <div class="prose">
     <h3>ISO/IEC 25010: eight product quality characteristics</h3>
     <p>The SQuaRE quality model. It superseded ISO 9126 and added security and compatibility. It gives consistent terms for specifying, measuring and evaluating quality, and a checklist to compare requirements against for completeness. There is also a quality-in-use model: effectiveness, efficiency, satisfaction, freedom from risk, and context coverage.</p>
@@ -1611,6 +1654,9 @@
     <li>TMMi Foundation. Test Maturity Model integration.</li>
     <li>W3C. Web Content Accessibility Guidelines.</li>
     <li>Keyes, E. "Sufficiently Advanced Monitoring is Indistinguishable from Testing." Google Test Automation Conference (GTAC), 2007.</li>
+    <li>Bolton, M. "Very Short Blog Posts (2): Confidence." DevelopSense, 2013.</li>
+    <li>Arbon, J. "Confidence in AI-Generated Software." 2026.</li>
+    <li>"Manifesto for Confidence Engineering." opentest.ai, living draft, 2026.</li>
     <li>Majors, C. "Deploys Are the Wrong Way to Change User Experience." charity.wtf.</li>
     <li>LaunchDarkly. "Why decouple deployments from releases."</li>
     <li>Bezos, J. Amazon letter to shareholders, 2015 (Type 1 and Type 2 decisions).</li>
