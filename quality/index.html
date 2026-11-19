@@ -439,6 +439,26 @@
   .m-only{display:none!important}
   @media (max-width:640px){.m-only{display:flex!important}.d-wide2{display:none}}
   @media (max-width:640px){.ghost{font-size:110px;top:-20px}.calc{padding:18px 14px}.tele{padding:14px 10px 10px}}
+  .pfull{font-size:14.5px;line-height:1.5;color:var(--read-ink);margin-top:10px}
+  .js .pfull{display:none}
+  .pmore{display:none;margin-top:auto;align-self:flex-start;font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ox);background:transparent;border:0;border-top:1px solid rgba(236,228,213,.08);padding:12px 0 2px;width:100%;text-align:left;cursor:pointer}
+  .js .pmore{display:block}
+  .pmore:hover{color:var(--paper)}
+  .pmore:focus-visible{outline:2px solid var(--ox);outline-offset:2px}
+  .pmore[aria-expanded=true] span{display:inline-block;transform:rotate(180deg)}
+  .phase ul{margin-bottom:10px!important}
+  .phase.sel{border-color:var(--ox)!important;box-shadow:0 0 0 1px var(--ox),0 18px 40px -20px rgba(192,85,69,.55)}
+  .phase-panel{grid-column:1 / -1;border-radius:12px;padding:20px 24px;background:linear-gradient(160deg,rgba(192,85,69,.14),rgba(255,240,220,.02) 55%);
+    border:1px solid rgba(192,85,69,.4);animation:pp .35s cubic-bezier(.2,.7,.2,1)}
+  @keyframes pp{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.phase-panel{animation:none}}
+  .phase-panel .ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 8px}
+  .phase-panel .pt2{font-family:var(--serif);font-weight:600;font-size:24px;color:var(--paper)}
+  .phase-panel .pt2 i{font:500 12px var(--mono);font-style:normal;color:var(--ox);margin-right:10px;letter-spacing:.1em}
+  .phase-panel p{margin:0;font-size:18px;line-height:1.65;color:var(--read-ink);max-width:70ch}
+  .phase-panel .px{font:500 18px var(--mono);color:var(--paper-dim);background:none;border:0;cursor:pointer;padding:0 4px}
+  .phase-panel .px:hover{color:var(--ox)}
 </style>
 </head>
 <body>
@@ -916,12 +936,13 @@
       <div class="band cd">CD · continuous delivery</div>
       <div class="band co">CO · continuous operations</div>
       <div class="rail" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="split"><span>BUILD TIME │ RUN TIME</span></span><span class="pk"></span><span class="pk b"></span></div>
-      <div class="phase"><span class="pn">1</span><span class="pt">Pre-coding</span><ul><li>Story &amp; AC review</li><li>Risk analysis</li><li>Test strategy, DoD</li><li class="ai">ambiguity check</li></ul></div>
-      <div class="phase"><span class="pn">2</span><span class="pt">Pre-commit</span><ul><li>Static, unit, integration</li><li>TDD, pairing</li><li>Local exploratory</li><li class="ai">review, test gen</li></ul></div>
-      <div class="phase"><span class="pn">3</span><span class="pt">Pre-merge</span><ul><li>All build-time layers</li><li>Deploy to test env</li><li>System tests, doubles</li><li class="ai">impact analysis</li></ul></div>
-      <div class="phase"><span class="pn">4</span><span class="pt">Post-merge</span><ul><li>System, real deps</li><li>Contract, perf, a11y</li><li>Deployable artifact</li><li class="ai">failure triage</li></ul></div>
-      <div class="phase"><span class="pn">5</span><span class="pt">Prod deploy</span><ul><li>Smoke / synthetics</li><li>Flag off (dark)</li><li>Rollback on fail</li><li class="ai">anomaly detection</li></ul></div>
-      <div class="phase"><span class="pn">6</span><span class="pt">Go-live</span><ul><li>Flag on, canary</li><li>SLOs, RUM</li><li>Ramp or roll back</li><li class="ai">journey analysis</li></ul></div>
+      <div class="phase"><span class="pn">1</span><span class="pt">Pre-coding</span><ul><li>Story &amp; AC review</li><li>Risk analysis</li><li>Test strategy, DoD</li><li class="ai">ambiguity check</li></ul><div class="pfull">The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
+      <div class="phase"><span class="pn">2</span><span class="pt">Pre-commit</span><ul><li>Static, unit, integration</li><li>TDD, pairing</li><li>Local exploratory</li><li class="ai">review, test gen</li></ul><div class="pfull">Development on the local machine before pushing: pairing, local review, and every test that can run locally.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
+      <div class="phase"><span class="pn">3</span><span class="pt">Pre-merge</span><ul><li>All build-time layers</li><li>Deploy to test env</li><li>System tests, doubles</li><li class="ai">impact analysis</li></ul><div class="pfull">Code is pushed, CI runs, and a deployed artifact lands in the test environment. The test environment can be physical or ephemeral; it needs to be capable of allowing the tests to run.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
+      <div class="phase"><span class="pn">4</span><span class="pt">Post-merge</span><ul><li>System, real deps</li><li>Contract, perf, a11y</li><li>Deployable artifact</li><li class="ai">failure triage</li></ul><div class="pfull">Reviewed and merged; the post-merge CI steps lead to a production-deployable artifact.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
+      <div class="phase"><span class="pn">5</span><span class="pt">Prod deploy</span><ul><li>Smoke / synthetics</li><li>Flag off (dark)</li><li>Rollback on fail</li><li class="ai">anomaly detection</li></ul><div class="pfull">The artifact is deployed to production. With flags, deploy is not release: the code is in production, the feature is still off, and smoke and synthetic checks confirm the deploy itself.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
+      <div class="phase"><span class="pn">6</span><span class="pt">Go-live</span><ul><li>Flag on, canary</li><li>SLOs, RUM</li><li>Ramp or roll back</li><li class="ai">journey analysis</li></ul><div class="pfull">The artifact is live and taking traffic, or the feature flag is enabled. Canary first, watch the SLOs, then ramp to everyone or roll back.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
+      <div class="phase-panel" id="phase-panel" role="region" aria-live="polite" hidden></div>
     </div>
     <figcaption id="track-cap">Go-live can mean a deploy taking traffic or a feature flag being turned on. Separating the two is what makes dark launching possible. Lines marked AI are where AI assistance pays off most in that phase.</figcaption>
   </figure>
@@ -934,14 +955,6 @@
       <p><b>Run-time tests</b> run against deployed artifacts. For UI apps: system, and end to end if required. For services: integration and system.</p>
       <p>For E2E, deploying to a test environment is basically required. But I've also worked places where we could spin up an ephemeral full stack and run the tests without deploying. In a modern world that's actually preferable: ephemeral stacks with test data, run per pipeline. Enterprises with large data sets and many external integrations still need an E2E environment to deploy to. Those integration points and data sets may be too large, complicated or costly to spin up per pipeline.</p>
       <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
-
-      <h3>The phases</h3>
-      <p><b>Pre-coding.</b> The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</p>
-      <p><b>Pre-commit.</b> Development on the local machine before pushing: pairing, local review, and every test that can run locally.</p>
-      <p><b>Pre-merge to main.</b> Code is pushed, CI runs, and a deployed artifact lands in the test environment. The test environment can be physical or ephemeral; it needs to be capable of allowing the tests to run.</p>
-      <p><b>Post-merge to main.</b> Reviewed and merged; the post-merge CI steps lead to a production-deployable artifact.</p>
-      <p><b>Production deploy.</b> The artifact is deployed to production.</p>
-      <p><b>Production go-live.</b> The artifact is live and taking traffic, or the feature flag is enabled.</p>
 
       <h3>Continuous integration</h3>
       <blockquote><p>"Continuous Integration does not get rid of bugs, but it does make them dramatically easier to find and remove."</p><cite>Martin Fowler</cite></blockquote>
@@ -1532,6 +1545,27 @@
   });
   D.forEach(function(d,i){var li=document.createElement('li');li.innerHTML='<b>'+(i+1)+'</b>';li.appendChild(document.createTextNode(d[1]));
     li.tabIndex=0;li.addEventListener('click',function(){pick(i)});li.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(i)}});list.appendChild(li)});
+})();
+
+/* pipeline phase details */
+(function(){
+  var panel=document.getElementById('phase-panel');if(!panel)return;
+  var track=panel.parentNode,cards=[].slice.call(track.querySelectorAll('.phase')),open=-1;
+  function close(){panel.hidden=true;cards.forEach(function(c){c.classList.remove('sel');c.querySelector('.pmore').setAttribute('aria-expanded','false')});open=-1}
+  cards.forEach(function(c,i){
+    var b=c.querySelector('.pmore');
+    b.addEventListener('click',function(){
+      if(open===i){close();b.focus();return}
+      close();open=i;c.classList.add('sel');b.setAttribute('aria-expanded','true');
+      panel.innerHTML='<div class="ph"><span class="pt2"><i>'+(i+1)+'</i></span><button type="button" class="px" aria-label="Close">×</button></div><p></p>';
+      panel.querySelector('.pt2').appendChild(document.createTextNode(c.querySelector('.pt').textContent));
+      panel.querySelector('p').innerHTML=c.querySelector('.pfull').innerHTML;
+      panel.querySelector('.px').addEventListener('click',function(){close();b.focus()});
+      var cols=getComputedStyle(track).gridTemplateColumns.split(' ').filter(Boolean).length||1,last=cards[Math.min(Math.ceil((i+1)/cols)*cols,cards.length)-1];
+      track.insertBefore(panel,last.nextSibling);panel.hidden=false;
+    });
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&open>-1){var b=cards[open].querySelector('.pmore');close();b.focus()}});
 })();
 </script>
 </body>
