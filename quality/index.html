@@ -529,6 +529,82 @@
   .js .trifig.rv{transform:translateX(-50%) translateY(18px)}
   .js .trifig.rv.in{transform:translateX(-50%)}
   @media (max-width:640px){.trifig .scroll-hint{display:block}.trifig{padding:14px 10px 10px}}
+  /* your diagrams, redrawn */
+  .dxfig{padding:22px;width:min(1080px,calc(100vw - 32px));margin-left:50%;transform:translateX(-50%)}
+  .js .dxfig.rv{transform:translateX(-50%) translateY(18px)}
+  .js .dxfig.rv.in{transform:translateX(-50%)}
+  .dx-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .dx-inner{min-width:880px}
+  .dxfig .scroll-hint{display:none}
+  @media (max-width:900px){.dxfig .scroll-hint{display:block}}
+  .dx-row{display:grid;grid-template-columns:96px 1fr;gap:12px;margin-bottom:14px}
+  .dx-rl{font:500 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);display:flex;align-items:center}
+  .dx-zones{display:grid;gap:10px}
+  .dx-zone{border-radius:12px;padding:12px 14px 14px}
+  .dx-zone.bt{background:rgba(236,228,213,.05);border:1px solid rgba(236,228,213,.14)}
+  .dx-zone.rt{background:rgba(157,134,184,.12);border:1px solid rgba(157,134,184,.4)}
+  .dx-zh{font:500 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);margin:0 0 10px;text-align:center}
+  .dx-zone.rt .dx-zh{color:#c9b8de}
+  .dx-steps{display:flex;align-items:flex-start;gap:6px}
+  .dx-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+  .dx-box,.dx-col{width:100%;text-align:center;font:600 14.5px var(--serif);padding:9px 6px;border-radius:8px;border:1px solid;color:var(--paper)}
+  .dx-box.s,.dx-col.s{background:rgba(143,163,122,.2);border-color:rgba(143,163,122,.6)}
+  .dx-box.u,.dx-col.u{background:rgba(201,163,91,.18);border-color:rgba(201,163,91,.6)}
+  .dx-box.i,.dx-col.i{background:rgba(209,140,170,.16);border-color:rgba(209,140,170,.55)}
+  .dx-box.c{background:rgba(110,170,170,.16);border-color:rgba(110,170,170,.55)}
+  .dx-box.y,.dx-col.y{background:rgba(120,160,215,.18);border-color:rgba(120,160,215,.6)}
+  .dx-box.e{background:rgba(192,85,69,.2);border-color:rgba(192,85,69,.6)}
+  .dx-arr{color:var(--paper-faint);font:500 16px var(--mono);padding-top:8px}
+  .dx-dn{color:var(--paper-faint);font-size:13px;line-height:1}
+  .dx-chip{font:400 11px/1.35 var(--mono);text-align:center;border-radius:6px;padding:5px 7px;width:100%}
+  .dx-chip.d{background:rgba(192,85,69,.12);border:1px solid rgba(192,85,69,.55);color:#e9a596}
+  .dx-chip.r{background:rgba(236,228,213,.06);border:1px dashed rgba(236,228,213,.35);color:var(--read-ink)}
+  .dx-chip.tall{padding:14px 7px}
+  .dx-chips{display:flex;flex-direction:column;gap:5px;width:100%}
+  .dx-xs{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  .dx-h{font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:6px;border-radius:6px}
+  .dx-h.hb{grid-column:1/4;background:rgba(236,228,213,.06);border:1px solid rgba(236,228,213,.16);color:var(--paper-dim)}
+  .dx-h.hr{grid-column:4/7;background:rgba(157,134,184,.14);border:1px solid rgba(157,134,184,.45);color:#c9b8de}
+  .dx-h.he{grid-column:5/7;background:rgba(192,85,69,.16);border:1px solid rgba(192,85,69,.5);color:#e9a596}
+  .dx-col{font-size:13.5px;padding:7px 4px}
+  .dx-aut{grid-column:1/6;background:linear-gradient(90deg,#3d63b8,#4f7ad6);color:#fff;text-align:center;font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:12px;border-radius:8px;box-shadow:0 0 24px rgba(79,122,214,.35)}
+  .dx-other{background:rgba(157,134,184,.22);border:1px solid rgba(157,134,184,.6);color:#e6dcf3;text-align:center;font:500 11px var(--mono);padding:8px 4px;border-radius:8px;box-shadow:4px 4px 0 -1px rgba(157,134,184,.35),8px 8px 0 -2px rgba(157,134,184,.2)}
+  .dx-cell{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .dx-tm{display:grid;grid-template-columns:120px repeat(3,1fr) 1.1fr;gap:6px}
+  .dx-th{font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:7px 4px;border-radius:6px}
+  .dx-th.tr{background:rgba(143,163,122,.18);border:1px solid rgba(143,163,122,.5);color:var(--moss)}
+  .dx-th.tl{background:rgba(110,170,170,.16);border:1px solid rgba(110,170,170,.5);color:#8fc4c4}
+  .dx-th.op{background:rgba(120,160,215,.18);border:1px solid rgba(120,160,215,.55);color:#9fbde8}
+  .dx-th.st{background:rgba(236,228,213,.06);border:1px solid rgba(236,228,213,.2);color:var(--paper-dim)}
+  .dx-th.dy{grid-column:2/5;background:rgba(236,228,213,.04);border:1px solid rgba(236,228,213,.12);color:var(--paper-dim)}
+  .dx-rlb{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;padding:8px;border-radius:6px;line-height:1.3}
+  .dx-rlb.bt{background:rgba(236,228,213,.06);color:var(--paper-dim)}
+  .dx-rlb.fn{background:rgba(160,80,120,.2);color:#e0a6c3}
+  .dx-rlb.nf{background:rgba(190,120,160,.14);color:#e0b6cc}
+  .dx-t{font:500 13px var(--serif);text-align:center;padding:8px 6px;border-radius:7px;border:1px solid rgba(236,228,213,.14);background:rgba(236,228,213,.04);color:var(--paper)}
+  .dx-t.o{background:rgba(120,160,215,.2);border-color:rgba(120,160,215,.5)}
+  .dx-t.g{background:rgba(143,163,122,.2);border-color:rgba(143,163,122,.5)}
+  .dx-v{display:flex;flex-direction:column;gap:6px}
+  /* objectives as cards */
+  .prose ol.objs{list-style:none;padding:0;margin:26px 0 22px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;counter-reset:obj}
+  .prose ol.objs li{counter-increment:obj;margin:0;padding:16px 16px 14px;border-radius:12px;border:1px solid rgba(236,228,213,.09);
+    background:linear-gradient(170deg,rgba(255,240,220,.05),rgba(255,240,220,.01));font-size:15.5px;line-height:1.5;position:relative}
+  .prose ol.objs li::before{content:counter(obj,decimal-leading-zero);display:block;font:500 11px var(--mono);letter-spacing:.14em;color:var(--ox);margin-bottom:6px}
+  .prose ol.objs li b{display:block;font-family:var(--serif);font-weight:600;font-size:17px;line-height:1.3;color:var(--paper);margin-bottom:6px}
+  .prose ol.objs li.key{border-color:rgba(192,85,69,.6);background:linear-gradient(170deg,rgba(192,85,69,.2),rgba(255,240,220,.01));box-shadow:0 18px 40px -24px rgba(192,85,69,.6)}
+  @media (max-width:860px){.prose ol.objs{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.prose ol.objs{grid-template-columns:1fr}}
+  .refs.wc{list-style:none;padding-left:0}
+  .refs.wc li{padding-left:2em;text-indent:-2em}
+  .is-col.ct1,.is-col.sl{background:linear-gradient(160deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 60%);border-color:rgba(143,163,122,.35)}
+  .is-col.ct2,.is-col.sr{background:linear-gradient(160deg,rgba(192,85,69,.14),rgba(255,240,220,.01) 60%);border-color:rgba(192,85,69,.35)}
+  .is-col.co1,.is-col.co2{background:linear-gradient(160deg,rgba(236,228,213,.1),rgba(255,240,220,.01) 60%);border-color:rgba(236,228,213,.25)}
+  .is-col.ct1 .ih,.is-col.sl .ih{color:var(--moss)}.is-col.ct2 .ih,.is-col.sr .ih{color:var(--ox)}.is-col.co1 .ih,.is-col.co2 .ih{color:var(--paper)}
+  .is-col.ct1 li::before,.is-col.ct2 li::before,.is-col.co1 li::before,.is-col.co2 li::before,.is-col.sl li::before,.is-col.sr li::before{content:"→";color:var(--paper-dim)}
+  .refs li{overflow-wrap:anywhere}
+  .prose p.def{border-top:1px solid rgba(236,228,213,.08);padding-top:16px;margin-top:18px}
+  .prose p.def>b:first-child{display:block;font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.25;color:var(--paper);margin-bottom:6px;letter-spacing:-.005em}
+  .prose p.def>b:first-child::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--ox);margin-right:10px;vertical-align:middle;position:relative;top:-2px}
 </style>
 </head>
 <body>
@@ -685,11 +761,11 @@
       <li>Testing is a skilled development activity, like writing code and like reviews; it starts when we start planning the work.</li>
       <li>Testing shows the presence of mistakes; it can only reduce the number of unfound issues.</li>
       <li>Exhaustive testing is impossible.</li>
-      <li>The cost of an error grows as it moves through the delivery lifecycle, so testing must begin at the earliest stages. (Section 02 says where that curve has flattened, and where it hasn't.)</li>
+      <li>The cost of an error grows as it moves through the delivery lifecycle, so testing must begin at the earliest stages. (<a href="#enough">Section 02</a> says where that curve has flattened, and where it hasn't.)</li>
     </ul>
     <h4>Two ways to get there</h4>
     <p><b>Defect management</b> counts and manages defects, usually by severity. A defect is any failure to address end-user requirements: missed or misunderstood requirements, errors in design, logic, data relationships, timing, validity checks, and code. This is generally a <em>reactive</em> approach.</p>
-    <p><b>Software quality attributes</b> assesses conformance with a quality model such as ISO/IEC 25010 (section 14), and guides testing of both functional and non-functional attributes. This is generally a <em>proactive</em> approach. A good team does both.</p>
+    <p><b>Software quality attributes</b> assesses conformance with a quality model such as ISO/IEC 25010 (<a href="#foundations">section 14</a>), and guides testing of both functional and non-functional attributes. This is generally a <em>proactive</em> approach. A good team does both.</p>
   </div>
 </section>
 
@@ -815,7 +891,7 @@
     </div>
   </div>
   <div class="prose">
-    <p>The two work together. Measurement is how you verify at scale; verification is how you know the measurement isn't lying. Section 11 covers what to measure; section 08 covers what verification looks like when the code, the tests and the reviewer may all be AI.</p>
+    <p>The two work together. Measurement is how you verify at scale; verification is how you know the measurement isn't lying. <a href="#measure">Section 11</a> covers what to measure; <a href="#ai">section 08</a> covers what verification looks like when the code, the tests and the reviewer may all be AI.</p>
   </div>
 </section>
 
@@ -826,14 +902,14 @@
   <h2 id="h-obj">What testing is for</h2>
   <p class="slede">Testing has nine objectives. At high delivery speed, number seven does most of the work.</p>
   <div class="prose">
-    <ol>
+    <ol class="objs">
       <li><b>Prevent defects.</b> Avoid mistakes in the early stages. Prevention means root cause analysis of past defects, then specific measures so those types don't happen again.</li>
       <li><b>Evaluate work products</b> such as requirements, design, user stories and code. Find ambiguity or contradictions before a developer picks the work up. Reviews, walk-throughs and static analysis happen before code integrates. This is <em>verification</em>.</li>
       <li><b>Verify that all specified requirements are met.</b> Ideally with a requirement traceability matrix, but a lightweight one, as lightweight as you can use. We're here to test and deliver quality, not up our page count.</li>
       <li><b>Validate that the product works as users and stakeholders expect.</b> This is <em>validation</em>: checking the product after development, manually or automated, opaque box or transparent box, and by stakeholders through acceptance testing.</li>
       <li><b>Build confidence in the quality level.</b> Fewer defects, higher satisfaction, lower maintenance costs.</li>
       <li><b>Reduce the risk of insufficient quality.</b> Every project carries uncertainty: launch time, budget, technology, implementation, maintenance. Testing brings risk management in early so risks are found as soon as possible.</li>
-      <li><b>Give stakeholders enough information to make informed decisions</b>, especially about the level of quality. Be transparent: coverage, what is missing, what went wrong, and the constraints and risks behind them.</li>
+      <li class="key"><b>Give stakeholders enough information to make informed decisions</b>, especially about the level of quality. Be transparent: coverage, what is missing, what went wrong, and the constraints and risks behind them.</li>
       <li><b>Find defects</b>, as early as possible. Unit testing finds them where they're cheapest; integration testing finds them at the touchpoints between systems; regression testing makes sure changes didn't add new ones; operational testing checks reliability and performance under maximum load.</li>
       <li><b>Comply with contractual, legal and regulatory requirements</b>, and verify compliance. Accessibility law differs by country; the EU has strict rules on handling personal data. Failure here will fail the product no matter how defect-free it has been working. ISO/IEC/IEEE 29119 covers the testing standards themselves.</li>
     </ol>
@@ -897,7 +973,7 @@
       <div class="tier stat"><span class="tn">Static</span><span class="ts">every keystroke</span></div>
     </div>
     <div class="trophy-side m-only"><span>build time ↓ static · unit · integration</span><span>run time ↑ system · e2e</span></div>
-    <figcaption id="trophy-cap">Width is relative effort. "Write tests. Not too many. Mostly integration." Chaos/resilience, accessibility and performance cut across the layers.</figcaption>
+    <figcaption id="trophy-cap">Width is relative effort. "Write tests. Not too many. Mostly integration." (Dodds) Chaos/resilience, accessibility and performance cut across the layers.</figcaption>
   </figure>
 
   <div class="prose">
@@ -925,7 +1001,7 @@
       <div class="body prose">
         <p><b>Finds:</b> local data structure issues, boundary conditions, error-handling paths, variable issues, incorrect initialization, wrong expressions and arithmetic precedence.</p>
         <p><b>Value:</b> finds bugs early, when they're fastest to fix; testable code is usually well-decoupled and more maintainable; tests document the author's intent; refactoring becomes safe; it shows the implementation solved the problem.</p>
-        <p><b>Approach:</b> TDD. Add a test for each defect found. Run in CI. Watch coverage as a trend, not a target (section 11).</p>
+        <p><b>Approach:</b> TDD. Add a test for each defect found. Run in CI. Watch coverage as a trend, not a target (<a href="#measure">section 11</a>).</p>
         <p><b>AI-assisted:</b> generate unit tests from code changes; find untested paths; flag flaky tests from run history. Generated tests should be checked against the requirement, not just the code: a test written from the code asserts what the code does, not what it should do.</p>
         <p>Teams with low unit coverage find more defects at higher layers, where they take far more effort to find and fix.</p>
       </div>
@@ -988,6 +1064,22 @@
       </tbody>
     </table>
   </div>
+
+  <figure class="fig rv dxfig" aria-labelledby="dx3-cap">
+   <div class="dx-scroll"><div class="dx-inner"><div class="dx-tm">
+    <div></div><div class="dx-th dy">Dynamic</div><div class="dx-th st">Static</div>
+    <div></div><div class="dx-th tr">Transparent box</div><div class="dx-th tl">Translucent box</div><div class="dx-th op">Opaque box</div><div class="dx-v"><div class="dx-t">Informal review</div><div class="dx-t">Inspection</div><div class="dx-t">Tech review</div><div class="dx-t">Walkthrough</div></div>
+    <div class="dx-rlb bt">Build time</div><div class="dx-v"><div class="dx-t g">Unit</div><div class="dx-t g">Integration</div></div><div></div><div></div><div class="dx-v"><div class="dx-t">Static analysis</div></div>
+    <div class="dx-rlb fn">Run time · functional</div><div></div>
+    <div class="dx-v" style="grid-column:3/5"><div class="dx-t" style="width:50%">Contract</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div></div><div class="dx-v"><div class="dx-t o">System</div><div class="dx-t o">E2E</div><div class="dx-t o">Visual</div></div></div>
+      <div class="dx-t">Exploratory</div><div class="dx-t">Production smoke tests</div></div><div></div>
+    <div class="dx-rlb nf">Run time · non-functional</div>
+    <div class="dx-v" style="grid-column:2/4"><div class="dx-t">Security</div></div><div class="dx-v"><div class="dx-t o">Performance</div><div class="dx-t o">A11y</div><div class="dx-t o">L10n</div><div class="dx-t o">Usability</div></div><div></div>
+   </div></div></div>
+   <p class="scroll-hint">scroll the diagram →</p>
+   <figcaption id="dx3-cap">Testing types and methods: static (reviews and static analysis) and dynamic, by how much of the inside you see (transparent, translucent or opaque box), when it runs (build time or run time), and whether it checks function or non-functional qualities.</figcaption>
+  </figure>
 </section>
 
 <!-- 06 -->
@@ -1021,10 +1113,61 @@
     <div class="prose">
       <h3>Build time and run time</h3>
       <p>The pipeline splits in two at the deployed artifact: phases 1–3 test code, phases 4–6 test something running.</p>
-      <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static and unit.</p>
+      <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static, unit, component and contract.</p>
       <p><b>Run-time tests</b> run against deployed artifacts. For UI apps: system, and end to end if required. For services: integration and system.</p>
       <p>For E2E, deploying to a test environment is basically required. But I've also worked places where we could spin up an ephemeral full stack and run the tests without deploying. In a modern world that's actually preferable: ephemeral stacks with test data, run per pipeline. Enterprises with large data sets and many external integrations still need an E2E environment to deploy to. Those integration points and data sets may be too large, complicated or costly to spin up per pipeline.</p>
-      <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
+      <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they do
+  </div>
+  <figure class="fig rv dxfig" aria-labelledby="dx1-cap">
+   <div class="dx-scroll"><div class="dx-inner">
+    <div class="dx-row"><div class="dx-rl">UI apps</div>
+     <div class="dx-zones" style="grid-template-columns:3fr 2.4fr">
+      <div class="dx-zone bt"><p class="dx-zh">Build time tests</p><div class="dx-steps">
+        <div class="dx-step"><div class="dx-box s">Static</div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box u">Unit</div><div class="dx-dn">↓</div><div class="dx-chip d">Test doubles</div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box i">Integration</div><div class="dx-dn">↓</div><div class="dx-chip d">Test doubles</div></div>
+      </div></div>
+      <div class="dx-zone rt"><p class="dx-zh">Run time tests</p><div class="dx-steps">
+        <div class="dx-step"><div class="dx-box y">System</div><div class="dx-dn">↓</div><div class="dx-chips"><div class="dx-chip d">Test doubles</div><div class="dx-chip r">db · Service</div></div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box e">E2E</div><div class="dx-dn">↓</div><div class="dx-chips"><div class="dx-chip r">Other experience layer application</div><div class="dx-chip r">db · Service</div></div></div>
+      </div></div>
+     </div></div>
+    <div class="dx-row" style="margin:0"><div class="dx-rl">Services</div>
+     <div class="dx-zones" style="grid-template-columns:3.6fr 2fr">
+      <div class="dx-zone bt"><p class="dx-zh">Build time tests</p><div class="dx-steps">
+        <div class="dx-step"><div class="dx-box s">Static</div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box u">Unit</div><div class="dx-dn">↓</div><div class="dx-chip d">Test doubles</div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box i">Component</div><div class="dx-dn">↓</div><div class="dx-chips"><div class="dx-chip d">Test doubles · in-memory db</div><div class="dx-chip r">or throwaway containers</div></div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box c">Contract</div><div class="dx-dn">↓</div><div class="dx-chip r">Consumer tests · provider verification</div></div>
+      </div></div>
+      <div class="dx-zone rt"><p class="dx-zh">Run time tests</p><div class="dx-steps">
+        <div class="dx-step"><div class="dx-box i">Integration</div><div class="dx-dn">↓</div><div class="dx-chip r">Real db · queue · services</div></div><div class="dx-arr">→</div>
+        <div class="dx-step"><div class="dx-box y">System</div><div class="dx-dn">↓</div><div class="dx-chip r">Deployed service via its API (REST, GraphQL, gRPC)</div></div>
+      </div></div>
+     </div></div>
+   </div></div>
+   <p class="scroll-hint">scroll the diagram →</p>
+   <figcaption id="dx1-cap">Services split integration in two: component tests run the service in isolation with test doubles, at build time; integration tests hit real dependencies once something is running (Clemson). Throwaway containers can now bring a real database into the build without deploying anything ("Getting Started with Testcontainers for Java"). Contract tests check that consumers and providers still agree, on both sides of the contract.</figcaption>
+  </figure>
+
+  <figure class="fig rv dxfig" aria-labelledby="dx2-cap" style="margin-top:22px">
+   <div class="dx-scroll"><div class="dx-inner"><div class="dx-xs">
+    <div class="dx-h hb">Build time (no deployed artifact / AUT)</div><div class="dx-h hr">Run time (requires deployed artifact / AUT)</div>
+    <div style="grid-column:1/5"></div><div class="dx-h he">End-to-end (E2E)</div>
+    <div class="dx-col s">Static</div><div class="dx-col u">Unit</div><div class="dx-col i">Integration / Component</div><div class="dx-col y">System (PR branch)</div><div class="dx-col y">System (PR or Main)</div><div class="dx-other">Other application(s)<br>SPA(s)</div>
+    <div class="dx-aut">Application under test (AUT)</div><div></div>
+    <div class="dx-cell"></div>
+    <div class="dx-cell"><div class="dx-dn">↓</div><div class="dx-chip d">Test doubles</div></div>
+    <div class="dx-cell"><div class="dx-dn">↓</div><div class="dx-chip d tall">Test doubles</div></div>
+    <div class="dx-cell"><div class="dx-dn">↓</div><div class="dx-chip d tall">Test doubles</div></div>
+    <div class="dx-cell"><div class="dx-dn">↓</div><div class="dx-chip r">Service (REST, GraphQL, gRPC) → db</div></div>
+    <div class="dx-cell"><div class="dx-dn">↓</div><div class="dx-chip r">Service (REST, GraphQL, gRPC) → db</div></div>
+   </div></div></div>
+   <p class="scroll-hint">scroll the diagram →</p>
+   <figcaption id="dx2-cap">Cross section of the application under test: each test layer takes its own slice of the AUT. Build-time layers need no deployed artifact. At run time, system tests use test doubles on PR branches and real dependencies on PR or main; end-to-end tests run the AUT together with the other applications it works with.</figcaption>
+  </figure>
+  <div class="prose">
+n't target them.</p>
 
       <h3>Continuous integration</h3>
       <blockquote><p>"Continuous Integration does not get rid of bugs, but it does make them dramatically easier to find and remove."</p><cite>Martin Fowler</cite></blockquote>
@@ -1083,14 +1226,72 @@
       <p>CI works only when continuous delivery and continuous testing are practiced too. We are continuously delivering software to somebody, somewhere: to production or to lower environments. The best organizations release many times a day. Small, frequent releases deliver value without delays and keep each change small enough to understand and undo. Releases are also a communication problem, not only a technical one: tell people what shipped and what's still open.</p>
 
       <h3>Continuous testing</h3>
-      <p>Whenever a change is made, big or small, make sure it doesn't break existing code or functionality. Unit and API tests cover the code impact; a regression subset covers the major flows. Releasing without regression is heavily risky. Cloud browser and device platforms make the compatibility matrix practical. Continuous testing does not stop at pre-production (section 07).</p>
+      <p>Whenever a change is made, big or small, make sure it doesn't break existing code or functionality. Unit and API tests cover the code impact; a regression subset covers the major flows. Releasing without regression is heavily risky. Cloud browser and device platforms make the compatibility matrix practical. Continuous testing does not stop at pre-production (<a href="#production">section 07</a>).</p>
+    </div>
+    <div class="isnt rv">
+      <div class="is-col ct1">
+        <p class="ih">CT · before production</p>
+        <ul>
+          <li>Every change, big or small, is checked against existing code and functionality.</li>
+          <li>Unit and API tests cover the code impact.</li>
+          <li>A regression subset covers the major flows.</li>
+          <li>Cloud browser and device platforms cover the compatibility matrix.</li>
+        </ul>
+      </div>
+      <div class="is-col ct2">
+        <p class="ih">CT · in production</p>
+        <ul>
+          <li>Continuous testing doesn't stop at pre-production.</li>
+          <li>Synthetics, canaries and monitors keep checking what's live (<a href="#production">section 07</a>).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose">
 
       <h3>Continuous operations</h3>
-      <p>The CO is what makes the other three safe to do fast: running what's live and watching it, all the time. Deploy, release, monitor, roll back, learn, repeat. Observability is the part that sees. It's a property of the system; monitoring is actively watching it. Logs, metrics, traces and alerts are the pillars. Section 07 covers why this is testing too.</p>
+      <p>The CO is what makes the other three safe to do fast: running what's live and watching it, all the time. Deploy, release, monitor, roll back, learn, repeat. Observability is the part that sees. It's a property of the system; monitoring is actively watching it. Logs, metrics, traces and alerts are the pillars. <a href="#production">Section 07</a> covers why this is testing too.</p>
+    </div>
+    <div class="isnt rv">
+      <div class="is-col co1">
+        <p class="ih">CO · run it</p>
+        <ul>
+          <li>Running what's live, all the time.</li>
+          <li>Deploy, release, monitor, roll back, learn, repeat.</li>
+        </ul>
+      </div>
+      <div class="is-col co2">
+        <p class="ih">CO · see it</p>
+        <ul>
+          <li>Observability is the part that sees: a property of the system.</li>
+          <li>Monitoring is actively watching it.</li>
+          <li>Logs, metrics, traces and alerts are the pillars.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose">
 
       <h3>Shift left and shift right</h3>
-      <p><b>Shift left:</b> testing starts in the envisioning phase. Test planning and strategy design start before code. Teams drive the discussion on what testing is needed, identify acceptance criteria, and outline high-level test cases. Test activities are part of story estimation.</p>
-      <p><b>Shift right:</b> testing continues in production, where complexity exists in its highest form. Dogfooding, synthetics, canaries, chaos experiments and incident learning. Both directions, at once.</p>
+    </div>
+    <div class="isnt rv">
+      <div class="is-col sl">
+        <p class="ih">Shift left</p>
+        <ul>
+          <li>Testing starts in the envisioning phase.</li>
+          <li>Test planning and strategy design start before code.</li>
+          <li>Teams drive the discussion on what testing is needed, identify acceptance criteria, and outline high-level test cases.</li>
+          <li>Test activities are part of story estimation.</li>
+        </ul>
+      </div>
+      <div class="is-col sr">
+        <p class="ih">Shift right</p>
+        <ul>
+          <li>Testing continues in production, where complexity exists in its highest form.</li>
+          <li>Dogfooding, synthetics, canaries, chaos experiments and incident learning.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose">
+      <p>Both directions, at once.</p>
     </div>
   </div>
 </section>
@@ -1111,7 +1312,7 @@
   </figure>
   <div class="prose">
     <p>A test is a known input, an expected result, a check, and a report. A synthetic check that logs in every minute and places a test order is that same thing, run against production instead of a build. An SLO alert is an assertion: "p99 checkout latency under 800 ms" is an expected result. Real user monitoring is exploratory testing done by your customers, at a scale no team can match. You just have to be able to see what they found.</p>
-    <p>The difference is who pays when it fails. A failing test in CI costs a red build. A failing check in production costs some users a bad experience. Monitoring is testing where the test data is real people. That's an acceptable trade when reach is small and recovery is fast (section 02). It is not acceptable for the one-way doors.</p>
+    <p>The difference is who pays when it fails. A failing test in CI costs a red build. A failing check in production costs some users a bad experience. Monitoring is testing where the test data is real people. That's an acceptable trade when reach is small and recovery is fast (<a href="#enough">section 02</a>). It is not acceptable for the one-way doors.</p>
 
     <h3>What makes monitoring count as testing</h3>
     <ul>
@@ -1168,7 +1369,7 @@
       <g class="sl-axis"><text x="60" y="252">day 0</text><text x="500" y="252" text-anchor="middle">day 15</text><text x="940" y="252" text-anchor="end">day 30</text></g>
     </svg></div>
     <p class="scroll-hint">scroll the charts →</p>
-    <figcaption id="sl-cap">The SLI is measured continuously. The SLO turns it into a pass/fail assertion, which is what makes monitoring a test. The gap between 100% and the SLO is the error budget: the amount of failure the team has agreed is acceptable. While budget is left, ship. When it runs low, the same rule that let you move fast tells you to slow down. That is section 02's "how much is enough," written as a number.</figcaption>
+    <figcaption id="sl-cap">The SLI is measured continuously. The SLO turns it into a pass/fail assertion, which is what makes monitoring a test. The gap between 100% and the SLO is the error budget: the amount of failure the team has agreed is acceptable. While budget is left, ship. When it runs low, the same rule that let you move fast tells you to slow down. That is <a href="#enough">section 02</a>'s "how much is enough," written as a number.</figcaption>
   </figure>
   <div class="prose">
     <p>Three things go wrong most often. SLIs that measure the server instead of the user (CPU is not an SLI). SLOs set at 100%, which leaves no budget and makes every change a violation. And SLAs set equal to the SLO, so the first internal miss is already a contract breach. Measure what the user feels, set the target below perfect on purpose, and keep the promise looser than the target.</p>
@@ -1180,7 +1381,7 @@
   <div class="dvr rv">
     <div class="dv-col dep"><p class="dk">Deploy</p><p class="dt">Pushing code artifacts to production with the flags off.</p><p class="dd">Nobody sees anything new. Smoke and synthetic checks confirm the deploy itself. Do it continuously, any time of day.</p><p class="dr">Risk: the deploy</p></div>
     <div class="dv-col rel"><p class="dk">Release</p><p class="dt">Knowingly turning a flag on, for a cohort, a percentage, or everyone.</p><p class="dd">A two-way door. If it misbehaves, the flag goes off in seconds, no deploy needed. Canary it, watch the SLOs, ramp.</p><p class="dr">Risk: the feature, reversible</p></div>
-    <div class="dv-col one"><p class="dk">Release with no switch</p><p class="dt">Something that goes live the moment it ships, with no way to turn it off.</p><p class="dd">Schema migrations, data backfills, emails sent, money moved, a partner integration cut over. A one-way door: deploy and release are the same act. Section 02's old bar applies.</p><p class="dr">Risk: all of it, at once</p></div>
+    <div class="dv-col one"><p class="dk">Release with no switch</p><p class="dt">Something that goes live the moment it ships, with no way to turn it off.</p><p class="dd">Schema migrations, data backfills, emails sent, money moved, a partner integration cut over. A one-way door: deploy and release are the same act. <a href="#enough">Section 02</a>'s old bar applies.</p><p class="dr">Risk: all of it, at once</p></div>
   </div>
   <div class="quotes rv">
     <blockquote><p>"You should deploy your code continuously throughout the day or week. But you should wrap any large, user-visible behavior changes behind a feature flag, so you can release that code by flipping a flag."</p><cite>Charity Majors · Deploys Are the Wrong Way to Change User Experience</cite></blockquote>
@@ -1190,11 +1391,11 @@
   <div class="prose">
     <p>Bezos was writing about business decisions, but it maps exactly. A flag turns most releases into two-way doors, which is why they can move fast. The ones without a switch are one-way doors, and they get the slow, careful treatment. The mistake in both directions is the same: treating a one-way door like a flag flip, or treating every flag flip like a one-way door.</p>
     <p>I've shipped under a lot of release models. At one end, sign-off was the pipeline itself: the tests passed and the change went to production. At the other, every release needs a recorded sign-off before it deploys and a verification sign-off after, with plenty of variations in between. All of them can deliver quality. The heavier models cost more per release, and that cost falls fastest when the evidence behind each sign-off comes from tooling — test results, monitors, dashboards — instead of people re-checking by hand. Modern tooling doesn't remove the sign-off; it makes the sign-off faster and better informed.</p>
-    <p><b>Canary releases.</b> Run the new version in production with a slice of real traffic and a safe rollback strategy. It tests capacity, and captures how the new version affects production before everyone gets it.</p>
-    <p><b>A/B testing.</b> Diligent use of A/B tests and flags gives the team flexibility, and gauges feature readiness from the customer's side: how it behaves in the real world, not only whether it works.</p>
-    <p><b>Rollback.</b> One action, rehearsed, measured. If rollback is a runbook nobody has run, it isn't a rollback. Database changes use expand/contract so the previous version still works against the new schema; otherwise code rollback is a fiction.</p>
-    <p><b>Testing in production and dogfooding.</b> The approach differs from lower environments. Testing in production is more of a manual exercise, with homework done first on what to test and what not to. It finds problems before customers do, and builds empathy with them.</p>
-    <p><b>Controlled chaos experiments.</b> Chaos engineering finds weaknesses conventional QA can't, from known knowns to unknown unknowns:</p>
+    <p class="def"><b>Canary releases</b>Run the new version in production with a slice of real traffic and a safe rollback strategy. It tests capacity, and captures how the new version affects production before everyone gets it.</p>
+    <p class="def"><b>A/B testing</b>Diligent use of A/B tests and flags gives the team flexibility, and gauges feature readiness from the customer's side: how it behaves in the real world, not only whether it works.</p>
+    <p class="def"><b>Rollback</b>One action, rehearsed, measured. If rollback is a runbook nobody has run, it isn't a rollback. Database changes use expand/contract so the previous version still works against the new schema; otherwise code rollback is a fiction.</p>
+    <p class="def"><b>Testing in production and dogfooding</b>The approach differs from lower environments. Testing in production is more of a manual exercise, with homework done first on what to test and what not to. It finds problems before customers do, and builds empathy with them.</p>
+    <p class="def"><b>Controlled chaos experiments</b>Chaos engineering finds weaknesses conventional QA can't, from known knowns to unknown unknowns:</p>
     <ol>
       <li>Define the current steady state with a baseline. Start small, such as network utilization.</li>
       <li>Define optimal conditions: a normal day, an easy day, and a very hard day. The last is the stress test.</li>
@@ -1202,8 +1403,8 @@
       <li>Run a real-world event, for example taking down a firewall that cuts connectivity to an ISP.</li>
       <li>Validate the hypothesis. Watch utilization and throughput, see where it fell over, and look for anything unexpected. Stabilize, document, remediate.</li>
     </ol>
-    <p><b>Incident learning.</b> Despite our best efforts, incidents and outages happen. Analyze them, do a real root cause analysis, and fold the learning (functional, performance, security, whatever it was) back into the team's practices and the product. Track the corrective actions. The incident becomes a test, a monitor, or a line in the Definition of Done.</p>
-    <p><b>Observability.</b> Nothing beats an environment that can tell you its own health. Collect the right logs, track metrics, detect anything that could affect the user experience, and alert on what matters most. When something goes wrong, tracing shows how a user got there: the functions, the parameters, how deep they got, and their whole journey through the stack. Dashboards built from that data show errors, usage and the success rate of new functionality.</p>
+    <p class="def"><b>Incident learning</b>Despite our best efforts, incidents and outages happen. Analyze them, do a real root cause analysis, and fold the learning (functional, performance, security, whatever it was) back into the team's practices and the product. Track the corrective actions. The incident becomes a test, a monitor, or a line in the Definition of Done.</p>
+    <p class="def"><b>Observability</b>Nothing beats an environment that can tell you its own health. Collect the right logs, track metrics, detect anything that could affect the user experience, and alert on what matters most. When something goes wrong, tracing shows how a user got there: the functions, the parameters, how deep they got, and their whole journey through the stack. Dashboards built from that data show errors, usage and the success rate of new functionality.</p>
   </div>
 </section>
 
@@ -1252,11 +1453,11 @@
     </div>
 
     <h3>What changes when AI writes the code</h3>
-    <p><b>Code got cheap. Being wrong didn't.</b> AI makes writing code fast, so there is more change, more often. Verification becomes the bottleneck, and the tester's job gets bigger, not smaller.</p>
-    <p><b>The output is a claim.</b> Rule one applies to agents the same as to people. "Done, all tests pass" gets checked: which tests, what they asserted, what is actually served.</p>
-    <p><b>Don't let the same model grade its own homework.</b> Tests generated from the code assert what the code does. Tests should come from the requirement or the acceptance criteria, which is one more reason to write those well. BDD-style acceptance criteria turn out to be excellent prompts.</p>
-    <p><b>Healing needs a gate.</b> A healed test that passes against the wrong element is worse than a failing test, because it hides the failure. Heal the locator, then prove the new one finds the same element, and keep a person in the loop for anything that changes what is asserted. In my own healing work the number I watch is "wrong heals kept," and it has to stay at zero. I built this into my open-source <a href="https://github.com/philmcneely/playwright-ai-framework">Python</a> and <a href="https://github.com/philmcneely/playwright-ai-framework-ts">TypeScript</a> Playwright frameworks.</p>
-    <p><b>Measure the AI.</b> What did it catch, what did it miss, how often was it wrong, and what did it cost? If you can't answer that, you don't know whether it helps (rule two).</p>
+    <p class="def"><b>Code got cheap. Being wrong didn't</b>AI makes writing code fast, so there is more change, more often. Verification becomes the bottleneck, and the tester's job gets bigger, not smaller.</p>
+    <p class="def"><b>The output is a claim</b>Rule one applies to agents the same as to people. "Done, all tests pass" gets checked: which tests, what they asserted, what is actually served.</p>
+    <p class="def"><b>Don't let the same model grade its own homework</b>Tests generated from the code assert what the code does. Tests should come from the requirement or the acceptance criteria, which is one more reason to write those well. BDD-style acceptance criteria turn out to be excellent prompts.</p>
+    <p class="def"><b>Healing needs a gate</b>A healed test that passes against the wrong element is worse than a failing test, because it hides the failure. Heal the locator, then prove the new one finds the same element, and keep a person in the loop for anything that changes what is asserted. In my own healing work the number I watch is "wrong heals kept," and it has to stay at zero. I built this into my open-source <a href="https://github.com/philmcneely/playwright-ai-framework">Python</a> and <a href="https://github.com/philmcneely/playwright-ai-framework-ts">TypeScript</a> Playwright frameworks.</p>
+    <p class="def"><b>Measure the AI</b>What did it catch, what did it miss, how often was it wrong, and what did it cost? If you can't answer that, you don't know whether it helps (rule two).</p>
   </div>
   <div class="note rv">
     <p class="nh">The warning that hasn't changed</p>
@@ -1369,7 +1570,7 @@
         <tr><td>Deployment frequency</td><td>How often you successfully release to production</td><td>Needs a robust, reliable pipeline and tests</td></tr>
         <tr><td>Lead time for changes</td><td>Commit to production</td><td>Slow tests and manual gates show up here</td></tr>
         <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>Reflects testing, along with change size, design and release practice</td></tr>
-        <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from section 02</td></tr>
+        <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from <a href="#enough">section 02</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -1505,7 +1706,7 @@
         <tr><td>Production smoke tests</td><td><span class="rt assess">Assess</span></td><td><span class="rt adopt">Adopt</span></td><td>Continuous synthetics on critical flows, with rollback on failure.</td></tr>
         <tr><td>Chaos testing</td><td><span class="rt trial">Trial</span></td><td><span class="rt trial">Trial</span></td><td>Worth it once observability is solid.</td></tr>
         <tr><td>Exploratory testing</td><td><span class="rt adopt">Adopt</span></td><td><span class="rt adopt">Adopt</span></td><td>More valuable as automation and AI absorb the repetitive checks.</td></tr>
-        <tr><td>Confidence engineering</td><td><span class="rt none">—</span></td><td><span class="rt assess">Assess</span></td><td>Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.</td></tr>
+        <tr><td>Confidence engineering</td><td><span class="rt none">—</span></td><td><span class="rt assess">Assess</span></td><td>Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence (Arbon). Worth watching.</td></tr>
         <tr><td>Fixed unit coverage target</td><td><span class="rt adopt">Adopt</span> 90%</td><td><span class="rt hold">Hold</span></td><td>Generated tests make the number easy to hit and meaningless. Watch the trend.</td></tr>
         <tr><td>Feature flags, dark launch</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>Separates deploy from release; release becomes reversible.</td></tr>
         <tr><td>Automated rollback</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>The "time" lever. Rehearse it.</td></tr>
@@ -1588,29 +1789,35 @@
     <p>Speed should never be the end goal. Speed is a long-term side effect of producing code with the highest possible internal quality.</p>
   </div>
 
-  <h3 style="margin-top:72px">References</h3>
-  <ol class="refs">
-    <li>Weinberg, G. "Agile and the Definition of Quality." 2012.</li>
-    <li>Bolton, M. "Quality of Testing Always Matters." Interview, a1qa, 2021.</li>
-    <li>Greenlees, D. "The Quality and Testing Information Model." Ministry of Testing, 2020.</li>
-    <li>Kaner, Falk &amp; Nguyen. <em>Testing Computer Software</em>, 2nd ed. Wiley, 1999.</li>
-    <li>Wiegers, K. "The Cost of Quality in Software." 2021.</li>
-    <li>Magowan, K. "Shift Left Testing: What, Why &amp; How." BMC, 2020.</li>
-    <li>Krasner, H. "The Cost of Poor Quality Software in the US." CISQ, 2018.</li>
-    <li>Fowler, M. "Continuous Integration."</li>
-    <li>Dodds, K. C. "The Testing Trophy and Testing Classifications."</li>
-    <li>Page, A. "Modern Testing Principles."</li>
-    <li>DORA. <em>Accelerate State of DevOps</em> reports.</li>
-    <li>ISO/IEC 25010, ISO/IEC 5055:2021, ISO/IEC/IEEE 29119, ISO 9000:2015.</li>
-    <li>TMMi Foundation. Test Maturity Model integration.</li>
-    <li>W3C. Web Content Accessibility Guidelines.</li>
-    <li>Keyes, E. "Sufficiently Advanced Monitoring is Indistinguishable from Testing." Google Test Automation Conference (GTAC), 2007.</li>
-    <li>Majors, C. "Deploys Are the Wrong Way to Change User Experience." charity.wtf.</li>
-    <li>LaunchDarkly. "Why decouple deployments from releases."</li>
-    <li>Bezos, J. Amazon letter to shareholders, 2015 (Type 1 and Type 2 decisions).</li>
+  <h3 style="margin-top:72px">Works Cited</h3>
+  <ul class="refs wc">
+    <li>Arbon, Jason. "Confidence in AI-Generated Software." <em>Jason&rsquo;s Substack</em>, 23 July 2026, jarbon.substack.com/p/confidence-in-ai-software-engineering.</li>
+    <li>Bezos, Jeff. "2015 Letter to Shareholders." <em>Amazon</em>, 2016.</li>
+    <li>Bolton, Michael. "Quality of Testing Always Matters: Interview with Michael Bolton, Part I." Interview by a1qa, 8 Apr. 2021.</li>
     <li>Bolton, Michael. "Testers: Get Out of the Quality Assurance Business." <em>DevelopSense</em>, 3 May 2010, developsense.com/blog/2010/05/testers-get-out-of-the-quality-assurance-business/.</li>
-    <li>Clarke, A. C. <em>Profiles of the Future</em> (the third law Keyes borrowed).</li>
-  </ol>
+    <li>Clarke, Arthur C. <em>Profiles of the Future</em>. Rev. ed., Harper &amp; Row, 1973.</li>
+    <li>Clemson, Toby. "Testing Strategies in a Microservice Architecture." <em>martinfowler.com</em>, 18 Nov. 2014, martinfowler.com/articles/microservice-testing/.</li>
+    <li>Dodds, Kent C. "The Testing Trophy and Testing Classifications." <em>Kent C. Dodds</em>, kentcdodds.com/blog/the-testing-trophy-and-testing-classifications.</li>
+    <li>DORA. <em>Accelerate State of DevOps Report</em>. Google Cloud.</li>
+    <li>Fowler, Martin. "Continuous Integration." <em>martinfowler.com</em>, martinfowler.com/articles/continuousIntegration.html.</li>
+    <li>"Getting Started with Testcontainers for Java." <em>Docker Docs</em>, docs.docker.com/guides/testcontainers-java-getting-started/.</li>
+    <li>Greenlees, David. "The Quality and Testing Information Model." <em>Ministry of Testing</em>, 2020.</li>
+    <li>International Organization for Standardization. <em>ISO 9000:2015, Quality Management Systems: Fundamentals and Vocabulary</em>. ISO, 2015.</li>
+    <li>International Organization for Standardization. <em>ISO/IEC 25010, Systems and Software Quality Requirements and Evaluation (SQuaRE): Product Quality Model</em>. ISO.</li>
+    <li>International Organization for Standardization. <em>ISO/IEC 5055:2021, Software Measurement: Software Quality Measurement</em>. ISO, 2021.</li>
+    <li>International Organization for Standardization. <em>ISO/IEC/IEEE 29119, Software and Systems Engineering: Software Testing</em>. ISO.</li>
+    <li>Kaner, Cem, et al. <em>Testing Computer Software</em>. 2nd ed., Wiley, 1999.</li>
+    <li>Keyes, Ed. "Sufficiently Advanced Monitoring Is Indistinguishable from Testing." Google Test Automation Conference, 2007.</li>
+    <li>Krasner, Herb. "The Cost of Poor Quality Software in the US: A 2018 Report." <em>CISQ</em>, 26 Sept. 2018, www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2018-report/The-Cost-of-Poor-Quality-Software-in-the-US-2018-Report.pdf.</li>
+    <li>LaunchDarkly. "Why Decouple Deployments from Releases." <em>LaunchDarkly Blog</em>, launchdarkly.com/blog/why-decouple-deployments-from-releases/.</li>
+    <li>Magowan, Kirstie. "Shift Left Testing: What, Why &amp; How to Shift Left." <em>BMC Blogs</em>, 30 Nov. 2020, www.bmc.com/blogs/what-is-shift-left-shift-left-testing-explained/.</li>
+    <li>Majors, Charity. "Deploys Are the Wrong Way to Change User Experience." <em>charity.wtf</em>, charity.wtf/p/deploys-are-the-wrong-way-to-change-user-experience.</li>
+    <li>Page, Alan, and Brent Jensen. "Modern Testing Principles." <em>Modern Testing</em>, moderntesting.org.</li>
+    <li>TMMi Foundation. <em>Test Maturity Model integration (TMMi)</em>. TMMi Foundation.</li>
+    <li>Weinberg, Gerald. "Agile and the Definition of Quality." <em>Gerald Weinberg&rsquo;s Secrets of Writing and Consulting</em>, Sept. 2012.</li>
+    <li>Wiegers, Karl. "The Cost of Quality in Software." <em>Geek Culture</em>, Medium, 1 Dec. 2021, medium.com/geekculture/the-cost-of-quality-in-software-5f113a26e759.</li>
+    <li>World Wide Web Consortium. <em>Web Content Accessibility Guidelines (WCAG) 2.0</em>. W3C, 11 Dec. 2008.</li>
+  </ul>
 
   <footer>
     <span>&copy; Phil McNeely</span>
@@ -1696,7 +1903,7 @@
     [0,'Continuous testing','A','A','Now runs past the deploy.'],
     [0,'Risk-based testing','S','A','Was Adopt for programs, Assess for everything else. It is how you decide what "enough" is for each change.'],
     [0,'Exploratory testing','A','A','More valuable as automation and AI absorb the repetitive checks.'],
-    [0,'Confidence engineering',null,'S','Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.'],
+    [0,'Confidence engineering',null,'S','Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence (Arbon). Worth watching.'],
     [1,'Contract testing','T','A','More services and generated clients mean more contracts to break.'],
     [1,'Visual tests','T','T','AI diffing reduced the noise; still tune per app.'],
     [1,'Automated E2E as pipeline gate','H','H','Still flaky and slow; a few critical flows only.'],
