@@ -439,111 +439,6 @@
   .m-only{display:none!important}
   @media (max-width:640px){.m-only{display:flex!important}.d-wide2{display:none}}
   @media (max-width:640px){.ghost{font-size:110px;top:-20px}.calc{padding:18px 14px}.tele{padding:14px 10px 10px}}
-  .pfull{font-size:14.5px;line-height:1.5;color:var(--read-ink);margin-top:10px}
-  .js .pfull{display:none}
-  .pmore{display:none;margin-top:auto;align-self:flex-start;font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;
-    color:var(--ox);background:transparent;border:0;border-top:1px solid rgba(236,228,213,.08);padding:12px 0 2px;width:100%;text-align:left;cursor:pointer}
-  .js .pmore{display:block}
-  .pmore:hover{color:var(--paper)}
-  .pmore:focus-visible{outline:2px solid var(--ox);outline-offset:2px}
-  .pmore[aria-expanded=true] span{display:inline-block;transform:rotate(180deg)}
-  .phase ul{margin-bottom:10px!important}
-  .phase.sel{border-color:var(--ox)!important;box-shadow:0 0 0 1px var(--ox),0 18px 40px -20px rgba(192,85,69,.55)}
-  .phase-panel{grid-column:1 / -1;border-radius:12px;padding:20px 24px;background:linear-gradient(160deg,rgba(192,85,69,.14),rgba(255,240,220,.02) 55%);
-    border:1px solid rgba(192,85,69,.4);animation:pp .35s cubic-bezier(.2,.7,.2,1)}
-  @keyframes pp{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){.phase-panel{animation:none}}
-  .phase-panel .ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 8px}
-  .phase-panel .pt2{font-family:var(--serif);font-weight:600;font-size:24px;color:var(--paper)}
-  .phase-panel .pt2 i{font:500 12px var(--mono);font-style:normal;color:var(--ox);margin-right:10px;letter-spacing:.1em}
-  .phase-panel p{margin:0;font-size:18px;line-height:1.65;color:var(--read-ink);max-width:70ch}
-  .phase-panel .px{font:500 18px var(--mono);color:var(--paper-dim);background:none;border:0;cursor:pointer;padding:0 4px}
-  .phase-panel .px:hover{color:var(--ox)}
-  .isnt{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 24px}
-  .is-col{border-radius:12px;padding:18px 20px 8px;border:1px solid rgba(236,228,213,.09)}
-  .is-col.yes{background:linear-gradient(160deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 60%);border-color:rgba(143,163,122,.35)}
-  .is-col.no{background:linear-gradient(160deg,rgba(192,85,69,.15),rgba(255,240,220,.01) 60%);border-color:rgba(192,85,69,.35)}
-  .is-col .ih{font:500 11px var(--mono);letter-spacing:.22em;text-transform:uppercase;margin:0 0 10px}
-  .is-col.yes .ih{color:var(--moss)}.is-col.no .ih{color:var(--ox)}
-  .is-col ul{list-style:none;margin:0;padding:0}
-  .is-col li{font-size:16.5px;line-height:1.45;color:var(--read-ink);padding:9px 0 9px 26px;border-top:1px solid rgba(236,228,213,.06);position:relative}
-  .is-col li:first-child{border-top:0}
-  .is-col li::before{position:absolute;left:0;top:9px;font:500 14px var(--mono)}
-  .is-col.yes li::before{content:"✓";color:var(--moss)}
-  .is-col.no li::before{content:"✕";color:var(--ox)}
-  .is-col.cdl{background:linear-gradient(160deg,rgba(201,163,91,.14),rgba(255,240,220,.01) 60%);border-color:rgba(201,163,91,.35)}
-  .is-col.cdp{background:linear-gradient(160deg,rgba(201,163,91,.24),rgba(192,85,69,.06) 60%);border-color:rgba(201,163,91,.5)}
-  .is-col.cdl .ih,.is-col.cdp .ih{color:var(--brass)}
-  .is-col.cdl li::before,.is-col.cdp li::before{content:"→";color:var(--brass)}
-  .nc{text-transform:none;letter-spacing:.06em}
-  @media (max-width:640px){.isnt{grid-template-columns:1fr}}
-  .slx{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 0}
-  .sl-card{border-radius:12px;padding:18px 18px 14px;border:1px solid rgba(236,228,213,.09);position:relative;overflow:hidden}
-  .sl-card::after{content:"";position:absolute;left:0;right:0;top:0;height:2px}
-  .sl-card.sli{background:linear-gradient(160deg,rgba(236,228,213,.1),rgba(255,240,220,.01) 60%)}.sl-card.sli::after{background:var(--paper)}
-  .sl-card.slo{background:linear-gradient(160deg,rgba(201,163,91,.16),rgba(255,240,220,.01) 60%)}.sl-card.slo::after{background:var(--brass)}
-  .sl-card.sla{background:linear-gradient(160deg,rgba(192,85,69,.16),rgba(255,240,220,.01) 60%)}.sl-card.sla::after{background:var(--ox)}
-  .sl-card .sk{font-family:var(--serif);font-weight:700;font-size:34px;line-height:1;margin:0 0 4px;color:var(--paper)}
-  .sl-card.slo .sk{color:var(--brass)}.sl-card.sla .sk{color:var(--ox)}
-  .sl-card .sn{font:500 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);margin:0 0 10px}
-  .sl-card .sd{font-size:16px;line-height:1.45;color:var(--read-ink);margin:0 0 12px}
-  .sl-card .se{font:400 12px/1.5 var(--mono);color:var(--paper);background:rgba(0,0,0,.28);border-radius:6px;padding:7px 10px;margin:0 0 10px}
-  .sl-card .so{font:400 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--paper-faint);margin:0}
-  .slfig{padding:22px}
-  .slfig svg{display:block;width:100%;height:auto;overflow:visible}
-  .slfig text{font-family:var(--mono)}
-  .sl-zone{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
-  .sl-tick text{font-size:13px;font-weight:500;letter-spacing:.06em}
-  .sl-now{font-size:13px;font-weight:500}
-  .sl-axis text{font-size:11px;fill:var(--paper-faint)}
-  .sl-foot{font-size:11.5px;fill:var(--paper-dim)}
-  .slfig .scroll-hint{margin-top:10px}
-  @media (max-width:760px){.slx{grid-template-columns:1fr}}
-  @media (max-width:640px){.slfig{padding:14px 10px 10px}}
-  .dvr{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 18px}
-  .dv-col{border-radius:12px;padding:18px 18px 14px;border:1px solid rgba(236,228,213,.09);display:flex;flex-direction:column}
-  .dv-col.dep{background:linear-gradient(160deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 60%);border-color:rgba(143,163,122,.35)}
-  .dv-col.rel{background:linear-gradient(160deg,rgba(201,163,91,.16),rgba(255,240,220,.01) 60%);border-color:rgba(201,163,91,.35)}
-  .dv-col.one{background:linear-gradient(160deg,rgba(192,85,69,.2),rgba(255,240,220,.01) 60%);border-color:rgba(192,85,69,.45)}
-  .dv-col .dk{font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.15;margin:0 0 8px;color:var(--paper)}
-  .dv-col .dt{font-size:16.5px;line-height:1.45;color:var(--paper);margin:0 0 10px}
-  .dv-col .dd{font-size:15px;line-height:1.5;color:var(--read-ink);margin:0 0 12px}
-  .dv-col .dr{margin:auto 0 0;font:500 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase}
-  .dv-col.dep .dr{color:var(--moss)}.dv-col.rel .dr{color:var(--brass)}.dv-col.one .dr{color:var(--ox)}
-  .quotes{display:grid;grid-template-columns:1fr;gap:4px;margin:6px 0 10px}
-  .quotes blockquote{margin:14px 0}
-  .quotes blockquote p{font-size:clamp(18px,2.2vw,21px)}
-  @media (max-width:760px){.dvr{grid-template-columns:1fr}}
-  .tri-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .tri{display:grid;grid-template-columns:110px repeat(6,minmax(0,1fr));gap:6px;min-width:860px}
-  .tri-h,.tri-r{display:contents}
-  .tri-h span{font:500 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--paper-faint);padding:0 4px 6px}
-  .tri-n{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--paper);display:flex;align-items:center;padding-left:10px;border-radius:8px}
-  .tri-c{font-size:14px;line-height:1.42;color:var(--read-ink);padding:10px 11px;border-radius:8px;background:rgba(0,0,0,.22);border:1px solid rgba(236,228,213,.06)}
-  .tri-r.pr .tri-n{border-left:3px solid var(--brass)}.tri-r.qa .tri-n{border-left:3px solid var(--ox)}.tri-r.en .tri-n{border-left:3px solid var(--moss)}
-  .tri-r.pr .tri-c.lead{background:rgba(201,163,91,.16);border-color:rgba(201,163,91,.45);color:var(--paper)}
-  .tri-r.qa .tri-c{background:rgba(192,85,69,.08);border-color:rgba(192,85,69,.22)}
-  .tri-r.qa .tri-c.lead{background:rgba(192,85,69,.2);border-color:rgba(192,85,69,.55);color:var(--paper)}
-  .tri-r.en .tri-c.lead{background:rgba(143,163,122,.18);border-color:rgba(143,163,122,.45);color:var(--paper)}
-  .trifig{padding:22px;width:min(1120px,calc(100vw - 32px));margin-left:50%;transform:translateX(-50%)}
-  .js .trifig.rv{transform:translateX(-50%) translateY(18px)}
-  .js .trifig.rv.in{transform:translateX(-50%)}
-  @media (max-width:640px){.trifig .scroll-hint{display:block}.trifig{padding:14px 10px 10px}}
-  .spec{margin:30px 0 10px}
-  .spec-bar{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--moss),var(--brass) 45%,var(--ox) 75%,#7a2a20);margin:0 0 12px;box-shadow:0 0 18px rgba(192,85,69,.35)}
-  .spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .sp{border-radius:12px;padding:16px 16px 12px;border:1px solid rgba(236,228,213,.09);display:flex;flex-direction:column}
-  .sp.s1{background:linear-gradient(170deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 65%)}
-  .sp.s2{background:linear-gradient(170deg,rgba(201,163,91,.14),rgba(255,240,220,.01) 65%)}
-  .sp.s3{background:linear-gradient(170deg,rgba(192,85,69,.15),rgba(255,240,220,.01) 65%)}
-  .sp.s4{background:linear-gradient(170deg,rgba(122,42,32,.3),rgba(255,240,220,.01) 65%);border-color:rgba(192,85,69,.35)}
-  .sp .sk{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--paper);margin:0;line-height:1.2}
-  .sp .sw{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--paper-faint);margin:4px 0 10px}
-  .sp .sd{font-size:15px;line-height:1.45;color:var(--read-ink);margin:0 0 12px}
-  .sp .se{margin:auto 0 0;font:400 11.5px var(--mono);color:var(--paper-dim);border-top:1px solid rgba(236,228,213,.08);padding-top:8px}
-  .spec-ax{display:flex;justify-content:space-between;margin-top:10px;font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--paper-faint)}
-  @media (max-width:760px){.spec-grid{grid-template-columns:1fr 1fr}}
-  @media (max-width:420px){.spec-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -684,14 +579,13 @@
         </ul>
       </div>
     </div>
-    <p>The right definition is important in an organization, so that everyone in the stakeholder chain has a shared understanding, measures themselves against common standards, and improves toward a common goal. Here is one I wrote and used at one company, at one point in time:</p>
+    <p>The right definition is important in an organization, so that everyone in the stakeholder chain has a shared understanding, measures themselves against common standards, and improves toward a common goal. The one I've used:</p>
   </div>
   <blockquote>
     <p>"Quality is making sure we give a consistent customer and partner experience using our services, which will help customer retention and future partnerships."</p>
   </blockquote>
   <div class="prose">
-    <p>That definition is not universal. It fit that company's business, its customers and partners, and that moment. That's Greenlees's point applied to my own words: the person who matters and the point in time are part of the definition. Your organization needs its own, written for its context, and revisited when the context changes. What carries over is the shape: name who the quality is for, and what they need to keep getting.</p>
-    <p>To satisfy that statement we needed software that is reliable, performant, secure, usable and functional, to name a few. The way the product is designed, the way code is written, the way it is verified and the platform it is deployed on all play a part in how the product is perceived quality-wise.</p>
+    <p>To satisfy that statement we need software that is reliable, performant, secure, usable and functional, to name a few. The way the product is designed, the way code is written, the way it is verified and the platform it is deployed on all play a part in how the product is perceived quality-wise.</p>
     <h4>Principles under the definition</h4>
     <ul>
       <li>Quality of software is a mindset, and NOT the responsibility of a few members of the team alone.</li>
@@ -807,35 +701,6 @@
     <p class="nh">The precondition</p>
     <p>"We can just fix it forward" is a claim, and it needs evidence. If you've never measured how long it takes you to notice a problem and roll it back, you don't know that it's fast. Measure MTTD and MTTR (rule two), rehearse the rollback, and only then lower the pre-merge bar. Until then, fast iteration is a hope, not a control.</p>
   </div>
-
-  <div class="prose">
-    <h3>The bar also moves with regulation</h3>
-    <p>Reversibility isn't the only thing that sets the bar. Rigor follows context: the same team can rightly run a marketing page on flags and canaries and run a payments ledger on traceability and recorded release decisions. That's the context-driven school's own first principle, that the value of any practice depends on its context, and it's why I keep the older frameworks close even where I don't use all of them.</p>
-  </div>
-  <figure class="spec rv" aria-label="Rigor spectrum from consumer web to safety-critical">
-    <div class="spec-bar" aria-hidden="true"></div>
-    <div class="spec-grid">
-      <div class="sp s1"><p class="sk">Consumer web</p><p class="sw">Reversible changes</p><p class="sd">Flags, canaries, SLOs, AI-generated evidence. Confidence engineering lives here.</p><p class="se">A marketing page behind a flag</p></div>
-      <div class="sp s2"><p class="sk">Enterprise</p><p class="sw">Shared integrations</p><p class="sd">Risk-based testing, product, quality and engineering together, a shared E2E environment where the integrations need it.</p><p class="se">Most of this page</p></div>
-      <div class="sp s3"><p class="sk">Regulated</p><p class="sw">Finance, payments, privacy</p><p class="sd">Traceability, a recorded release decision with its evidence, audit trails, standards as the reference.</p><p class="se">A payments ledger</p></div>
-      <div class="sp s4"><p class="sk">Safety-critical</p><p class="sw">Medical, military, aviation</p><p class="sd">Formal traceability, ISO and IEC standards, independent verification. This is where the full frameworks earn their keep.</p><p class="se">An infusion pump</p></div>
-    </div>
-    <div class="spec-ax"><span>lighter, faster, reversible</span><span>heavier, formal, irreversible</span></div>
-  </figure>
-
-  <div class="prose">
-    <h3>Three traditions, one decision</h3>
-    <p>Three schools of thought sit along that spectrum, and I've worked in all three.</p>
-    <p><b>Standards and process.</b> The traditional school, what Bret Pettichord called the Standard and Quality schools: defined processes, standards, traceability, formal sign-off. Some contexts require it: medical devices, military and aviation are regulated or contracted to work this way, and finance often is. It's also the vocabulary auditors use. Section 14 keeps it as a reference library.</p>
-    <p><b>Context-driven testing.</b> James Bach, Michael Bolton, Cem Kaner and the people around them taught me that testing is an investigation, that practices only have value in context, and that a tester's job is information, not assurance. Bolton put the line about confidence precisely:</p>
-  </div>
-  <blockquote class="rv"><p>"It is not the job of testing to build confidence in the product. … Confidence is a relationship between the product and some stakeholder."</p><cite>Michael Bolton · Very Short Blog Posts: Confidence, 2013</cite></blockquote>
-  <div class="prose">
-    <p>Testing's job, in that view, is to find problems, including the ones in our own perceptions that would lead to <em>unwarranted</em> confidence.</p>
-    <p><b>Confidence engineering.</b> The newest framing, from the AI era. When AI makes producing software cheap, the bottleneck becomes deciding whether you have <em>justified</em> confidence to release it. Jason Arbon describes the people who own that decision as Confidence Engineers, who "supply context, judgment, and accountability" while AI produces much of the code and the evidence. The term is still emerging; a draft manifesto opens with "Perfect software isn't achievable, but confidence is."</p>
-    <p>I don't see these as rivals. Bolton warns against unwarranted confidence; Arbon asks for justified confidence. Same idea from two sides. Testing finds the problems. Confidence engineering decides whether the confidence is earned. The process school decides how much of that has to be written down and signed, and that should scale with the risk. Where I sit on any given day depends on what I'm shipping, and that's the point of this whole page.</p>
-    <p>I've shipped under a lot of release models. At one end, sign-off was the pipeline itself: the tests passed and the change went to production. At the other, every release needs a recorded sign-off before it deploys and a verification sign-off after, with plenty of variations in between. All of them can deliver quality. The heavier models cost more per release, and that cost falls fastest when the evidence behind each sign-off comes from tooling — test results, monitors, dashboards — instead of people re-checking by hand. Modern tooling doesn't remove the sign-off; it makes the sign-off faster and better informed.</p>
-  </div>
 </section>
 
 <!-- 03 -->
@@ -873,9 +738,9 @@
     <ol>
       <li><b>Prevent defects.</b> Avoid mistakes in the early stages. Prevention means root cause analysis of past defects, then specific measures so those types don't happen again.</li>
       <li><b>Evaluate work products</b> such as requirements, design, user stories and code. Find ambiguity or contradictions before a developer picks the work up. Reviews, walk-throughs and static analysis happen before code integrates. This is <em>verification</em>.</li>
-      <li><b>Verify that all specified requirements are met.</b> Know which tests cover which requirements, so gaps are visible. The old factory-QA version of this was a ponderous traceability matrix document. I want the lightweight version: tag tests with the story or acceptance criterion they cover, and let the pipeline report what has no test. AI can help find the gaps and draft the mapping, but the output stays small. I'm here to test and deliver quality, not to raise my page count.</li>
+      <li><b>Verify that all specified requirements are met.</b> Ideally with a requirement traceability matrix mapping tests to requirements, so coverage of requirements is visible.</li>
       <li><b>Validate that the product works as users and stakeholders expect.</b> This is <em>validation</em>: checking the product after development, manually or automated, opaque box or transparent box, and by stakeholders through acceptance testing.</li>
-      <li><b>Show whether confidence in the quality level is justified.</b> Testing doesn't create confidence; it shows how much the evidence supports, and where it doesn't. Earned confidence is what lets a team ship, and it pays back in fewer escapes, happier customers and lower maintenance costs.</li>
+      <li><b>Build confidence in the quality level.</b> Fewer defects, higher satisfaction, lower maintenance costs.</li>
       <li><b>Reduce the risk of insufficient quality.</b> Every project carries uncertainty: launch time, budget, technology, implementation, maintenance. Testing brings risk management in early so risks are found as soon as possible.</li>
       <li><b>Give stakeholders enough information to make informed decisions</b>, especially about the level of quality. Be transparent: coverage, what is missing, what went wrong, and the constraints and risks behind them.</li>
       <li><b>Find defects</b>, as early as possible. Unit testing finds them where they're cheapest; integration testing finds them at the touchpoints between systems; regression testing makes sure changes didn't add new ones; operational testing checks reliability and performance under maximum load.</li>
@@ -1003,14 +868,13 @@
         </ul>
         <p><b>Examples:</b> Playwright, axe for accessibility, Lighthouse, Karate.</p>
         <p><b>AI-assisted:</b> visual regression; test healing when locators or APIs change; risk-based suggestions for exploratory testing; accessibility scanning; user-journey analysis from production data; test generation from stories; flaky-test management; clustering failures for root cause.</p>
-        <p><b>Use test doubles or an ephemeral stack in PR branches, and real dependencies after merge</b>, as a limited subset to avoid data issues.</p>
+        <p><b>Use test doubles in PR branches and real dependencies after merge</b>, as a limited subset to avoid data issues.</p>
       </div>
     </details>
     <details class="ly">
       <summary><span class="lk">End to end</span><span class="lt">The whole business flow, across apps<span class="ls">Real services, real data, no test doubles. Few of these.</span></span><span class="pl" aria-hidden="true">+</span></summary>
       <div class="body prose">
         <p>E2E tests cross multiple applications and services, which makes them harder to keep stable when the underlying services change. That often means false positives and flakiness. Used as the main gate in an application's pipeline, they bring flakiness, failures and long test cycles. Same tools as system tests, wider scope, and the same rule: a minimal set of critical business flows.</p>
-        <p><b>Where they run.</b> E2E needs the whole system running. If you own most of it, spin it up ephemeral per pipeline with seeded data. If the flow crosses large external integrations or data sets, it needs a shared E2E environment to deploy to (section 06).</p>
         <p><b>System vs end to end, with an example.</b> Say the app under test is a post-purchase page that needs a logged-in user with a completed order.</p>
         <ul>
           <li><b>System test:</b> simulate login with a cookie that the login app would normally set, and pass the order id as a query parameter to the page where the test starts. You skip the flows and applications you aren't testing. For APIs, string a few calls together to simulate the workflow.</li>
@@ -1020,6 +884,12 @@
     </details>
   </div>
 
+  <div class="prose">
+    <h3>Build time and run time</h3>
+    <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static and unit.</p>
+    <p><b>Run-time tests</b> run against deployed artifacts. For UI apps: system, and end to end if required. For services: integration and system.</p>
+    <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
+  </div>
 
   <div class="tw rv">
     <table>
@@ -1048,86 +918,34 @@
     <div class="track">
       <div class="band ct">CT · continuous testing, every phase</div>
       <div class="band ci">CI · continuous integration</div>
-      <div class="band cd"><span class="nc">Cd/CD</span> · continuous delivery / deployment</div>
+      <div class="band cd">CD · continuous delivery</div>
       <div class="band co">CO · continuous operations</div>
       <div class="rail" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="split"><span>BUILD TIME │ RUN TIME</span></span><span class="pk"></span><span class="pk b"></span></div>
-      <div class="phase"><span class="pn">1</span><span class="pt">Pre-coding</span><ul><li>Story &amp; AC review</li><li>Risk analysis</li><li>Test strategy, DoD</li><li class="ai">ambiguity check</li></ul><div class="pfull">The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
-      <div class="phase"><span class="pn">2</span><span class="pt">Pre-commit</span><ul><li>Static, unit, integration</li><li>TDD, pairing</li><li>Local exploratory</li><li class="ai">review, test gen</li></ul><div class="pfull">Development on the local machine before pushing: pairing, local review, and every test that can run locally.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
-      <div class="phase"><span class="pn">3</span><span class="pt">Pre-merge</span><ul><li>All build-time layers</li><li>Ephemeral stack or test env</li><li>System tests, doubles</li><li class="ai">impact analysis</li></ul><div class="pfull">Code is pushed and CI runs. Run-time tests run against an ephemeral full stack the pipeline spins up with seeded test data, or, where the integrations and data are too large for that, a deployed artifact in the shared test environment.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
-      <div class="phase"><span class="pn">4</span><span class="pt">Post-merge</span><ul><li>System, real deps</li><li>Contract, perf, a11y</li><li>Deployable artifact</li><li class="ai">failure triage</li></ul><div class="pfull">Reviewed and merged; the post-merge CI steps lead to a production-deployable artifact.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
-      <div class="phase"><span class="pn">5</span><span class="pt">Prod deploy</span><ul><li>Smoke / synthetics</li><li>Flag off (dark)</li><li>Rollback on fail</li><li class="ai">anomaly detection</li></ul><div class="pfull">The artifact is deployed to production. With flags, deploy is not release: the code is in production, the feature is still off, and smoke and synthetic checks confirm the deploy itself.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
-      <div class="phase"><span class="pn">6</span><span class="pt">Go-live</span><ul><li>Flag on, canary</li><li>SLOs, RUM</li><li>Ramp or roll back</li><li class="ai">journey analysis</li></ul><div class="pfull">The artifact is live and taking traffic, or the feature flag is enabled. Canary first, watch the SLOs, then ramp to everyone or roll back.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
-      <div class="phase-panel" id="phase-panel" role="region" aria-live="polite" hidden></div>
+      <div class="phase"><span class="pn">1</span><span class="pt">Pre-coding</span><ul><li>Story &amp; AC review</li><li>Risk analysis</li><li>Test strategy, DoD</li><li class="ai">ambiguity check</li></ul></div>
+      <div class="phase"><span class="pn">2</span><span class="pt">Pre-commit</span><ul><li>Static, unit, integration</li><li>TDD, pairing</li><li>Local exploratory</li><li class="ai">review, test gen</li></ul></div>
+      <div class="phase"><span class="pn">3</span><span class="pt">Pre-merge</span><ul><li>All build-time layers</li><li>Deploy to test env</li><li>System tests, doubles</li><li class="ai">impact analysis</li></ul></div>
+      <div class="phase"><span class="pn">4</span><span class="pt">Post-merge</span><ul><li>System, real deps</li><li>Contract, perf, a11y</li><li>Deployable artifact</li><li class="ai">failure triage</li></ul></div>
+      <div class="phase"><span class="pn">5</span><span class="pt">Prod deploy</span><ul><li>Smoke / synthetics</li><li>Flag off (dark)</li><li>Rollback on fail</li><li class="ai">anomaly detection</li></ul></div>
+      <div class="phase"><span class="pn">6</span><span class="pt">Go-live</span><ul><li>Flag on, canary</li><li>SLOs, RUM</li><li>Ramp or roll back</li><li class="ai">journey analysis</li></ul></div>
     </div>
     <figcaption id="track-cap">Go-live can mean a deploy taking traffic or a feature flag being turned on. Separating the two is what makes dark launching possible. Lines marked AI are where AI assistance pays off most in that phase.</figcaption>
   </figure>
 
   <div class="col" style="padding:0">
     <div class="prose">
-      <h3>Build time and run time</h3>
-      <p>The split is between testing code and testing something running. Where that running thing lives is what has changed most.</p>
-      <p><b>Build-time tests</b> run during compilation, with no deployed artifact, so a developer can test the project's own logic quickly and in isolation. For UI apps: static, unit, integration (component). For services: static and unit.</p>
-      <p><b>Run-time tests</b> run against a running system: an ephemeral stack the pipeline spins up, or an artifact deployed to a shared environment. For UI apps: system, and end to end if required. For services: integration and system.</p>
-
-      <h3>Ephemeral stacks vs. a shared E2E environment</h3>
-      <p>The traditional answer was to deploy to a shared test environment and run the run-time tests there. For E2E that was basically required. But I've also worked places where we could spin up the full stack, ephemeral, per pipeline run, seed it with test data, run the tests, and throw it away, with no deploy at all. In a modern setup that's preferable: every branch gets a clean, known state, nobody else's half-finished change breaks your run, data doesn't drift, and tests can run in parallel without fighting over shared records.</p>
-      <p>It doesn't fit everyone. Large enterprises with huge data sets and many external integrations still need a shared E2E environment to deploy to, because the integration points and the data are too large or too external to stand up per run. Partner sandboxes, payment and identity providers, and mainframe-era systems don't come in containers. The practical mix: ephemeral stacks for everything you own, test doubles or contract tests at the edges you don't, and a shared environment kept for the few E2E flows that truly need the real integrations.</p>
-      <p>The application under test (system under test) is the single application in development. Downstream services aren't part of it unless their code is in the same repository. Tests may exercise the dependencies, but they don't target them.</p>
+      <h3>The phases</h3>
+      <p><b>Pre-coding.</b> The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</p>
+      <p><b>Pre-commit.</b> Development on the local machine before pushing: pairing, local review, and every test that can run locally.</p>
+      <p><b>Pre-merge to main.</b> Code is pushed, CI runs, and a deployed artifact lands in the test environment.</p>
+      <p><b>Post-merge to main.</b> Reviewed and merged; the post-merge CI steps lead to a production-deployable artifact.</p>
+      <p><b>Production deploy.</b> The artifact is deployed to production.</p>
+      <p><b>Production go-live.</b> The artifact is live and taking traffic, or the feature flag is enabled.</p>
 
       <h3>Continuous integration</h3>
       <blockquote><p>"Continuous Integration does not get rid of bugs, but it does make them dramatically easier to find and remove."</p><cite>Martin Fowler</cite></blockquote>
       <p>Commit daily, if not every few hours. The point is that nothing new breaks existing functionality, and that testing doesn't pile up at the end. When a test fails, we know which change caused it, and that person can fix it quickly. Keep tasks and branches as small as possible; it makes the code easier to write and the review easier to do. Before a review, the new code should have tests and they should pass. Code review is not the primary bug-finding instrument; a robust set of unit, functional and integration tests is.</p>
 
-      <h4>What continuous integration is, and is not</h4>
-    </div>
-    <div class="isnt rv">
-      <div class="is-col yes">
-        <p class="ih">CI is</p>
-        <ul>
-          <li>Everyone merges small changes to main at least daily. Branches live hours, not weeks.</li>
-          <li>Every merge triggers a build and the full automated suite, automatically. Nobody kicks it off.</li>
-          <li>Tests are fast enough to run on every change: minutes, not hours.</li>
-          <li>A red main is the team's top priority, fixed or reverted in minutes.</li>
-          <li>Main is always releasable.</li>
-        </ul>
-      </div>
-      <div class="is-col no">
-        <p class="ih">CI is not</p>
-        <ul>
-          <li>Owning a CI server. The tool is not the practice.</li>
-          <li>Long-lived feature branches merged at the end of a sprint.</li>
-          <li>Merging, then someone has to kick off a build.</li>
-          <li>Running the full suite nightly, or only before a release.</li>
-          <li>A broken build that sits overnight while people keep merging.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="prose">
-      <p>If someone has to start the build after a merge, you have a build server, not continuous integration. Plenty of teams work that way, and it's a fine place to start. Call it what it is, and know what's missing: the feedback that tells you within minutes which change broke what, while the person who made it still has it in their head. The path from there is small steps: trigger the build on merge, then run the fast tests on every push, then shrink branches until they last a day.</p>
-
-      <h3>Continuous delivery and continuous deployment</h3>
-      <p>CD is two different things, and the difference matters. I write it Cd/CD.</p>
-    </div>
-    <div class="isnt rv">
-      <div class="is-col cdl">
-        <p class="ih"><span class="nc">Cd</span> · continuous delivery</p>
-        <ul>
-          <li>Every change that passes the pipeline is releasable.</li>
-          <li>Going to production is a decision: a person, or a business calendar, pushes the button.</li>
-          <li>Fits regulated work, coordinated launches, and teams still building their safety net.</li>
-        </ul>
-      </div>
-      <div class="is-col cdp">
-        <p class="ih"><span class="nc">CD</span> · continuous deployment</p>
-        <ul>
-          <li>Every change that passes the pipeline goes to production automatically.</li>
-          <li>No human gate between merge and production. The pipeline is the gate.</li>
-          <li>Needs the section 07 toolbox: flags, canaries, SLOs and automatic rollback.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="prose">
-      <p>Continuous deployment is not delivery with the approval removed. Take away the human gate without adding flags, canaries and automatic rollback, and you've only taken away a check. Earn it: get to continuous delivery first, measure your change failure rate and time to restore, and remove the button when the numbers say the pipeline catches what the person used to.</p>
+      <h3>Continuous delivery</h3>
       <p>CI works only when continuous delivery and continuous testing are practiced too. We are continuously delivering software to somebody, somewhere: to production or to lower environments. The best organizations release many times a day. Small, frequent releases deliver value without delays and keep each change small enough to understand and undo. Releases are also a communication problem, not only a technical one: tell people what shipped and what's still open.</p>
 
       <h3>Continuous testing</h3>
@@ -1148,7 +966,7 @@
   <div class="rule"></div>
   <span class="ghost" aria-hidden="true">07</span><p class="snum">07</p>
   <h2 id="h-prod">After the deploy <span class="new">updated</span></h2>
-  <blockquote><p>Sufficiently advanced monitoring is indistinguishable from testing.</p><cite>Ed Keyes, Google Test Automation Conference, 2007 · after Arthur C. Clarke</cite></blockquote>
+  <blockquote><p>Sufficiently advanced monitoring is indistinguishable from testing.</p><cite>with apologies to Arthur C. Clarke</cite></blockquote>
   <figure class="tvm glass rv" aria-label="A test and a production monitor have the same four parts">
     <div class="tvm-head"><span></span><span>Test in CI</span><span></span><span class="p">Monitor in production</span></div>
     <div class="tvm-row"><span class="tvm-k">Input</span><span class="tvm-c">Fixtures, test data, a build</span><span class="tvm-eq" aria-hidden="true">≡</span><span class="tvm-c p">Synthetic checks and real traffic</span></div>
@@ -1163,80 +981,17 @@
 
     <h3>What makes monitoring count as testing</h3>
     <ul>
-      <li><b>It has an oracle.</b> SLIs with SLOs (defined below), not dashboards someone might look at. If nothing asserts, nothing is tested.</li>
+      <li><b>It has an oracle.</b> SLIs with SLOs, not dashboards someone might look at. If nothing asserts, nothing is tested.</li>
       <li><b>It's fast.</b> Time to detect in minutes, not when a customer calls support.</li>
       <li><b>It's tied to the change.</b> You can tell which deploy or which flag caused the movement.</li>
       <li><b>It acts.</b> An SLO breach during a canary rolls back without waiting for a human.</li>
       <li><b>It runs without traffic.</b> Synthetic checks on critical flows run at 3 a.m. too, when no real user would find the break.</li>
       <li><b>It's part of Done.</b> Monitors and alerts are added or adapted with the story, not after the incident.</li>
     </ul>
-    <h3>SLI, SLO, SLA: how they fit together</h3>
-    <p>"Is it working?" needs a number, a target and a promise. They're three different things, owned by different people, and they nest.</p>
-  </div>
-  <div class="slx rv">
-    <div class="sl-card sli"><p class="sk">SLI</p><p class="sn">Service level indicator</p><p class="sd">What you measure. A ratio of good events to all events, from the user's side.</p><p class="se">% of checkout requests that return 2xx in under 800 ms</p><p class="so">Owner: engineering</p></div>
-    <div class="sl-card slo"><p class="sk">SLO</p><p class="sn">Service level objective</p><p class="sd">The target for that indicator over a window. Internal. Stricter than anything promised outside.</p><p class="se">99.9% over a rolling 30 days</p><p class="so">Owner: the team, with product</p></div>
-    <div class="sl-card sla"><p class="sk">SLA</p><p class="sn">Service level agreement</p><p class="sd">The promise to a customer or partner, with consequences: credits, penalties, a contract. Looser than the SLO.</p><p class="se">99.5% monthly, or service credits</p><p class="so">Owner: the business, legal</p></div>
-  </div>
-
-  <figure class="fig rv slfig" aria-labelledby="sl-cap">
-    <div class="fig-h"><span class="fig-t">One indicator, <b>three lines</b></span><span class="illus">illustration · not data</span></div>
-    <div class="tele-scroll"><svg viewBox="0 0 1000 215" role="img" aria-label="Availability scale from 99.0 to 100 percent. Below the 99.5 percent SLA the contract is broken. Between the SLA and the 99.9 percent SLO the internal target is missed but no one is owed yet. Above the SLO is the error budget. The measured SLI sits at 99.95 percent.">
-      <defs>
-        <linearGradient id="slz1" x1="0" x2="1"><stop offset="0" stop-color="#c05545" stop-opacity=".35"/><stop offset="1" stop-color="#c05545" stop-opacity=".12"/></linearGradient>
-        <linearGradient id="slz2" x1="0" x2="1"><stop offset="0" stop-color="#c9a35b" stop-opacity=".12"/><stop offset="1" stop-color="#c9a35b" stop-opacity=".3"/></linearGradient>
-        <linearGradient id="slz3" x1="0" x2="1"><stop offset="0" stop-color="#8fa37a" stop-opacity=".22"/><stop offset="1" stop-color="#8fa37a" stop-opacity=".45"/></linearGradient>
-      </defs>
-      <rect x="60" y="70" width="440" height="46" rx="8" fill="url(#slz1)"/>
-      <rect x="500" y="70" width="352" height="46" fill="url(#slz2)"/>
-      <rect x="852" y="70" width="88" height="46" rx="0" fill="url(#slz3)"/>
-      <text class="sl-zone" x="280" y="98" text-anchor="middle" fill="#e07a5f">SLA broken · you pay</text>
-      <text class="sl-zone" x="676" y="98" text-anchor="middle" fill="#c9a35b">SLO missed · fix reliability first</text>
-      <text class="sl-zone" x="884" y="60" text-anchor="end" fill="#8fa37a">error budget →</text>
-      <g class="sl-tick"><line x1="500" x2="500" y1="64" y2="126" stroke="#c05545" stroke-width="2"/><text x="500" y="146" text-anchor="middle" fill="#c05545">SLA 99.5%</text></g>
-      <g class="sl-tick"><line x1="852" x2="852" y1="64" y2="126" stroke="#c9a35b" stroke-width="2"/><text x="852" y="146" text-anchor="middle" fill="#c9a35b">SLO 99.9%</text></g>
-      <g class="pop" style="--d:.4s"><line x1="896" x2="896" y1="24" y2="120" stroke="#ece4d5" stroke-width="2.5"/><circle cx="896" cy="24" r="6" fill="#ece4d5" filter="url(#glow)"/><text x="884" y="29" text-anchor="end" fill="#ece4d5" class="sl-now">SLI now 99.95%</text></g>
-      <g class="sl-axis"><text x="60" y="176">99.0%</text><text x="280" y="176" text-anchor="middle">99.25%</text><text x="720" y="176" text-anchor="middle">99.75%</text><text x="940" y="176" text-anchor="end">100%</text></g>
-      <text class="sl-foot" x="60" y="206">The SLO sits inside the SLA on purpose: when you miss your own target, you still have room before you owe anyone.</text>
-    </svg></div>
-
-    <div class="fig-h" style="margin-top:30px"><span class="fig-t">Error budget = 100% − SLO · <b>43 minutes a month at 99.9%</b></span></div>
-    <div class="tele-scroll"><svg viewBox="0 0 1000 260" role="img" aria-label="Error budget burn-down over 30 days. Steady small spending, a bad deploy on day 9 burns about a third of the budget, another dip on day 20, and the remaining budget crosses the 25 percent policy line near day 25.">
-      <defs><linearGradient id="bbg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8fa37a" stop-opacity=".35"/><stop offset="1" stop-color="#8fa37a" stop-opacity="0"/></linearGradient></defs>
-      <g class="tl-grid"><line x1="60" x2="940" y1="30" y2="30"/><line x1="60" x2="940" y1="80" y2="80"/><line x1="60" x2="940" y1="130" y2="130"/><line x1="60" x2="940" y1="230" y2="230"/></g>
-      <rect x="60" y="180" width="880" height="50" fill="rgba(192,85,69,.08)"/>
-      <line x1="60" x2="940" y1="180" y2="180" stroke="#c9a35b" stroke-dasharray="6 6"/>
-      <text class="tl-lbl" x="70" y="173" style="fill:#c9a35b">25% left · reliability work before features</text>
-      <text class="tl-lbl" x="935" y="223" text-anchor="end" style="fill:#e07a5f">0% · freeze risky changes</text>
-      <text class="tl-lbl" x="60" y="20">BUDGET REMAINING</text>
-      <path d="M60,30 L324,51.6 L325.5,126 L646.7,152 L648,168 L940,192 L940,230 L60,230 Z" fill="url(#bbg)" class="pop" style="--d:.3s"/>
-      <path class="tl-err draw" style="--len:1300;stroke:#8fa37a" d="M60,30 L324,51.6 L325.5,126 L646.7,152 L648,168 L940,192"/>
-      <g class="pop" style="--d:1.2s"><circle cx="325" cy="88" r="3" fill="#c05545"/><text class="tl-ev" x="334" y="92" fill="#c05545">bad deploy · 16 of 43 minutes gone</text></g>
-      <g class="pop" style="--d:1.8s"><circle cx="648" cy="160" r="3" fill="#c9a35b"/><text class="tl-ev" x="656" y="150" fill="#c9a35b">dependency blip</text></g>
-      <g class="sl-axis"><text x="60" y="252">day 0</text><text x="500" y="252" text-anchor="middle">day 15</text><text x="940" y="252" text-anchor="end">day 30</text></g>
-    </svg></div>
-    <p class="scroll-hint">scroll the charts →</p>
-    <figcaption id="sl-cap">The SLI is measured continuously. The SLO turns it into a pass/fail assertion, which is what makes monitoring a test. The gap between 100% and the SLO is the error budget: the amount of failure the team has agreed is acceptable. While budget is left, ship. When it runs low, the same rule that let you move fast tells you to slow down. That is section 02's "how much is enough," written as a number.</figcaption>
-  </figure>
-  <div class="prose">
-    <p>Three things go wrong most often. SLIs that measure the server instead of the user (CPU is not an SLI). SLOs set at 100%, which leaves no budget and makes every change a violation. And SLAs set equal to the SLO, so the first internal miss is already a contract breach. Measure what the user feels, set the target below perfect on purpose, and keep the promise looser than the target.</p>
     <p>Three questions every team should be able to answer: How do we know our app is working right now? What monitors do we have in place? Which critical flows have synthetics?</p>
 
     <h3>The release toolbox</h3>
-    <p><b>Deploy is not release.</b> Keep the words separate, because they carry different risk.</p>
-  </div>
-  <div class="dvr rv">
-    <div class="dv-col dep"><p class="dk">Deploy</p><p class="dt">Pushing code artifacts to production with the flags off.</p><p class="dd">Nobody sees anything new. Smoke and synthetic checks confirm the deploy itself. Do it continuously, any time of day.</p><p class="dr">Risk: the deploy</p></div>
-    <div class="dv-col rel"><p class="dk">Release</p><p class="dt">Knowingly turning a flag on, for a cohort, a percentage, or everyone.</p><p class="dd">A two-way door. If it misbehaves, the flag goes off in seconds, no deploy needed. Canary it, watch the SLOs, ramp.</p><p class="dr">Risk: the feature, reversible</p></div>
-    <div class="dv-col one"><p class="dk">Release with no switch</p><p class="dt">Something that goes live the moment it ships, with no way to turn it off.</p><p class="dd">Schema migrations, data backfills, emails sent, money moved, a partner integration cut over. A one-way door: deploy and release are the same act. Section 02's old bar applies.</p><p class="dr">Risk: all of it, at once</p></div>
-  </div>
-  <div class="quotes rv">
-    <blockquote><p>"You should deploy your code continuously throughout the day or week. But you should wrap any large, user-visible behavior changes behind a feature flag, so you can release that code by flipping a flag."</p><cite>Charity Majors · Deploys Are the Wrong Way to Change User Experience</cite></blockquote>
-    <blockquote><p>"Feature flags allow you to separate code deployments from feature releases. As a result, developers can deploy to production whenever they want, and the business can release when it's ready."</p><cite>LaunchDarkly · Why decouple deployments from releases</cite></blockquote>
-    <blockquote><p>"Some decisions are consequential and irreversible or nearly irreversible – one-way doors – and these decisions must be made methodically, carefully, slowly, with great deliberation and consultation."</p><cite>Jeff Bezos · Amazon shareholder letter, 2015</cite></blockquote>
-  </div>
-  <div class="prose">
-    <p>Bezos was writing about business decisions, but it maps exactly. A flag turns most releases into two-way doors, which is why they can move fast. The ones without a switch are one-way doors, and they get the slow, careful treatment. The mistake in both directions is the same: treating a one-way door like a flag flip, or treating every flag flip like a one-way door.</p>
+    <p><b>Feature flags and dark launching.</b> Deploy the code with the feature off. Turn it on for the team, then internal users, then a percentage of customers. Deploy and release become two decisions, and "release" can be undone in seconds without a deploy.</p>
     <p><b>Canary releases.</b> Run the new version in production with a slice of real traffic and a safe rollback strategy. It tests capacity, and captures how the new version affects production before everyone gets it.</p>
     <p><b>A/B testing.</b> Diligent use of A/B tests and flags gives the team flexibility, and gauges feature readiness from the customer's side: how it behaves in the real world, not only whether it works.</p>
     <p><b>Rollback.</b> One action, rehearsed, measured. If rollback is a runbook nobody has run, it isn't a rollback. Database changes use expand/contract so the previous version still works against the new schema; otherwise code rollback is a fiction.</p>
@@ -1319,21 +1074,6 @@
   <p class="slede">Automation can't judge whether a flow makes sense. It can't test usability. Somebody has to write each automated flow and tell the machine what to do. So what's the deal with manual testing?</p>
   <div class="prose">
     <p>Back in 2000, automated tools pretty much sucked and cost $20k a seat or more; manual testing was "the way." In 2008 manual was still the main way, with a small set of automated tests augmenting. Around 2010 the real shift toward automation began, and by 2015 automated testing was heavily used, understood and trusted. Now there are very few manual testers around, and a lot of that skill set is gone. Teams need to deliver fast and automation is key to that, but there is still room for manual practice: exploratory work on edge cases, boundaries, error handling and usability. I'm not saying a team needs a dedicated person doing this full time. The team itself needs to be capable of effective manual testing in those areas, and product should look at the app from the customer's view too.</p>
-  </div>
-  <div class="prose">
-    <h3>Product, quality, engineering: the three together</h3>
-    <p>Most of what works in agile and modern delivery comes from the three working together, not in sequence. Each has a role. Product defines the thing; quality and engineering ask questions to help refine it. Engineering builds it, quality tests it, and product accepts it, and helps test it, as does engineering. That's the shape whether you call it the Three Amigos, a triad, or just a good team.</p>
-  </div>
-  <figure class="fig rv trifig" aria-labelledby="tri-cap">
-    <div class="tri-scroll"><div class="tri" role="table" aria-label="Who does what across delivery: product, quality and engineering"><div class="tri-h" role="row"><span role="columnheader"></span><span role="columnheader">Define</span><span role="columnheader">Refine</span><span role="columnheader">Build</span><span role="columnheader">Test</span><span role="columnheader">Accept</span><span role="columnheader">Run &amp; learn</span></div><div class="tri-r pr" role="row"><span class="tri-n" role="rowheader">Product</span><span class="tri-c lead" role="cell">Defines the thing: the problem, the outcome, acceptance criteria.</span><span class="tri-c" role="cell">Answers questions, trims scope, sharpens criteria.</span><span class="tri-c" role="cell">Stays reachable; reviews early builds.</span><span class="tri-c" role="cell">Helps test it from the customer&rsquo;s view.</span><span class="tri-c lead" role="cell">Accepts it, or doesn&rsquo;t. Decides when it releases.</span><span class="tri-c" role="cell">Reads outcomes and customer feedback.</span></div><div class="tri-r qa" role="row"><span class="tri-n" role="rowheader">Quality</span><span class="tri-c" role="cell">Asks questions: risks, edge cases, testability.</span><span class="tri-c" role="cell">Refines criteria; risk analysis, test strategy, Definition of Done.</span><span class="tri-c" role="cell">Pairs; builds test data and automation alongside the code.</span><span class="tri-c lead" role="cell">Tests it: exploratory, automated, non-functional. Reports what it found.</span><span class="tri-c" role="cell">Brings the evidence the acceptance decision rests on.</span><span class="tri-c" role="cell">Owns the quality system: monitors, escape analysis, metrics. Coaches the other two.</span></div><div class="tri-r en" role="row"><span class="tri-n" role="rowheader">Engineering</span><span class="tri-c" role="cell">Asks questions: feasibility, design, cost.</span><span class="tri-c" role="cell">Designs; estimates with testing included.</span><span class="tri-c lead" role="cell">Builds it, TDD, unit and integration tests.</span><span class="tri-c" role="cell">Helps test; fixes what testing finds.</span><span class="tri-c" role="cell">Demos it; makes it shippable.</span><span class="tri-c" role="cell">Runs it: on-call, rollback, fixes.</span></div></div></div>
-    <p class="scroll-hint">scroll the table →</p>
-    <figcaption id="tri-cap">Highlighted cells are where each role leads. Seems like quality gets off light, huh? Read across its row. Product leads at the two ends, engineering leads in the middle, and quality carries load in every column without ever handing off. Quality isn't a stage between build and accept; it runs the length of the line.</figcaption>
-  </figure>
-  <div class="note rv">
-    <p class="nh">Know how to use what you own</p>
-    <p>A product owner who can't run their own product, and perform and verify most of their own requirements, doesn't understand the product well enough to own it. Same goes for engineering: nobody should be so specialized they can't sign in, place an order, or walk the main flow of the thing they build. There are exceptions to every rule, but they should be rare and deliberate, not the default.</p>
-  </div>
-  <div class="prose">
     <p>Here's how that works in practice.</p>
   </div>
   <div class="story prose">
@@ -1415,13 +1155,12 @@
       <tbody>
         <tr><td>Deployment frequency</td><td>How often you successfully release to production</td><td>Needs a robust, reliable pipeline and tests</td></tr>
         <tr><td>Lead time for changes</td><td>Commit to production</td><td>Slow tests and manual gates show up here</td></tr>
-        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>Reflects testing, along with change size, design and release practice</td></tr>
+        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>A direct measure of how effective the testing is</td></tr>
         <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from section 02</td></tr>
       </tbody>
     </table>
   </div>
   <div class="prose">
-    <p>I used to call change failure rate "a direct measure of how effective the testing is." That's how the metrics-alignment world I came up in talks: a delivery number maps straight onto a testing number. The context-driven school, Cem Kaner in particular, taught me to ask what a metric actually measures before trusting it. Change failure rate moves with testing, but also with how big the changes are, how the system is designed, and how releases are run. It's a good signal to investigate, not a scorecard for the testers.</p>
     <h3>Quality and testing</h3>
     <p><b>Product risks:</b> % of risks fully covered by passing tests; % with some or all tests failing; % not yet fully tested; coverage by risk category; risks found after the initial analysis.</p>
     <p><b>Defects:</b> found vs. fixed over time; mean time between failures; breakdown by root cause, phase introduced/detected/removed, priority, rejected or duplicate, leaked to production, and defect age.</p>
@@ -1553,7 +1292,6 @@
         <tr><td>Production smoke tests</td><td><span class="rt assess">Assess</span></td><td><span class="rt adopt">Adopt</span></td><td>Continuous synthetics on critical flows, with rollback on failure.</td></tr>
         <tr><td>Chaos testing</td><td><span class="rt trial">Trial</span></td><td><span class="rt trial">Trial</span></td><td>Worth it once observability is solid.</td></tr>
         <tr><td>Exploratory testing</td><td><span class="rt adopt">Adopt</span></td><td><span class="rt adopt">Adopt</span></td><td>More valuable as automation and AI absorb the repetitive checks.</td></tr>
-        <tr><td>Confidence engineering</td><td><span class="rt none">—</span></td><td><span class="rt assess">Assess</span></td><td>Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.</td></tr>
         <tr><td>Fixed unit coverage target</td><td><span class="rt adopt">Adopt</span> 90%</td><td><span class="rt hold">Hold</span></td><td>Generated tests make the number easy to hit and meaningless. Watch the trend.</td></tr>
         <tr><td>Feature flags, dark launch</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>Separates deploy from release; release becomes reversible.</td></tr>
         <tr><td>Automated rollback</td><td><span class="rt none">—</span></td><td><span class="rt adopt">Adopt</span></td><td>The "time" lever. Rehearse it.</td></tr>
@@ -1571,7 +1309,7 @@
   <div class="rule"></div>
   <span class="ghost" aria-hidden="true">14</span><p class="snum">14</p>
   <h2 id="h-found">The foundations</h2>
-  <p class="slede">None of the speed above replaces the fundamentals. These are the standards and models underneath how I think about quality. Treat them as a reference library, not a rulebook. How things should be done varies with context; these describe one well-documented way, the one that fits best when failure can't be undone. You draw on more of them the further right you sit on the rigor spectrum in section 02.</p>
+  <p class="slede">None of the speed above replaces the fundamentals. These are the standards and models underneath how I think about quality.</p>
   <div class="prose">
     <h3>ISO/IEC 25010: eight product quality characteristics</h3>
     <p>The SQuaRE quality model. It superseded ISO 9126 and added security and compatibility. It gives consistent terms for specifying, measuring and evaluating quality, and a checklist to compare requirements against for completeness. There is also a quality-in-use model: effectiveness, efficiency, satisfaction, freedom from risk, and context coverage.</p>
@@ -1594,7 +1332,7 @@
     <p>29119 is the software testing standard: concepts, processes, documentation and techniques. ISO 9000:2015 gives seven quality management principles: customer focus, leadership, engagement of people, process approach, improvement, evidence-based decision making, and relationship management. I didn't recommend aligning a delivery organization to an ISO standard; the overhead would need dedicated QA staff to be practical. They're the vocabulary and the checklist, not the process.</p>
 
     <h3>Quality assurance vs. quality control</h3>
-    <p><b>Quality assurance</b> is preventive and works on the process: process definition, training, audits, tool selection. <b>Quality control</b> is corrective and works on the product: reviews, testing, inspections. That's the classic process-alignment framing I learned early, and it's still how many organizations draw the org chart: testing sits in QC. The context-driven school, James Bach and Michael Bolton in particular, pushed me past it. Testers don't control quality any more than they assure it; we don't own the code, the schedule or the scope. What testing does is inform both: it gives the people who do control those things the information they need to decide. I keep the QA/QC terms because organizations use them, but that's the role I actually play.</p>
+    <p><b>Quality assurance</b> is preventive and works on the process: process definition, training, audits, tool selection. <b>Quality control</b> is corrective and works on the product: reviews, testing, inspections. Testing sits in QC; a quality culture needs both.</p>
 
     <h3>The planning hierarchy</h3>
   </div>
@@ -1609,9 +1347,6 @@
         <tr><td>Test case</td><td>Feature</td><td>Conditions, steps, data, expected and actual result</td><td>Constantly</td></tr>
       </tbody>
     </table>
-  </div>
-  <div class="prose">
-    <p>Same rule as the traceability matrix: these are levels of thinking, not a stack of documents to produce. On a fast-moving team the policy is a page, the strategy lives in the repo next to the code, the plan is the story and its acceptance criteria, and the test cases are the tests. Write only what someone will read and act on.</p>
   </div>
   <div class="prose">
     <h3>Testing maturity (TMMi)</h3>
@@ -1655,15 +1390,7 @@
     <li>ISO/IEC 25010, ISO/IEC 5055:2021, ISO/IEC/IEEE 29119, ISO 9000:2015.</li>
     <li>TMMi Foundation. Test Maturity Model integration.</li>
     <li>W3C. Web Content Accessibility Guidelines.</li>
-    <li>Keyes, E. "Sufficiently Advanced Monitoring is Indistinguishable from Testing." Google Test Automation Conference (GTAC), 2007.</li>
-    <li>Pettichord, B. "Four Schools of Software Testing." 2003.</li>
-    <li>Bolton, M. "Very Short Blog Posts (2): Confidence." DevelopSense, 2013.</li>
-    <li>Arbon, J. "Confidence in AI-Generated Software." 2026.</li>
-    <li>"Manifesto for Confidence Engineering." opentest.ai, living draft, 2026.</li>
-    <li>Majors, C. "Deploys Are the Wrong Way to Change User Experience." charity.wtf.</li>
-    <li>LaunchDarkly. "Why decouple deployments from releases."</li>
-    <li>Bezos, J. Amazon letter to shareholders, 2015 (Type 1 and Type 2 decisions).</li>
-    <li>Clarke, A. C. <em>Profiles of the Future</em> (the third law Keyes borrowed).</li>
+    <li>Clarke, A. C. <em>Profiles of the Future</em> (the third law, borrowed).</li>
   </ol>
 
   <footer>
@@ -1750,7 +1477,6 @@
     [0,'Continuous testing','A','A','Now runs past the deploy.'],
     [0,'Risk-based testing','S','A','Was Adopt for programs, Assess for everything else. It is how you decide what "enough" is for each change.'],
     [0,'Exploratory testing','A','A','More valuable as automation and AI absorb the repetitive checks.'],
-    [0,'Confidence engineering',null,'S','Emerging term for owning the justified-confidence-to-ship decision when AI produces much of the code and evidence. Worth watching.'],
     [1,'Contract testing','T','A','More services and generated clients mean more contracts to break.'],
     [1,'Visual tests','T','T','AI diffing reduced the noise; still tune per app.'],
     [1,'Automated E2E as pipeline gate','H','H','Still flaky and slow; a few critical flows only.'],
@@ -1804,27 +1530,6 @@
   });
   D.forEach(function(d,i){var li=document.createElement('li');li.innerHTML='<b>'+(i+1)+'</b>';li.appendChild(document.createTextNode(d[1]));
     li.tabIndex=0;li.addEventListener('click',function(){pick(i)});li.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(i)}});list.appendChild(li)});
-})();
-
-/* pipeline phase details */
-(function(){
-  var panel=document.getElementById('phase-panel');if(!panel)return;
-  var track=panel.parentNode,cards=[].slice.call(track.querySelectorAll('.phase')),open=-1;
-  function close(){panel.hidden=true;cards.forEach(function(c){c.classList.remove('sel');c.querySelector('.pmore').setAttribute('aria-expanded','false')});open=-1}
-  cards.forEach(function(c,i){
-    var b=c.querySelector('.pmore');
-    b.addEventListener('click',function(){
-      if(open===i){close();b.focus();return}
-      close();open=i;c.classList.add('sel');b.setAttribute('aria-expanded','true');
-      panel.innerHTML='<div class="ph"><span class="pt2"><i>'+(i+1)+'</i></span><button type="button" class="px" aria-label="Close">×</button></div><p></p>';
-      panel.querySelector('.pt2').appendChild(document.createTextNode(c.querySelector('.pt').textContent));
-      panel.querySelector('p').innerHTML=c.querySelector('.pfull').innerHTML;
-      panel.querySelector('.px').addEventListener('click',function(){close();b.focus()});
-      var cols=getComputedStyle(track).gridTemplateColumns.split(' ').filter(Boolean).length||1,last=cards[Math.min(Math.ceil((i+1)/cols)*cols,cards.length)-1];
-      track.insertBefore(panel,last.nextSibling);panel.hidden=false;
-    });
-  });
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&open>-1){var b=cards[open].querySelector('.pmore');close();b.focus()}});
 })();
 </script>
 </body>
