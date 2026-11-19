@@ -1371,12 +1371,13 @@
       <tbody>
         <tr><td>Deployment frequency</td><td>How often you successfully release to production</td><td>Needs a robust, reliable pipeline and tests</td></tr>
         <tr><td>Lead time for changes</td><td>Commit to production</td><td>Slow tests and manual gates show up here</td></tr>
-        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>A direct measure of how effective the testing is</td></tr>
+        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>Reflects testing, along with change size, design and release practice</td></tr>
         <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from section 02</td></tr>
       </tbody>
     </table>
   </div>
   <div class="prose">
+    <p>I first wrote that change failure rate was "a direct measure of how effective the testing is." That was the metrics-alignment world I came up in talking, where a delivery number maps straight onto a testing number. The context-driven school, Cem Kaner in particular, taught me to ask what a metric actually measures before trusting it. Change failure rate moves with testing, but also with how big the changes are, how the system is designed, and how releases are run. It's a good signal to investigate, not a scorecard for the testers.</p>
     <h3>Quality and testing</h3>
     <p><b>Product risks:</b> % of risks fully covered by passing tests; % with some or all tests failing; % not yet fully tested; coverage by risk category; risks found after the initial analysis.</p>
     <p><b>Defects:</b> found vs. fixed over time; mean time between failures; breakdown by root cause, phase introduced/detected/removed, priority, rejected or duplicate, leaked to production, and defect age.</p>
