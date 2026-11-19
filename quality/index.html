@@ -477,6 +477,43 @@
   .is-col.cdl li::before,.is-col.cdp li::before{content:"→";color:var(--brass)}
   .nc{text-transform:none;letter-spacing:.06em}
   @media (max-width:640px){.isnt{grid-template-columns:1fr}}
+  .slx{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 0}
+  .sl-card{border-radius:12px;padding:18px 18px 14px;border:1px solid rgba(236,228,213,.09);position:relative;overflow:hidden}
+  .sl-card::after{content:"";position:absolute;left:0;right:0;top:0;height:2px}
+  .sl-card.sli{background:linear-gradient(160deg,rgba(236,228,213,.1),rgba(255,240,220,.01) 60%)}.sl-card.sli::after{background:var(--paper)}
+  .sl-card.slo{background:linear-gradient(160deg,rgba(201,163,91,.16),rgba(255,240,220,.01) 60%)}.sl-card.slo::after{background:var(--brass)}
+  .sl-card.sla{background:linear-gradient(160deg,rgba(192,85,69,.16),rgba(255,240,220,.01) 60%)}.sl-card.sla::after{background:var(--ox)}
+  .sl-card .sk{font-family:var(--serif);font-weight:700;font-size:34px;line-height:1;margin:0 0 4px;color:var(--paper)}
+  .sl-card.slo .sk{color:var(--brass)}.sl-card.sla .sk{color:var(--ox)}
+  .sl-card .sn{font:500 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);margin:0 0 10px}
+  .sl-card .sd{font-size:16px;line-height:1.45;color:var(--read-ink);margin:0 0 12px}
+  .sl-card .se{font:400 12px/1.5 var(--mono);color:var(--paper);background:rgba(0,0,0,.28);border-radius:6px;padding:7px 10px;margin:0 0 10px}
+  .sl-card .so{font:400 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--paper-faint);margin:0}
+  .slfig{padding:22px}
+  .slfig svg{display:block;width:100%;height:auto;overflow:visible}
+  .slfig text{font-family:var(--mono)}
+  .sl-zone{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+  .sl-tick text{font-size:13px;font-weight:500;letter-spacing:.06em}
+  .sl-now{font-size:13px;font-weight:500}
+  .sl-axis text{font-size:11px;fill:var(--paper-faint)}
+  .sl-foot{font-size:11.5px;fill:var(--paper-dim)}
+  .slfig .scroll-hint{margin-top:10px}
+  @media (max-width:760px){.slx{grid-template-columns:1fr}}
+  @media (max-width:640px){.slfig{padding:14px 10px 10px}}
+  .dvr{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 18px}
+  .dv-col{border-radius:12px;padding:18px 18px 14px;border:1px solid rgba(236,228,213,.09);display:flex;flex-direction:column}
+  .dv-col.dep{background:linear-gradient(160deg,rgba(143,163,122,.16),rgba(255,240,220,.01) 60%);border-color:rgba(143,163,122,.35)}
+  .dv-col.rel{background:linear-gradient(160deg,rgba(201,163,91,.16),rgba(255,240,220,.01) 60%);border-color:rgba(201,163,91,.35)}
+  .dv-col.one{background:linear-gradient(160deg,rgba(192,85,69,.2),rgba(255,240,220,.01) 60%);border-color:rgba(192,85,69,.45)}
+  .dv-col .dk{font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.15;margin:0 0 8px;color:var(--paper)}
+  .dv-col .dt{font-size:16.5px;line-height:1.45;color:var(--paper);margin:0 0 10px}
+  .dv-col .dd{font-size:15px;line-height:1.5;color:var(--read-ink);margin:0 0 12px}
+  .dv-col .dr{margin:auto 0 0;font:500 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase}
+  .dv-col.dep .dr{color:var(--moss)}.dv-col.rel .dr{color:var(--brass)}.dv-col.one .dr{color:var(--ox)}
+  .quotes{display:grid;grid-template-columns:1fr;gap:4px;margin:6px 0 10px}
+  .quotes blockquote{margin:14px 0}
+  .quotes blockquote p{font-size:clamp(18px,2.2vw,21px)}
+  @media (max-width:760px){.dvr{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1067,17 +1104,80 @@
 
     <h3>What makes monitoring count as testing</h3>
     <ul>
-      <li><b>It has an oracle.</b> SLIs with SLOs, not dashboards someone might look at. If nothing asserts, nothing is tested.</li>
+      <li><b>It has an oracle.</b> SLIs with SLOs (defined below), not dashboards someone might look at. If nothing asserts, nothing is tested.</li>
       <li><b>It's fast.</b> Time to detect in minutes, not when a customer calls support.</li>
       <li><b>It's tied to the change.</b> You can tell which deploy or which flag caused the movement.</li>
       <li><b>It acts.</b> An SLO breach during a canary rolls back without waiting for a human.</li>
       <li><b>It runs without traffic.</b> Synthetic checks on critical flows run at 3 a.m. too, when no real user would find the break.</li>
       <li><b>It's part of Done.</b> Monitors and alerts are added or adapted with the story, not after the incident.</li>
     </ul>
+    <h3>SLI, SLO, SLA: how they fit together</h3>
+    <p>"Is it working?" needs a number, a target and a promise. They're three different things, owned by different people, and they nest.</p>
+  </div>
+  <div class="slx rv">
+    <div class="sl-card sli"><p class="sk">SLI</p><p class="sn">Service level indicator</p><p class="sd">What you measure. A ratio of good events to all events, from the user's side.</p><p class="se">% of checkout requests that return 2xx in under 800 ms</p><p class="so">Owner: engineering</p></div>
+    <div class="sl-card slo"><p class="sk">SLO</p><p class="sn">Service level objective</p><p class="sd">The target for that indicator over a window. Internal. Stricter than anything promised outside.</p><p class="se">99.9% over a rolling 30 days</p><p class="so">Owner: the team, with product</p></div>
+    <div class="sl-card sla"><p class="sk">SLA</p><p class="sn">Service level agreement</p><p class="sd">The promise to a customer or partner, with consequences: credits, penalties, a contract. Looser than the SLO.</p><p class="se">99.5% monthly, or service credits</p><p class="so">Owner: the business, legal</p></div>
+  </div>
+
+  <figure class="fig rv slfig" aria-labelledby="sl-cap">
+    <div class="fig-h"><span class="fig-t">One indicator, <b>three lines</b></span><span class="illus">illustration · not data</span></div>
+    <div class="tele-scroll"><svg viewBox="0 0 1000 215" role="img" aria-label="Availability scale from 99.0 to 100 percent. Below the 99.5 percent SLA the contract is broken. Between the SLA and the 99.9 percent SLO the internal target is missed but no one is owed yet. Above the SLO is the error budget. The measured SLI sits at 99.95 percent.">
+      <defs>
+        <linearGradient id="slz1" x1="0" x2="1"><stop offset="0" stop-color="#c05545" stop-opacity=".35"/><stop offset="1" stop-color="#c05545" stop-opacity=".12"/></linearGradient>
+        <linearGradient id="slz2" x1="0" x2="1"><stop offset="0" stop-color="#c9a35b" stop-opacity=".12"/><stop offset="1" stop-color="#c9a35b" stop-opacity=".3"/></linearGradient>
+        <linearGradient id="slz3" x1="0" x2="1"><stop offset="0" stop-color="#8fa37a" stop-opacity=".22"/><stop offset="1" stop-color="#8fa37a" stop-opacity=".45"/></linearGradient>
+      </defs>
+      <rect x="60" y="70" width="440" height="46" rx="8" fill="url(#slz1)"/>
+      <rect x="500" y="70" width="352" height="46" fill="url(#slz2)"/>
+      <rect x="852" y="70" width="88" height="46" rx="0" fill="url(#slz3)"/>
+      <text class="sl-zone" x="280" y="98" text-anchor="middle" fill="#e07a5f">SLA broken · you pay</text>
+      <text class="sl-zone" x="676" y="98" text-anchor="middle" fill="#c9a35b">SLO missed · fix reliability first</text>
+      <text class="sl-zone" x="884" y="60" text-anchor="end" fill="#8fa37a">error budget →</text>
+      <g class="sl-tick"><line x1="500" x2="500" y1="64" y2="126" stroke="#c05545" stroke-width="2"/><text x="500" y="146" text-anchor="middle" fill="#c05545">SLA 99.5%</text></g>
+      <g class="sl-tick"><line x1="852" x2="852" y1="64" y2="126" stroke="#c9a35b" stroke-width="2"/><text x="852" y="146" text-anchor="middle" fill="#c9a35b">SLO 99.9%</text></g>
+      <g class="pop" style="--d:.4s"><line x1="896" x2="896" y1="24" y2="120" stroke="#ece4d5" stroke-width="2.5"/><circle cx="896" cy="24" r="6" fill="#ece4d5" filter="url(#glow)"/><text x="884" y="29" text-anchor="end" fill="#ece4d5" class="sl-now">SLI now 99.95%</text></g>
+      <g class="sl-axis"><text x="60" y="176">99.0%</text><text x="280" y="176" text-anchor="middle">99.25%</text><text x="720" y="176" text-anchor="middle">99.75%</text><text x="940" y="176" text-anchor="end">100%</text></g>
+      <text class="sl-foot" x="60" y="206">The SLO sits inside the SLA on purpose: when you miss your own target, you still have room before you owe anyone.</text>
+    </svg></div>
+
+    <div class="fig-h" style="margin-top:30px"><span class="fig-t">Error budget = 100% − SLO · <b>43 minutes a month at 99.9%</b></span></div>
+    <div class="tele-scroll"><svg viewBox="0 0 1000 260" role="img" aria-label="Error budget burn-down over 30 days. Steady small spending, a bad deploy on day 9 burns about a third of the budget, another dip on day 20, and the remaining budget crosses the 25 percent policy line near day 25.">
+      <defs><linearGradient id="bbg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8fa37a" stop-opacity=".35"/><stop offset="1" stop-color="#8fa37a" stop-opacity="0"/></linearGradient></defs>
+      <g class="tl-grid"><line x1="60" x2="940" y1="30" y2="30"/><line x1="60" x2="940" y1="80" y2="80"/><line x1="60" x2="940" y1="130" y2="130"/><line x1="60" x2="940" y1="230" y2="230"/></g>
+      <rect x="60" y="180" width="880" height="50" fill="rgba(192,85,69,.08)"/>
+      <line x1="60" x2="940" y1="180" y2="180" stroke="#c9a35b" stroke-dasharray="6 6"/>
+      <text class="tl-lbl" x="70" y="173" style="fill:#c9a35b">25% left · reliability work before features</text>
+      <text class="tl-lbl" x="935" y="223" text-anchor="end" style="fill:#e07a5f">0% · freeze risky changes</text>
+      <text class="tl-lbl" x="60" y="20">BUDGET REMAINING</text>
+      <path d="M60,30 L324,51.6 L325.5,126 L646.7,152 L648,168 L940,192 L940,230 L60,230 Z" fill="url(#bbg)" class="pop" style="--d:.3s"/>
+      <path class="tl-err draw" style="--len:1300;stroke:#8fa37a" d="M60,30 L324,51.6 L325.5,126 L646.7,152 L648,168 L940,192"/>
+      <g class="pop" style="--d:1.2s"><circle cx="325" cy="88" r="3" fill="#c05545"/><text class="tl-ev" x="334" y="92" fill="#c05545">bad deploy · 16 of 43 minutes gone</text></g>
+      <g class="pop" style="--d:1.8s"><circle cx="648" cy="160" r="3" fill="#c9a35b"/><text class="tl-ev" x="656" y="150" fill="#c9a35b">dependency blip</text></g>
+      <g class="sl-axis"><text x="60" y="252">day 0</text><text x="500" y="252" text-anchor="middle">day 15</text><text x="940" y="252" text-anchor="end">day 30</text></g>
+    </svg></div>
+    <p class="scroll-hint">scroll the charts →</p>
+    <figcaption id="sl-cap">The SLI is measured continuously. The SLO turns it into a pass/fail assertion, which is what makes monitoring a test. The gap between 100% and the SLO is the error budget: the amount of failure the team has agreed is acceptable. While budget is left, ship. When it runs low, the same rule that let you move fast tells you to slow down. That is section 02's "how much is enough," written as a number.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Three things go wrong most often. SLIs that measure the server instead of the user (CPU is not an SLI). SLOs set at 100%, which leaves no budget and makes every change a violation. And SLAs set equal to the SLO, so the first internal miss is already a contract breach. Measure what the user feels, set the target below perfect on purpose, and keep the promise looser than the target.</p>
     <p>Three questions every team should be able to answer: How do we know our app is working right now? What monitors do we have in place? Which critical flows have synthetics?</p>
 
     <h3>The release toolbox</h3>
-    <p><b>Feature flags and dark launching.</b> Deploy the code with the feature off. Turn it on for the team, then internal users, then a percentage of customers. Deploy and release become two decisions, and "release" can be undone in seconds without a deploy.</p>
+    <p><b>Deploy is not release.</b> Keep the words separate, because they carry different risk.</p>
+  </div>
+  <div class="dvr rv">
+    <div class="dv-col dep"><p class="dk">Deploy</p><p class="dt">Pushing code artifacts to production with the flags off.</p><p class="dd">Nobody sees anything new. Smoke and synthetic checks confirm the deploy itself. Do it continuously, any time of day.</p><p class="dr">Risk: the deploy</p></div>
+    <div class="dv-col rel"><p class="dk">Release</p><p class="dt">Knowingly turning a flag on, for a cohort, a percentage, or everyone.</p><p class="dd">A two-way door. If it misbehaves, the flag goes off in seconds, no deploy needed. Canary it, watch the SLOs, ramp.</p><p class="dr">Risk: the feature, reversible</p></div>
+    <div class="dv-col one"><p class="dk">Release with no switch</p><p class="dt">Something that goes live the moment it ships, with no way to turn it off.</p><p class="dd">Schema migrations, data backfills, emails sent, money moved, a partner integration cut over. A one-way door: deploy and release are the same act. Section 02's old bar applies.</p><p class="dr">Risk: all of it, at once</p></div>
+  </div>
+  <div class="quotes rv">
+    <blockquote><p>"You should deploy your code continuously throughout the day or week. But you should wrap any large, user-visible behavior changes behind a feature flag, so you can release that code by flipping a flag."</p><cite>Charity Majors · Deploys Are the Wrong Way to Change User Experience</cite></blockquote>
+    <blockquote><p>"Feature flags allow you to separate code deployments from feature releases. As a result, developers can deploy to production whenever they want, and the business can release when it's ready."</p><cite>LaunchDarkly · Why decouple deployments from releases</cite></blockquote>
+    <blockquote><p>"Some decisions are consequential and irreversible or nearly irreversible – one-way doors – and these decisions must be made methodically, carefully, slowly, with great deliberation and consultation."</p><cite>Jeff Bezos · Amazon shareholder letter, 2015</cite></blockquote>
+  </div>
+  <div class="prose">
+    <p>Bezos was writing about business decisions, but it maps exactly. A flag turns most releases into two-way doors, which is why they can move fast. The ones without a switch are one-way doors, and they get the slow, careful treatment. The mistake in both directions is the same: treating a one-way door like a flag flip, or treating every flag flip like a one-way door.</p>
     <p><b>Canary releases.</b> Run the new version in production with a slice of real traffic and a safe rollback strategy. It tests capacity, and captures how the new version affects production before everyone gets it.</p>
     <p><b>A/B testing.</b> Diligent use of A/B tests and flags gives the team flexibility, and gauges feature readiness from the customer's side: how it behaves in the real world, not only whether it works.</p>
     <p><b>Rollback.</b> One action, rehearsed, measured. If rollback is a runbook nobody has run, it isn't a rollback. Database changes use expand/contract so the previous version still works against the new schema; otherwise code rollback is a fiction.</p>
@@ -1480,6 +1580,9 @@
     <li>TMMi Foundation. Test Maturity Model integration.</li>
     <li>W3C. Web Content Accessibility Guidelines.</li>
     <li>Keyes, E. "Sufficiently Advanced Monitoring is Indistinguishable from Testing." Google Test Automation Conference (GTAC), 2007.</li>
+    <li>Majors, C. "Deploys Are the Wrong Way to Change User Experience." charity.wtf.</li>
+    <li>LaunchDarkly. "Why decouple deployments from releases."</li>
+    <li>Bezos, J. Amazon letter to shareholders, 2015 (Type 1 and Type 2 decisions).</li>
     <li>Clarke, A. C. <em>Profiles of the Future</em> (the third law Keyes borrowed).</li>
   </ol>
 
