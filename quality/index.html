@@ -1189,6 +1189,7 @@
   </div>
   <div class="prose">
     <p>Bezos was writing about business decisions, but it maps exactly. A flag turns most releases into two-way doors, which is why they can move fast. The ones without a switch are one-way doors, and they get the slow, careful treatment. The mistake in both directions is the same: treating a one-way door like a flag flip, or treating every flag flip like a one-way door.</p>
+    <p>I've shipped under a lot of release models. At one end, sign-off was the pipeline itself: the tests passed and the change went to production. At the other, every release needs a recorded sign-off before it deploys and a verification sign-off after, with plenty of variations in between. All of them can deliver quality. The heavier models cost more per release, and that cost falls fastest when the evidence behind each sign-off comes from tooling — test results, monitors, dashboards — instead of people re-checking by hand. Modern tooling doesn't remove the sign-off; it makes the sign-off faster and better informed.</p>
     <p><b>Canary releases.</b> Run the new version in production with a slice of real traffic and a safe rollback strategy. It tests capacity, and captures how the new version affects production before everyone gets it.</p>
     <p><b>A/B testing.</b> Diligent use of A/B tests and flags gives the team flexibility, and gauges feature readiness from the customer's side: how it behaves in the real world, not only whether it works.</p>
     <p><b>Rollback.</b> One action, rehearsed, measured. If rollback is a runbook nobody has run, it isn't a rollback. Database changes use expand/contract so the previous version still works against the new schema; otherwise code rollback is a fiction.</p>
@@ -1367,7 +1368,7 @@
       <tbody>
         <tr><td>Deployment frequency</td><td>How often you successfully release to production</td><td>Needs a robust, reliable pipeline and tests</td></tr>
         <tr><td>Lead time for changes</td><td>Commit to production</td><td>Slow tests and manual gates show up here</td></tr>
-        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>A direct measure of how effective the testing is</td></tr>
+        <tr><td>Change failure rate</td><td>% of deployments causing a failure in production</td><td>Reflects testing, along with change size, design and release practice</td></tr>
         <tr><td>Time to restore</td><td>Failure to recovery</td><td>The "time" lever from section 02</td></tr>
       </tbody>
     </table>
