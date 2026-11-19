@@ -605,6 +605,27 @@
   .prose p.def{border-top:1px solid rgba(236,228,213,.08);padding-top:16px;margin-top:18px}
   .prose p.def>b:first-child{display:block;font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.25;color:var(--paper);margin-bottom:6px;letter-spacing:-.005em}
   .prose p.def>b:first-child::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--ox);margin-right:10px;vertical-align:middle;position:relative;top:-2px}
+  details.found .inner{padding:4px 22px 22px}
+  details.found summary{text-transform:none;letter-spacing:.02em;font-size:13px;line-height:1.5}
+  .amfig{padding:22px;width:min(1120px,calc(100vw - 32px));margin-left:50%;transform:translateX(-50%)}
+  .js .amfig.rv{transform:translateX(-50%) translateY(18px)}
+  .js .amfig.rv.in{transform:translateX(-50%)}
+  .am-legend{font-size:14.5px;color:var(--read-ink);margin:0 0 16px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .am-grid{columns:3 300px;column-gap:12px}
+  .am-g{break-inside:avoid;margin-bottom:12px}
+  .am-g{border-radius:12px;padding:14px 16px 8px;border:1px solid rgba(236,228,213,.09);background:linear-gradient(170deg,rgba(255,240,220,.045),rgba(255,240,220,.01))}
+  .am-g.s{border-top:2px solid var(--moss)}.am-g.u{border-top:2px solid var(--brass)}.am-g.i{border-top:2px solid #d18caa}.am-g.y{border-top:2px solid #78a0d7}
+  .am-g.c{border-top:2px solid #6eaaaa}.am-g.e{border-top:2px solid var(--paper-dim)}.am-g.p{border-top:2px solid var(--ox)}
+  .am-h{font:500 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);margin:0 0 6px}
+  .am-g ul{list-style:none;margin:0;padding:0}
+  .am-g li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:9px 0;border-top:1px solid rgba(236,228,213,.06)}
+  .am-g li:first-child{border-top:0}
+  .am-n{grid-column:1;grid-row:1;font-family:var(--serif);font-weight:600;font-size:15.5px;color:var(--paper)}
+  .am-d{grid-column:1 / -1;font-size:14px;line-height:1.45;color:var(--read-ink)}
+  .am-g li .am-t{grid-column:2;grid-row:1;justify-self:end}
+  .am-t{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:2px 8px;white-space:nowrap;align-self:center}
+  .am-t.after{color:var(--moss);border:1px solid var(--moss-deep)}
+  .am-t.before{color:var(--ox);border:1px solid var(--ox-deep);background:rgba(192,85,69,.1)}
 </style>
 </head>
 <body>
@@ -765,7 +786,7 @@
     </ul>
     <h4>Two ways to get there</h4>
     <p><b>Defect management</b> counts and manages defects, usually by severity. A defect is any failure to address end-user requirements: missed or misunderstood requirements, errors in design, logic, data relationships, timing, validity checks, and code. This is generally a <em>reactive</em> approach.</p>
-    <p><b>Software quality attributes</b> assesses conformance with a quality model such as ISO/IEC 25010 (<a href="#foundations">section 14</a>), and guides testing of both functional and non-functional attributes. This is generally a <em>proactive</em> approach. A good team does both.</p>
+    <p><b>Software quality attributes</b> assesses conformance with a quality model such as <a href="https://www.iso.org/standard/35733.html" rel="noopener">ISO/IEC 25010</a> (<a href="#foundations">section 14</a>), and guides testing of both functional and non-functional attributes. This is generally a <em>proactive</em> approach. A good team does both.</p>
   </div>
 </section>
 
@@ -911,7 +932,7 @@
       <li><b>Reduce the risk of insufficient quality.</b> Every project carries uncertainty: launch time, budget, technology, implementation, maintenance. Testing brings risk management in early so risks are found as soon as possible.</li>
       <li class="key"><b>Give stakeholders enough information to make informed decisions</b>, especially about the level of quality. Be transparent: coverage, what is missing, what went wrong, and the constraints and risks behind them.</li>
       <li><b>Find defects</b>, as early as possible. Unit testing finds them where they're cheapest; integration testing finds them at the touchpoints between systems; regression testing makes sure changes didn't add new ones; operational testing checks reliability and performance under maximum load.</li>
-      <li><b>Comply with contractual, legal and regulatory requirements</b>, and verify compliance. Accessibility law differs by country; the EU has strict rules on handling personal data. Failure here will fail the product no matter how defect-free it has been working. ISO/IEC/IEEE 29119 covers the testing standards themselves.</li>
+      <li><b>Comply with contractual, legal and regulatory requirements</b>, and verify compliance. Accessibility law differs by country; the EU has strict rules on handling personal data. Failure here will fail the product no matter how defect-free it has been working. <a href="https://www.iso.org/standard/81291.html" rel="noopener">ISO/IEC/IEEE 29119</a> covers the testing standards themselves.</li>
     </ol>
     <p>Why seven? When you ship many times a day, nobody reads a test report before each deploy. The pipeline, the dashboards and the alerts <em>are</em> the report, and the decision to ship is made by a gate or by a person looking at a canary graph. Testing's job is to make sure that information is there, correct, and in front of whoever decides.</p>
   </div>
@@ -1452,6 +1473,24 @@ n't target them.</p>
       </div>
     </div>
 
+
+    <h3>Effective use of AI</h3>
+    <p>AI-assisted testing can accelerate test creation and maintenance, by generating or updating tests as code and UI change. It can improve defect detection through anomaly detection and pattern recognition. It can enhance exploratory testing by suggesting the areas most likely to hide defects. And it can optimize coverage by finding redundant or missing tests. Here is where each use pays off, and how much to trust it.</p>
+  </div>
+  <figure class="fig rv amfig" aria-labelledby="am-cap">
+    <div class="am-legend"><span class="am-t after">check after</span> spot-check the output with sampling and metrics <span class="am-t before" style="margin-left:14px">gate before</span> a person approves before it counts</div>
+    <div class="am-grid">
+      <div class="am-g s"><p class="am-h">Static</p><ul><li><span class="am-n">AI-powered code review</span><span class="am-d">Suggest code improvements, flag security vulnerabilities and enforce coding standards (GitHub Copilot, DeepCode).</span><span class="am-t after">check after</span></li><li><span class="am-n">Requirements analysis</span><span class="am-d">Scan requirement documents for ambiguities, inconsistencies or missing information.</span><span class="am-t after">check after</span></li><li><span class="am-n">Documentation review</span><span class="am-d">Check for outdated or inconsistent documentation and suggest updates.</span><span class="am-t after">check after</span></li></ul></div>
+      <div class="am-g u"><p class="am-h">Unit</p><ul><li><span class="am-n">Unit test generation</span><span class="am-d">Generate unit tests by analyzing code changes and usage patterns (GitHub Copilot).</span><span class="am-t before">gate before</span></li><li><span class="am-n">Coverage optimization</span><span class="am-d">Identify untested code paths and recommend or generate additional tests.</span><span class="am-t after">check after</span></li><li><span class="am-n">Flaky test detection</span><span class="am-d">Analyze execution history to flag flaky or unreliable tests.</span><span class="am-t after">check after</span></li></ul></div>
+      <div class="am-g i"><p class="am-h">Integration</p><ul><li><span class="am-n">Contract analysis</span><span class="am-d">Analyze API contracts and usage to suggest integration tests and detect breaking changes.</span><span class="am-t after">check after</span></li><li><span class="am-n">Test data synthesis</span><span class="am-d">Generate realistic, diverse test data for integration scenarios.</span><span class="am-t after">check after</span></li><li><span class="am-n">Anomaly detection</span><span class="am-d">Watch integration results and logs for unusual patterns that point to deeper issues.</span><span class="am-t after">check after</span></li></ul></div>
+      <div class="am-g y"><p class="am-h">System &amp; E2E</p><ul><li><span class="am-n">Visual regression</span><span class="am-d">Compare UI screenshots across builds to detect subtle visual changes (Applitools).</span><span class="am-t before">gate before</span></li><li><span class="am-n">Test healing</span><span class="am-d">Update test scripts when UI locators or APIs change.</span><span class="am-t before">gate before</span></li><li><span class="am-n">Test creation</span><span class="am-d">Generate test scripts from user stories, requirements or recorded user interactions.</span><span class="am-t before">gate before</span></li><li><span class="am-n">Accessibility scanning</span><span class="am-d">Identify accessibility issues in UI pages and suggest remediations.</span><span class="am-t after">check after</span></li><li><span class="am-n">User journey analysis</span><span class="am-d">Use production usage data to suggest scenarios that reflect real user behavior.</span><span class="am-t after">check after</span></li><li><span class="am-n">Flaky test management</span><span class="am-d">Detect flaky tests and retry them, but report every retry: count it, track the trend, and quarantine repeat offenders for review.</span><span class="am-t after">check after</span></li><li><span class="am-n">Root cause analysis</span><span class="am-d">Cluster and analyze failures to find systemic issues quickly.</span><span class="am-t after">check after</span></li></ul></div>
+      <div class="am-g c"><p class="am-h">Pipeline</p><ul><li><span class="am-n">Test impact analysis</span><span class="am-d">Select and prioritize the tests relevant to each build.</span><span class="am-t after">check after</span></li><li><span class="am-n">Test prioritization</span><span class="am-d">Run critical or failure-prone tests first.</span><span class="am-t after">check after</span></li><li><span class="am-n">Environment setup</span><span class="am-d">Auto-configure test environments based on historical needs.</span><span class="am-t after">check after</span></li></ul></div>
+      <div class="am-g e"><p class="am-h">Exploratory &amp; upkeep</p><ul><li><span class="am-n">Risk-area suggestions</span><span class="am-d">Point exploratory testing at high-risk or untested areas.</span><span class="am-t after">check after</span></li><li><span class="am-n">Traceability and gaps</span><span class="am-d">Map requirements to tests and find the gaps.</span><span class="am-t after">check after</span></li><li><span class="am-n">Test maintenance</span><span class="am-d">Recommend obsolete or redundant tests for removal.</span><span class="am-t before">gate before</span></li></ul></div>
+      <div class="am-g p"><p class="am-h">Production</p><ul><li><span class="am-n">Performance regression</span><span class="am-d">Detect performance regressions and predict scalability problems.</span><span class="am-t after">check after</span></li><li><span class="am-n">Log and result anomalies</span><span class="am-d">Detect anomalies in logs and test results.</span><span class="am-t after">check after</span></li></ul></div>
+    </div>
+    <figcaption id="am-cap">The trust level follows the two rules in <a href="#rules">section 03</a> and the doors in <a href="#enough">section 02</a>: anything that changes what a test asserts, adds or removes tests, or sets a visual baseline gets a person's approval first. Everything else is checked after the fact. Tools named are examples (GitHub; Snyk; Applitools).</figcaption>
+  </figure>
+  <div class="prose">
     <h3>What changes when AI writes the code</h3>
     <p class="def"><b>Code got cheap. Being wrong didn't</b>AI makes writing code fast, so there is more change, more often. Verification becomes the bottleneck, and the tester's job gets bigger, not smaller.</p>
     <p class="def"><b>The output is a claim</b>Rule one applies to agents the same as to people. "Done, all tests pass" gets checked: which tests, what they asserted, what is actually served.</p>
@@ -1724,9 +1763,12 @@ n't target them.</p>
   <div class="rule"></div>
   <span class="ghost" aria-hidden="true">14</span><p class="snum">14</p>
   <h2 id="h-found">The foundations</h2>
+  <details class="more found">
+    <summary>Show the foundations: ISO 25010, 5055, 29119, ISO 9000, QA vs. QC, the planning hierarchy, TMMi, Modern Testing Principles</summary>
+    <div class="inner">
   <p class="slede">None of the speed above replaces the fundamentals. These are the standards and models underneath how I think about quality.</p>
   <div class="prose">
-    <h3>ISO/IEC 25010: eight product quality characteristics</h3>
+    <h3><a href="https://www.iso.org/standard/35733.html" rel="noopener">ISO/IEC 25010</a>: eight product quality characteristics</h3>
     <p>The SQuaRE quality model. It superseded ISO 9126 and added security and compatibility. It gives consistent terms for specifying, measuring and evaluating quality, and a checklist to compare requirements against for completeness. There is also a quality-in-use model: effectiveness, efficiency, satisfaction, freedom from risk, and context coverage.</p>
   </div>
   <div class="iso rv">
@@ -1740,11 +1782,11 @@ n't target them.</p>
     <div><b>Portability</b><span>adaptability, installability, replaceability</span></div>
   </div>
   <div class="prose">
-    <h3>ISO/IEC 5055: measuring the internal structure</h3>
+    <h3><a href="https://www.iso.org/standard/80623.html" rel="noopener">ISO/IEC 5055</a>: measuring the internal structure</h3>
     <p>ISO 5055:2021 measures source code on four business-critical factors: <b>security</b>, <b>reliability</b>, <b>performance efficiency</b> and <b>maintainability</b>. It counts weaknesses at the unit, technology and system level: hard-coded credentials, SQL injection, unhandled exceptions, unbounded resources, expensive work in loops, high cyclomatic complexity, tightly coupled modules. These are the factors that decide how trustworthy and resilient a system is, and many of them are exactly what static analysis and AI code review should catch.</p>
 
     <h3>ISO/IEC/IEEE 29119 and ISO 9000</h3>
-    <p>29119 is the software testing standard: concepts, processes, documentation and techniques. ISO 9000:2015 gives seven quality management principles: customer focus, leadership, engagement of people, process approach, improvement, evidence-based decision making, and relationship management. I didn't recommend aligning a delivery organization to an ISO standard; the overhead would need dedicated QA staff to be practical. They're the vocabulary and the checklist, not the process.</p>
+    <p>29119 (at <a href="https://www.iso.org/standard/81291.html" rel="noopener">ISO</a> and <a href="https://standards.ieee.org/ieee/29119-1/10779/" rel="noopener">IEEE</a>) is the software testing standard: concepts, processes, documentation and techniques. <a href="https://www.iso.org/standard/45481.html" rel="noopener">ISO 9000:2015</a> gives seven quality management principles: customer focus, leadership, engagement of people, process approach, improvement, evidence-based decision making, and relationship management. I didn't recommend aligning a delivery organization to an ISO standard; the overhead would need dedicated QA staff to be practical. They're the vocabulary and the checklist, not the process.</p>
 
     <h3>Quality assurance vs. quality control</h3>
     <p><b>Quality assurance</b> is preventive and works on the process: process definition, training, audits, tool selection. <b>Quality control</b> is corrective and works on the product: reviews, testing, inspections. Testers don't assure quality. We can't. We don't control the schedule, the budget, the staffing, the scope, or the development model (Bolton).</p>
@@ -1789,8 +1831,11 @@ n't target them.</p>
     <p>Speed should never be the end goal. Speed is a long-term side effect of producing code with the highest possible internal quality.</p>
   </div>
 
-  <h3 style="margin-top:72px">Works Cited</h3>
+      </div>
+  </details>
+<h3 style="margin-top:72px">Works Cited</h3>
   <ul class="refs wc">
+    <li>Applitools. <em>Applitools Eyes</em>. Applitools, applitools.com.</li>
     <li>Arbon, Jason. "Confidence in AI-Generated Software." <em>Jason&rsquo;s Substack</em>, 23 July 2026, jarbon.substack.com/p/confidence-in-ai-software-engineering.</li>
     <li>Bezos, Jeff. "2015 Letter to Shareholders." <em>Amazon</em>, 2016.</li>
     <li>Bolton, Michael. "Quality of Testing Always Matters: Interview with Michael Bolton, Part I." Interview by a1qa, 8 Apr. 2021.</li>
@@ -1801,11 +1846,12 @@ n't target them.</p>
     <li>DORA. <em>Accelerate State of DevOps Report</em>. Google Cloud.</li>
     <li>Fowler, Martin. "Continuous Integration." <em>martinfowler.com</em>, martinfowler.com/articles/continuousIntegration.html.</li>
     <li>"Getting Started with Testcontainers for Java." <em>Docker Docs</em>, docs.docker.com/guides/testcontainers-java-getting-started/.</li>
+    <li>GitHub. <em>GitHub Copilot</em>. GitHub, github.com/features/copilot.</li>
     <li>Greenlees, David. "The Quality and Testing Information Model." <em>Ministry of Testing</em>, 2020.</li>
-    <li>International Organization for Standardization. <em>ISO 9000:2015, Quality Management Systems: Fundamentals and Vocabulary</em>. ISO, 2015.</li>
-    <li>International Organization for Standardization. <em>ISO/IEC 25010, Systems and Software Quality Requirements and Evaluation (SQuaRE): Product Quality Model</em>. ISO.</li>
-    <li>International Organization for Standardization. <em>ISO/IEC 5055:2021, Software Measurement: Software Quality Measurement</em>. ISO, 2021.</li>
-    <li>International Organization for Standardization. <em>ISO/IEC/IEEE 29119, Software and Systems Engineering: Software Testing</em>. ISO.</li>
+    <li>International Organization for Standardization and International Electrotechnical Commission. <em>ISO/IEC 25010:2011, Systems and Software Engineering: Systems and Software Quality Requirements and Evaluation (SQuaRE): System and Software Quality Models</em>. ISO, 2011, www.iso.org/standard/35733.html. Replaced by ISO/IEC 25010:2023, www.iso.org/standard/78176.html.</li>
+    <li>International Organization for Standardization and International Electrotechnical Commission. <em>ISO/IEC 5055:2021, Information Technology: Software Measurement: Software Quality Measurement: Automated Source Code Quality Measures</em>. ISO, 2021, www.iso.org/standard/80623.html.</li>
+    <li>International Organization for Standardization, International Electrotechnical Commission, and Institute of Electrical and Electronics Engineers. <em>ISO/IEC/IEEE 29119-1:2022, Software and Systems Engineering: Software Testing: Part 1: General Concepts</em>. ISO, 2022, www.iso.org/standard/81291.html; IEEE, standards.ieee.org/ieee/29119-1/10779/.</li>
+    <li>International Organization for Standardization. <em>ISO 9000:2015, Quality Management Systems: Fundamentals and Vocabulary</em>. ISO, 2015, www.iso.org/standard/45481.html.</li>
     <li>Kaner, Cem, et al. <em>Testing Computer Software</em>. 2nd ed., Wiley, 1999.</li>
     <li>Keyes, Ed. "Sufficiently Advanced Monitoring Is Indistinguishable from Testing." Google Test Automation Conference, 2007.</li>
     <li>Krasner, Herb. "The Cost of Poor Quality Software in the US: A 2018 Report." <em>CISQ</em>, 26 Sept. 2018, www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2018-report/The-Cost-of-Poor-Quality-Software-in-the-US-2018-Report.pdf.</li>
@@ -1813,10 +1859,11 @@ n't target them.</p>
     <li>Magowan, Kirstie. "Shift Left Testing: What, Why &amp; How to Shift Left." <em>BMC Blogs</em>, 30 Nov. 2020, www.bmc.com/blogs/what-is-shift-left-shift-left-testing-explained/.</li>
     <li>Majors, Charity. "Deploys Are the Wrong Way to Change User Experience." <em>charity.wtf</em>, charity.wtf/p/deploys-are-the-wrong-way-to-change-user-experience.</li>
     <li>Page, Alan, and Brent Jensen. "Modern Testing Principles." <em>Modern Testing</em>, moderntesting.org.</li>
-    <li>TMMi Foundation. <em>Test Maturity Model integration (TMMi)</em>. TMMi Foundation.</li>
+    <li>Snyk. <em>Snyk Code (formerly DeepCode)</em>. Snyk, snyk.io.</li>
+    <li>TMMi Foundation. <em>Test Maturity Model integration (TMMi)</em>. TMMi Foundation, www.tmmi.org/tmmi-model/.</li>
     <li>Weinberg, Gerald. "Agile and the Definition of Quality." <em>Gerald Weinberg&rsquo;s Secrets of Writing and Consulting</em>, Sept. 2012.</li>
     <li>Wiegers, Karl. "The Cost of Quality in Software." <em>Geek Culture</em>, Medium, 1 Dec. 2021, medium.com/geekculture/the-cost-of-quality-in-software-5f113a26e759.</li>
-    <li>World Wide Web Consortium. <em>Web Content Accessibility Guidelines (WCAG) 2.0</em>. W3C, 11 Dec. 2008.</li>
+    <li>World Wide Web Consortium. <em>Web Content Accessibility Guidelines (WCAG) 2.0</em>. W3C, 11 Dec. 2008, www.w3.org/TR/WCAG20/.</li>
   </ul>
 
   <footer>
