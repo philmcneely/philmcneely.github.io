@@ -472,6 +472,11 @@
   .is-col.yes li::before{content:"✓";color:var(--moss)}
   .is-col.no li::before{content:"✕";color:var(--ox)}
   @media (max-width:640px){.isnt{grid-template-columns:1fr}}
+  .is-col.cdl{background:linear-gradient(160deg,rgba(201,163,91,.14),rgba(255,240,220,.01) 60%);border-color:rgba(201,163,91,.35)}
+  .is-col.cdp{background:linear-gradient(160deg,rgba(201,163,91,.24),rgba(192,85,69,.06) 60%);border-color:rgba(201,163,91,.5)}
+  .is-col.cdl .ih,.is-col.cdp .ih{color:var(--brass)}
+  .is-col.cdl li::before,.is-col.cdp li::before{content:"→";color:var(--brass)}
+  .nc{text-transform:none;letter-spacing:.06em}
 </style>
 </head>
 <body>
@@ -946,7 +951,7 @@
     <div class="track">
       <div class="band ct">CT · continuous testing, every phase</div>
       <div class="band ci">CI · continuous integration</div>
-      <div class="band cd">CD · continuous delivery</div>
+      <div class="band cd"><span class="nc">Cd/CD</span> · continuous delivery / deployment</div>
       <div class="band co">CO · continuous operations</div>
       <div class="rail" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="split"><span>BUILD TIME │ RUN TIME</span></span><span class="pk"></span><span class="pk b"></span></div>
       <div class="phase"><span class="pn">1</span><span class="pt">Pre-coding</span><ul><li>Story &amp; AC review</li><li>Risk analysis</li><li>Test strategy, DoD</li><li class="ai">ambiguity check</li></ul><div class="pfull">The idea is created and approved; stories, documentation and reviews happen before coding starts. Asking questions early is also an act of testing. Bring the quality perspective into every engineering decision, alongside product and development: it helps everyone see the scope and the alternate and negative flows, which are where bugs live.</div><button type="button" class="pmore" aria-expanded="false" aria-controls="phase-panel">Read more <span aria-hidden="true">↓</span></button></div>
@@ -983,7 +988,7 @@
           <li>Every merge triggers a build and the full automated suite, automatically. Nobody kicks it off.</li>
           <li>Tests are fast enough to run on every change: minutes, not hours.</li>
           <li>A red main is the team's top priority, fixed or reverted in minutes.</li>
-          <li>Main is always releasable.</li>
+          <li>Main is always deployable.</li>
         </ul>
       </div>
       <div class="is-col no">
@@ -1000,7 +1005,29 @@
     <div class="prose">
       <p>If someone has to start the build after a merge, you have a build server, not continuous integration. Plenty of teams work that way, and it's a fine place to start. Call it what it is, and know what's missing: the feedback that tells you within minutes which change broke what, while the person who made it still has it in their head. The path from there is small steps: trigger the build on merge, then run the fast tests on every push, then shrink branches until they last a day.</p>
 
-      <h3>Continuous delivery</h3>
+      <h3>Continuous delivery and continuous deployment</h3>
+      <p>CD is two different things, and the difference matters. I write it Cd/CD.</p>
+    </div>
+    <div class="isnt rv">
+      <div class="is-col cdl">
+        <p class="ih"><span class="nc">Cd</span> · continuous delivery</p>
+        <ul>
+          <li>Every change that passes the pipeline is deployable: it could go to production at any time.</li>
+          <li>Going to production is a decision: a person, or a business calendar, pushes the button.</li>
+          <li>Usually no feature flags, so deploying a change also releases it. That's why a person decides.</li>
+        </ul>
+      </div>
+      <div class="is-col cdp">
+        <p class="ih"><span class="nc">CD</span> · continuous deployment</p>
+        <ul>
+          <li>Every change that passes the pipeline is deployed to production automatically.</li>
+          <li>No human gate between merge and production. The pipeline is the gate.</li>
+          <li>Needs flags, canaries, SLOs and automatic rollback, so deploying doesn't have to mean releasing.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose">
+      <p>Continuous deployment is not delivery with the approval removed. Take away the human gate without adding flags, canaries and automatic rollback, and you've only taken away a check. Earn it: get to continuous delivery first, measure your change failure rate and time to restore, and remove the button when the numbers say the pipeline catches what the person used to.</p>
       <p>CI works only when continuous delivery and continuous testing are practiced too. We are continuously delivering software to somebody, somewhere: to production or to lower environments. The best organizations release many times a day. Small, frequent releases deliver value without delays and keep each change small enough to understand and undo. Releases are also a communication problem, not only a technical one: tell people what shipped and what's still open.</p>
 
       <h3>Continuous testing</h3>
